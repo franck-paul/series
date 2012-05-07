@@ -97,7 +97,7 @@ $core->callBehavior('adminPostsActionsCombo',array(&$combo_action));
   <script type="text/javascript" src="js/_posts_list.js"></script>
   <script type="text/javascript">
   //<![CDATA[
-  dotclear.msg.confirm_serie_delete = '<?php echo html::escapeJS(sprintf(__('Are you sure you want to remove this %s?'),'serie')) ?>';
+  dotclear.msg.confirm_serie_delete = '<?php echo html::escapeJS(sprintf(__('Are you sure you want to remove this %s?'),__('serie'))) ?>';
   $(function() {
     $('#serie_delete').submit(function() {
       return window.confirm(dotclear.msg.confirm_serie_delete);

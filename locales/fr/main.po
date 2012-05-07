@@ -1,0 +1,83 @@
+msgid "Series"
+msgstr "Séries"
+
+msgid "Series:"
+msgstr "Séries :"
+
+msgid "Serie"
+msgstr "Série"
+
+msgid "Enter series separated by coma"
+msgstr "Entrer les séries séparées par des virgules"
+
+msgid "Add series"
+msgstr "Ajouter des séries"
+
+msgid "Remove series"
+msgstr "Supprimer des séries"
+
+msgid "Add series to entries"
+msgstr "Ajouter des séries aux billets"
+
+msgid "Series to add:"
+msgstr "Séries à ajouter :"
+
+msgid "Remove selected series from entries"
+msgstr "Supprimer les séries sélectionnées des billets"
+
+msgid "No series for selected entries"
+msgstr "Aucune série pour les billets sélectionnés"
+
+msgid "Following series have been found in selected entries:"
+msgstr "Les séries suivantes ont été trouvées pour les billets sélectionnés :"
+
+msgid "Series list format:"
+msgstr "Format de la liste des séries :"
+
+msgid "Series of posts"
+msgstr "Séries de billets"
+
+msgid "This serie's comments Atom feed"
+msgstr "Flux Atom des commentaires de cette série"
+
+msgid "This serie's entries Atom feed"
+msgstr "Flux Atom des billets de cette série"
+
+msgid "Link to all series:"
+msgstr "Lien vers toutes les séries :"
+
+msgid "All series"
+msgstr "Toutes les séries"
+
+msgid "serie"
+msgstr "série"
+
+msgid "Edit serie"
+msgstr "Modifier la série"
+
+msgid "Serie has been successfully renamed"
+msgstr "La série a été renommée avec succès"
+
+msgid "Back to series list"
+msgstr "Retour à la liste des séries"
+
+msgid "Actions for this serie"
+msgstr "Actions pour cette série"
+
+msgid "Edit serie name:"
+msgstr "Modifier le nom de la série :"
+
+msgid "Delete this serie:"
+msgstr "Supprimer cette série :"
+
+msgid "List of entries in this serie"
+msgstr "Liste des billets de cette série"
+
+msgid "Serie has been successfully removed"
+msgstr "La série a été supprimée avec succès"
+
+msgid "No series on this blog."
+msgstr "Aucune série sur ce blog."
+
+msgid "Serie name"
+msgstr "Nom de série"
