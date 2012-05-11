@@ -22,7 +22,7 @@
   <link rel="top" href="{{tpl:BlogURL}}" title="{{tpl:lang Home}}" />
   <link rel="contents" href="{{tpl:BlogArchiveURL}}" title="{{tpl:lang Archives}}" />
   
-  <tpl:Entries no_content="1">
+  <tpl:Entries no_content="1" order="asc">
     <tpl:EntriesHeader>
       <tpl:Pagination>
         <tpl:PaginationIf end="0">
@@ -66,7 +66,7 @@
     </p>
   </div>
   
-  <tpl:Entries>
+  <tpl:Entries order="asc">
     <div id="p{{tpl:EntryID}}" class="post {{tpl:EntryIfOdd}} {{tpl:EntryIfFirst}}" lang="{{tpl:EntryLang}}" xml:lang="{{tpl:EntryLang}}">
     <!-- # New day date -->
     <tpl:DateHeader><p class="day-date">{{tpl:EntryDate}}</p></tpl:DateHeader>
