@@ -81,3 +81,24 @@ msgstr "Aucune série sur ce blog."
 
 msgid "Serie name"
 msgstr "Nom de série"
+
+msgid "Current serie(s)"
+msgstr "Série(s) courante(s)"
+
+msgid "Show titles of series"
+msgstr "Afficher le titre des séries"
+
+msgid "Order series by:"
+msgstr "Ordre des séries :"
+
+msgid "Include current entry:"
+msgstr "Inclure le billet courant :"
+
+msgid "Standard"
+msgstr "Normal"
+
+msgid "With link"
+msgstr "Avec l'URL"
+
+msgid "Order entries by:"
+msgstr "Trier les billets par :"

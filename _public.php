@@ -28,7 +28,7 @@ $core->tpl->addValue('SerieRoundPercent',array('tplSeries','SerieRoundPercent'))
 $core->tpl->addValue('SerieURL',array('tplSeries','SerieURL'));
 $core->tpl->addValue('SerieCloudURL',array('tplSeries','SerieCloudURL'));
 $core->tpl->addValue('SerieFeedURL',array('tplSeries','SerieFeedURL'));
-
+$core->tpl->addValue('SerieEntriesList',array('tplSeries','SerieEntriesList'));
 
 $core->addBehavior('templateBeforeBlock',array('behaviorsSeries','templateBeforeBlock'));
 $core->addBehavior('tplSysIfConditions',array('behaviorsSeries','tplSysIfConditions'));
@@ -196,6 +196,26 @@ class tplSeries
 		'rawurlencode($_ctx->meta->meta_id)."/'.$type.'")').'; ?>';
 	}
 	
+	public static function SerieEntriesList($attr)
+	{
+		$option = !empty($attr['include_current']) ? $attr['include_current'] : 'std';
+		
+		if (!preg_match('#^(std|link|none)$#',$option)) {
+			$option = 'std';
+		}
+		
+		// $_ctx->meta->meta_id contient l'id de la série en cours
+		// $_ctx->posts->post_id contient l'id du billet en cours
+
+		$f = $GLOBALS['core']->tpl->getFilters($attr);
+
+		$res = <<<EOT
+			echo '<ul class="serie-entries-list">'."\n";
+			echo '</ul>'."\n";
+EOT;
+		return ($res != '' ? '<?php '.$res.' ?>' : '');
+	}
+	
 	# Widget function
 	public static function seriesWidget($w)
 	{
@@ -236,7 +256,7 @@ class tplSeries
 			$res .=
 			'<li><a href="'.$core->blog->url.$core->url->getURLFor('serie',rawurlencode($rs->meta_id)).'" '.
 			'class="serie'.$rs->roundpercent.'" rel="serie">'.
-			$rs->meta_id.'</a> </li>';
+			$rs->meta_id.'</a></li>';
 		}
 		
 		$res .= '</ul>';
@@ -252,6 +272,93 @@ class tplSeries
 		
 		return $res;
 	}
+
+	public static function seriePostsWidget($w)
+	{
+		global $core,$_ctx;
+		if($core->url->type != 'post'){ 
+			return;
+		}
+
+		$metas = unserialize($_ctx->posts->post_meta);
+		if (isset($metas['serie'])) {
+			$sql = 'SELECT * FROM '.$core->prefix.'meta as m,'.
+				$core->prefix.'post as p WHERE m.post_id = p.post_id AND post_type="post" AND post_status=1 AND blog_id = "'.$core->blog->id.'"'.
+				' AND meta_type="serie" AND ( ';
+			foreach ($metas['serie'] as $key => $meta) {
+				$sql .= ' meta_id = "'.$meta.'" ';
+				if ($key < count($metas['serie']) -1) {
+					$sql .= ' OR ';
+				}
+			}
+			$sql .= ')';
+
+			$order = $w->orderseriesby;
+			if ($order != 'desc') {
+				$order = 'asc';
+			}
+			$sql .= ' ORDER BY meta_id '.($order == 'asc' ? 'ASC' : 'DESC').', ';
+			
+			$sort = $w->sortentriesby;
+			if (!in_array($sort,array('date','title'))) {
+				$sort = 'date';
+			}
+			$order = $w->orderentriesby;
+			if ($order != 'desc') {
+				$order = 'asc';
+			}
+			$sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title').' '.($order == 'asc' ? 'ASC' : 'DESC');
+			$rs = $core->con->select($sql);	
+			if ($rs->isEmpty()) {
+				return;
+			}
+		}
+
+		$res = '<div class="series-posts">'."\n";
+		$res .= ($w->title ? '<h2>'.html::escapeHTML($w->title).'</h2>'."\n" : '');
+				
+		$serie = '';
+		$list = '';
+		while ($rs->fetch()) {
+			$class = '';
+			$link = true;
+			if ($rs->post_id == $_ctx->posts->post_id) 
+			{
+				if ($w->current == 'none') {
+					continue;
+				}
+				$class = ' class="current"';
+				if ($w->current == 'std') {
+					$link = false;
+				}
+			}
+
+			if ($rs->meta_id != $serie) {
+				if ($serie != '') {
+					$list .= '</ul>'."\n";
+				}
+				if ($w->serietitle) {
+					$list .= '<h3><a href="'.$core->blog->url.$core->url->getURLFor('serie',rawurlencode($rs->meta_id)).'" rel="serie">'.
+					$rs->meta_id.'</a></h3>'."\n";
+				}
+				$list .= '<ul>'."\n";
+				$serie = $rs->meta_id;
+			}
+
+			$list .= '<li'.$class.'>'.
+				($link ? '<a href="'.$core->blog->url.$core->getPostPublicURL($rs->post_type,html::sanitizeURL($rs->post_url)).'">' : '').
+				html::escapeHTML($rs->post_title).
+				($link ? '</a>' : '').
+				'</li>'."\n";
+		}
+		if ($list == '') {
+			return;
+		}
+		$res .= $list.'</ul>'."\n";
+		$res .= '</div>'."\n";
+		
+		return $res;
+	}	
 }
 
 class urlSeries extends dcUrlHandlers
