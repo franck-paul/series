@@ -31,7 +31,7 @@ class seriesWidgets
 		$w->series->setting('allserieslinktitle',__('Link to all series:'),__('All series'));
 
 		// Widget for currently displayed post
-		$w->create( 'seriesPosts', __( 'Current serie(s)' ), array( 'tplSeries', 'seriePostsWidget' ) );
+		$w->create( 'seriesPosts', __( 'Siblings' ), array( 'tplSeries', 'seriePostsWidget' ) );
 		$w->seriesPosts->setting( 'title', __( 'Title:' ),__( 'Current serie(s)' ) );
 		$w->seriesPosts->setting('serietitle',__('Show titles of series'),1,'check');
 		$w->seriesPosts->setting('orderseriesby',__('Order series by:'),'asc','combo',

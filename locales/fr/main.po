@@ -82,8 +82,8 @@ msgstr "Aucune série sur ce blog."
 msgid "Serie name"
 msgstr "Nom de série"
 
-msgid "Current serie(s)"
-msgstr "Série(s) courante(s)"
+msgid "Siblings"
+msgstr "Fratrie"
 
 msgid "Show titles of series"
 msgstr "Afficher le titre des séries"
