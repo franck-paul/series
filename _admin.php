@@ -30,7 +30,7 @@ $core->addBehavior('adminPostsActions',array('seriesBehaviors','adminPostsAction
 $core->addBehavior('adminPostsActionsContent',array('seriesBehaviors','adminPostsActionsContent'));
 
 $core->addBehavior('adminPreferencesForm',array('seriesBehaviors','adminUserForm'));
-// $core->addBehavior('adminUserForm',array('seriesBehaviors','adminUserForm'));
+$core->addBehavior('adminUserForm',array('seriesBehaviors','adminUserForm'));
 
 $core->addBehavior('adminBeforeUserCreate',array('seriesBehaviors','setSerieListFormat'));
 $core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieListFormat'));
