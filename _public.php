@@ -312,6 +312,8 @@ EOT;
 			if ($rs->isEmpty()) {
 				return;
 			}
+		} else {
+			return;
 		}
 
 		$res = '<div class="series-posts">'."\n";
