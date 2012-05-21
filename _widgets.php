@@ -32,7 +32,7 @@ class seriesWidgets
 
 		// Widget for currently displayed post
 		$w->create( 'seriesPosts', __( 'Siblings' ), array( 'tplSeries', 'seriePostsWidget' ) );
-		$w->seriesPosts->setting( 'title', __( 'Title:' ),__( 'Current serie(s)' ) );
+		$w->seriesPosts->setting( 'title', __( 'Title:' ),__( 'Siblings' ) );
 		$w->seriesPosts->setting('serietitle',__('Show titles of series'),1,'check');
 		$w->seriesPosts->setting('orderseriesby',__('Order series by:'),'asc','combo',
 			array(__('Ascending') => 'asc', __('Descending') => 'desc')

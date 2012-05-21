@@ -85,6 +85,9 @@ msgstr "Nom de série"
 msgid "Siblings"
 msgstr "Connexes"
 
+msgid "Current serie(s)"
+msgstr "Série(s) courante(s)"
+
 msgid "Show titles of series"
 msgstr "Afficher le titre des séries"
 
