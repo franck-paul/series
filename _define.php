@@ -15,7 +15,7 @@ $this->registerModule(
 	/* Name */			"Series",
 	/* Description*/		"Series of posts",
 	/* Author */			"Franck Paul",
-	/* Version */			'0.1',
+	/* Version */			'0.1.1',
 	array(
 		'permissions' =>	'usage,contentadmin'
 	)
