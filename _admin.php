@@ -29,11 +29,12 @@ $core->addBehavior('adminPostsActionsCombo',array('seriesBehaviors','adminPostsA
 $core->addBehavior('adminPostsActions',array('seriesBehaviors','adminPostsActions'));
 $core->addBehavior('adminPostsActionsContent',array('seriesBehaviors','adminPostsActionsContent'));
 
-$core->addBehavior('adminPreferencesForm',array('seriesBehaviors','adminUserForm'));
 $core->addBehavior('adminUserForm',array('seriesBehaviors','adminUserForm'));
-
 $core->addBehavior('adminBeforeUserCreate',array('seriesBehaviors','setSerieListFormat'));
 $core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieListFormat'));
+
+$core->addBehavior('adminPreferencesForm',array('seriesBehaviors','adminUserForm'));
+$core->addBehavior('adminBeforeUserOptionsUpdate',array('seriesBehaviors','setSerieListFormat'));
 
 $core->addBehavior('coreInitWikiPost',array('seriesBehaviors','coreInitWikiPost'));
 
