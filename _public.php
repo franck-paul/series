@@ -247,7 +247,7 @@ EOT;
 		$rs->sort($sort,$order);
 		
 		$res =
-		'<div class="series">'.
+		'<div class="series'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">'.
 		($w->title ? '<h2>'.html::escapeHTML($w->title).'</h2>' : '').
 		'<ul>';
 		
@@ -316,7 +316,7 @@ EOT;
 			return;
 		}
 
-		$res = '<div class="series-posts">'."\n";
+		$res = '<div class="series-posts'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">'."\n";
 		$res .= ($w->title ? '<h2>'.html::escapeHTML($w->title).'</h2>'."\n" : '');
 				
 		$serie = '';

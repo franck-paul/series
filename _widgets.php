@@ -29,6 +29,7 @@ class seriesWidgets
 			array(__('Ascending') => 'asc', __('Descending') => 'desc')
 			);
 		$w->series->setting('allserieslinktitle',__('Link to all series:'),__('All series'));
+		$w->series->setting('class',__('CSS class:'),'');
 
 		// Widget for currently displayed post
 		$w->create( 'seriesPosts', __( 'Siblings' ), array( 'tplSeries', 'seriePostsWidget' ) );
@@ -46,6 +47,7 @@ class seriesWidgets
 		$w->seriesPosts->setting('orderentriesby',__('Sort:'),'asc','combo',
 			array(__('Ascending') => 'asc', __('Descending') => 'desc')
 			);
+		$w->seriesPosts->setting('class',__('CSS class:'),'');
 	}
 	
 	public static function initDefaultWidgets($w,$d)
