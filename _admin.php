@@ -34,6 +34,9 @@ $core->addBehavior('adminBeforeUserCreate',array('seriesBehaviors','setSerieList
 $core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieListFormat'));
 
 $core->addBehavior('adminPreferencesForm',array('seriesBehaviors','adminUserForm'));
+if (version_compare(DC_VERSION,'2.4.4','<=')) {
+	$core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieListFormat'));
+}
 $core->addBehavior('adminBeforeUserOptionsUpdate',array('seriesBehaviors','setSerieListFormat'));
 
 $core->addBehavior('coreInitWikiPost',array('seriesBehaviors','coreInitWikiPost'));
