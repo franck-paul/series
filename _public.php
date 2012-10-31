@@ -221,6 +221,11 @@ EOT;
 	{
 		global $core;
 		
+		if (($w->homeonly == 1 && $core->url->type != 'default') ||
+			($w->homeonly == 2 && $core->url->type == 'default')) {
+			return;
+		}
+
 		$params = array('meta_type' => 'serie');
 		
 		if ($w->limit !== '') {
@@ -276,6 +281,12 @@ EOT;
 	public static function seriePostsWidget($w)
 	{
 		global $core,$_ctx;
+
+		if (($w->homeonly == 1 && $core->url->type != 'default') ||
+			($w->homeonly == 2 && $core->url->type == 'default')) {
+			return;
+		}
+
 		if($core->url->type != 'post'){ 
 			return;
 		}

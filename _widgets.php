@@ -29,6 +29,13 @@ class seriesWidgets
 			array(__('Ascending') => 'asc', __('Descending') => 'desc')
 			);
 		$w->series->setting('allserieslinktitle',__('Link to all series:'),__('All series'));
+		$w->series->setting('homeonly',__('Display on:'),0,'combo',
+			array(
+				__('All pages') => 0,
+				__('Home page only') => 1,
+				__('Except on home page') => 2
+				)
+		);
 		$w->series->setting('class',__('CSS class:'),'');
 
 		// Widget for currently displayed post
@@ -47,6 +54,13 @@ class seriesWidgets
 		$w->seriesPosts->setting('orderentriesby',__('Sort:'),'asc','combo',
 			array(__('Ascending') => 'asc', __('Descending') => 'desc')
 			);
+		$w->seriesPosts->setting('homeonly',__('Display on:'),0,'combo',
+			array(
+				__('All pages') => 0,
+				__('Home page only') => 1,
+				__('Except on home page') => 2
+				)
+		);
 		$w->seriesPosts->setting('class',__('CSS class:'),'');
 	}
 	
