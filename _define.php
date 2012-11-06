@@ -12,8 +12,8 @@
 if (!defined('DC_RC_PATH')) { return; }
 
 $this->registerModule(
-	/* Name */				__("Series"),
-	/* Description*/		__("Series of posts"),
+	/* Name */			"Series",
+	/* Description*/		"Series of posts",
 	/* Author */			"Franck Paul",
 	/* Version */			'0.1',
 	array(
