@@ -119,3 +119,9 @@ msgstr "Aucune série sur ce blog."
 
 #~ msgid "Current serie(s)"
 #~ msgstr "Série(s) courante(s)"
+
+msgid "List of series"
+msgstr "Liste des séries"
+
+msgid "Other posts of the same serie(s)"
+msgstr "Autres billets de la/des même(s) série(s)"
