@@ -113,7 +113,7 @@ $core->callBehavior('adminPostsActionsCombo',array(&$combo_action));
 
 <?php
 if (!empty($_GET['renamed'])) {
-	echo '<p class="message">'.__('Serie has been successfully renamed').'</p>';
+	dcPage::message(__('Serie has been successfully renamed'));
 }
 
 echo '<p><a href="'.$p_url.'&amp;m=series">'.__('Back to series list').'</a></p>';
