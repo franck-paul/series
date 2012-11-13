@@ -1,0 +1,166 @@
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Dotclear 2 series module\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-05 17:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../hg-plugins/series/__html_tpl_dummy.php:8
+#: ../hg-plugins/series/_admin.php:125 ../hg-plugins/series/_public.php:459
+msgid "Serie"
+msgstr ""
+
+#: ../hg-plugins/series/__html_tpl_dummy.php:9
+#: ../hg-plugins/series/_admin.php:14 ../hg-plugins/series/_admin.php:166
+#: ../hg-plugins/series/_admin.php:169 ../hg-plugins/series/_admin.php:318
+#: ../hg-plugins/series/_define.php:15 ../hg-plugins/series/_widgets.php:22
+#: ../hg-plugins/series/_widgets.php:23
+#: ../hg-plugins/series/serie_posts.php:95 ../hg-plugins/series/series.php:17
+#: ../hg-plugins/series/series.php:23
+msgid "Series"
+msgstr ""
+
+#: ../hg-plugins/series/__html_tpl_dummy.php:10
+#: ../hg-plugins/series/_public.php:15
+msgid "This serie's comments Atom feed"
+msgstr ""
+
+#: ../hg-plugins/series/__html_tpl_dummy.php:11
+#: ../hg-plugins/series/_public.php:16
+msgid "This serie's entries Atom feed"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:87
+msgid "Series:"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:154
+msgid "Enter series separated by coma"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:166
+msgid "Add series"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:170
+msgid "Remove series"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:236
+msgid "Add series to entries"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:238
+msgid "Series to add:"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:266
+msgid "Remove selected series from entries"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:269
+msgid "No series for selected entries"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:277
+msgid "Following series have been found in selected entries:"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:319
+msgid "Series list format:"
+msgstr ""
+
+#: ../hg-plugins/series/_define.php:16
+msgid "Series of posts"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:26
+msgid "Serie name"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:31
+msgid "All series"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:31
+msgid "Link to all series:"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:42 ../hg-plugins/series/_widgets.php:43
+msgid "Siblings"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:44
+msgid "Show titles of series"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:45
+msgid "Order series by:"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:48
+msgid "Include current entry:"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:49
+msgid "Standard"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:49
+msgid "With link"
+msgstr ""
+
+#: ../hg-plugins/series/_widgets.php:51
+msgid "Order entries by:"
+msgstr ""
+
+#: ../hg-plugins/series/serie_posts.php:100
+msgid "serie"
+msgstr ""
+
+#: ../hg-plugins/series/serie_posts.php:112
+msgid "Edit serie"
+msgstr ""
+
+#: ../hg-plugins/series/serie_posts.php:116
+msgid "Serie has been successfully renamed"
+msgstr ""
+
+#: ../hg-plugins/series/serie_posts.php:119
+msgid "Back to series list"
+msgstr ""
+
+#: ../hg-plugins/series/serie_posts.php:127
+msgid "Actions for this serie"
+msgstr ""
+
+#: ../hg-plugins/series/serie_posts.php:128
+msgid "Edit serie name:"
+msgstr ""
+
+#: ../hg-plugins/series/serie_posts.php:137
+msgid "Delete this serie:"
+msgstr ""
+
+#: ../hg-plugins/series/serie_posts.php:146
+msgid "List of entries in this serie"
+msgstr ""
+
+#: ../hg-plugins/series/series.php:27
+msgid "Serie has been successfully removed"
+msgstr ""
+
+#: ../hg-plugins/series/series.php:72
+msgid "No series on this blog."
+msgstr ""
