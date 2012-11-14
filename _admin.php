@@ -316,9 +316,9 @@ class seriesBehaviors
 		
 		echo
 		'<fieldset><legend>'.__('Series').'</legend>'.
-		'<p><label for="user_serie_list_format">'.__('Series list format:').' '.
+		'<p><label for="user_serie_list_format">'.__('Series list format:').'</label> '.
 		form::combo('user_serie_list_format',$combo,$value).
-		'</label></p></fieldset>';
+		'</p></fieldset>';
 	}
 	
 	public static function setSerieListFormat($cur,$user_id = null)
