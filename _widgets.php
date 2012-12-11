@@ -36,6 +36,7 @@ class seriesWidgets
 				__('Except on home page') => 2
 				)
 		);
+		$w->series->setting('content_only',__('Content only'),0,'check');
 		$w->series->setting('class',__('CSS class:'),'');
 
 		// Widget for currently displayed post
@@ -61,6 +62,7 @@ class seriesWidgets
 				__('Except on home page') => 2
 				)
 		);
+		$w->seriesPosts->setting('content_only',__('Content only'),0,'check');
 		$w->seriesPosts->setting('class',__('CSS class:'),'');
 	}
 	

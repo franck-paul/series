@@ -252,7 +252,7 @@ EOT;
 		$rs->sort($sort,$order);
 		
 		$res =
-		'<div class="series'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">'.
+		($w->content_only ? '' : '<div class="series'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">').
 		($w->title ? '<h2>'.html::escapeHTML($w->title).'</h2>' : '').
 		'<ul>';
 		
@@ -273,7 +273,7 @@ EOT;
 			html::escapeHTML($w->allserieslinktitle).'</a></strong></p>';
 		}
 		
-		$res .= '</div>';
+		$res .= ($w->content_only ? '' : '</div>');
 		
 		return $res;
 	}
@@ -327,7 +327,7 @@ EOT;
 			return;
 		}
 
-		$res = '<div class="series-posts'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">'."\n";
+		$res = ($w->content_only ? '' : '<div class="series-posts'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">'."\n");
 		$res .= ($w->title ? '<h2>'.html::escapeHTML($w->title).'</h2>'."\n" : '');
 				
 		$serie = '';
@@ -368,7 +368,7 @@ EOT;
 			return;
 		}
 		$res .= $list.'</ul>'."\n";
-		$res .= '</div>'."\n";
+		$res .= ($w->content_only ? '' : '</div>'."\n");
 		
 		return $res;
 	}	
