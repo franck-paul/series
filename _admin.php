@@ -107,7 +107,7 @@ class seriesBehaviors
 	{
 		$serie_url = $GLOBALS['core']->blog->url.$GLOBALS['core']->url->getURLFor('serie');
 		
-		$opts = $GLOBALS['core']->blog->url.$GLOBALS['core']->auth->getOptions();
+		$opts = $GLOBALS['core']->auth->getOptions();
 		$type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
 		
 		return 
