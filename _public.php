@@ -42,8 +42,11 @@ class behaviorsSeries
 		{
 			return
 			"<?php\n".
-			"@\$params['from'] .= ', '.\$core->prefix.'meta METAS ';\n".
-			"@\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n".
+			"if (!isset(\$params)) { \$params = array(); }\n".
+			"if (!isset(\$params['from'])) { \$params['from'] = ''; }\n".
+			"if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n".
+			"\$params['from'] .= ', '.\$core->prefix.'meta METAS ';\n".
+			"\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n".
 			"\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n".
 			"\$params['sql'] .= \"AND METAS.meta_id = '".$core->con->escape($attr['serie'])."' \";\n".
 			"?>\n";
@@ -52,8 +55,11 @@ class behaviorsSeries
 		{
 			return
 			'<?php if ($_ctx->exists("meta") && ($_ctx->meta->meta_type == "serie")) { '.
-				"@\$params['from'] .= ', '.\$core->prefix.'meta METAS ';\n".
-				"@\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n".
+				"if (!isset(\$params)) { \$params = array(); }\n".
+				"if (!isset(\$params['from'])) { \$params['from'] = ''; }\n".
+				"if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n".
+				"\$params['from'] .= ', '.\$core->prefix.'meta METAS ';\n".
+				"\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n".
 				"\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n".
 				"\$params['sql'] .= \"AND METAS.meta_id = '\".\$core->con->escape(\$_ctx->meta->meta_id).\"' \";\n".
 			"} ?>\n";
