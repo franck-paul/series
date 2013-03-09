@@ -6,6 +6,7 @@ $(function() {
 	
 	var target = $('#series_list');	
 	var mEdit = new metaEditor(target,serie_field,'serie');
+	mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 	
 	mEdit.meta_dialog = $('<input type="text" />');
 	mEdit.meta_dialog.attr('title',mEdit.text_add_meta.replace(/%s/,mEdit.meta_type));

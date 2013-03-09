@@ -11,6 +11,7 @@ $(function() {
 				meta_field.val($('#post_series').val());
 			}
 			var mEdit = new metaEditor(series_edit,meta_field,'serie');
+			mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 			mEdit.displayMeta('serie',post_id);
 			
 			// mEdit object reference for toolBar
