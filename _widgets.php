@@ -11,8 +11,8 @@
 # -- END LICENSE BLOCK -----------------------------------------
 if (!defined('DC_RC_PATH')) { return; }
 
-$core->addBehavior('initWidgets',array('seriesWidgets','initWidgets'));
-$core->addBehavior('initDefaultWidgets',array('seriesWidgets','initDefaultWidgets'));
+$GLOBALS['core']->addBehavior('initWidgets',array('seriesWidgets','initWidgets'));
+$GLOBALS['core']->addBehavior('initDefaultWidgets',array('seriesWidgets','initDefaultWidgets'));
 
 class seriesWidgets
 {
