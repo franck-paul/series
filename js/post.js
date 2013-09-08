@@ -60,7 +60,13 @@ $(function() {
 });
 
 // Toolbar button for series
-jsToolBar.prototype.elements.serieSpace = {type: 'space'};
+jsToolBar.prototype.elements.serieSpace = {type: 'space',
+	format: {
+		wysiwyg: true,
+		wiki: true,
+		xhtml: true
+	}
+};
 
 jsToolBar.prototype.elements.serie = {type: 'button', title: 'Keyword', fn:{} };
 jsToolBar.prototype.elements.serie.context = 'post';
