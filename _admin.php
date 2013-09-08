@@ -315,10 +315,9 @@ class seriesBehaviors
 		$value = array_key_exists('serie_list_format',$opts) ? $opts['serie_list_format'] : 'more';
 		
 		echo
-		'<fieldset><legend>'.__('Series').'</legend>'.
-		'<p><label for="user_serie_list_format">'.__('Series list format:').'</label> '.
+		'<p><label for="user_serie_list_format" class="classic">'.__('Series list format:').'</label> '.
 		form::combo('user_serie_list_format',$combo,$value).
-		'</p></fieldset>';
+		'</p>';
 	}
 	
 	public static function setSerieListFormat($cur,$user_id = null)
