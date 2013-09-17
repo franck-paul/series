@@ -57,6 +57,12 @@ $(function() {
 			}
 		});
 	});
+
+	$('h5 .s-series').toggleWithLegend($('.s-series').not('label'),{
+		user_pref: 'post_series',
+		legend_click: true
+	});
+
 });
 
 // Toolbar button for series

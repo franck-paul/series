@@ -17,7 +17,8 @@ $_menu['Blog']->addItem(__('Series'),'plugin.php?p=series&amp;m=series','index.p
 
 require dirname(__FILE__).'/_widgets.php';
 
-$core->addBehavior('adminPostFormSidebar',array('seriesBehaviors','seriesField'));
+//$core->addBehavior('adminPostFormSidebar',array('seriesBehaviors','seriesField'));
+$core->addBehavior('adminPostFormItems',array('seriesBehaviors','seriesField'));
 
 $core->addBehavior('adminAfterPostCreate',array('seriesBehaviors','setSeries'));
 $core->addBehavior('adminAfterPostUpdate',array('seriesBehaviors','setSeries'));
@@ -34,9 +35,6 @@ $core->addBehavior('adminBeforeUserCreate',array('seriesBehaviors','setSerieList
 $core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieListFormat'));
 
 $core->addBehavior('adminPreferencesForm',array('seriesBehaviors','adminUserForm'));
-if (version_compare(DC_VERSION,'2.4.4','<=')) {
-	$core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieListFormat'));
-}
 $core->addBehavior('adminBeforeUserOptionsUpdate',array('seriesBehaviors','setSerieListFormat'));
 
 $core->addBehavior('coreInitWikiPost',array('seriesBehaviors','coreInitWikiPost'));
@@ -73,7 +71,7 @@ class seriesBehaviors
 		return $res;
 	}
 	
-	public static function seriesField($post)
+	public static function seriesField($main,$sidebar,$post)
 	{
 		$meta =& $GLOBALS['core']->meta;
 		
@@ -83,9 +81,9 @@ class seriesBehaviors
 			$value = ($post) ? $meta->getMetaStr($post->post_meta,'serie') : '';
 		}
 		
-		echo
-		'<h3><label for="post_series">'.__('Series:').'</label></h3>'.
-		'<div class="p" id="series-edit">'.form::textarea('post_series',20,3,$value,'maximal').'</div>';
+		$sidebar['metas-box']['items']['post_series'] =
+		'<h5><label class="s-series" for="post_series">'.__('Series:').'</label></h5>'.
+		'<div class="p s-series" id="series-edit">'.form::textarea('post_series',20,3,$value,'maximal').'</div>';
 	}
 	
 	public static function setSeries($cur,$post_id)

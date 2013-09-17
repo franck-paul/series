@@ -16,7 +16,7 @@ $serie = (!empty($_REQUEST['serie']) || $_REQUEST['serie'] == '0') ? $_REQUEST['
 $this_url = $p_url.'&amp;m=serie_posts&amp;serie='.rawurlencode($serie);
 
 
-$page = !empty($_GET['page']) ? (integer) $_GET['page'] : 1;
+$page = !empty($_GET['page']) ? max(1,(integer) $_GET['page']) : 1;
 $nb_per_page =  30;
 
 # Rename a serie
