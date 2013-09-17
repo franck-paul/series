@@ -112,8 +112,8 @@ $core->callBehavior('adminPostsActionsCombo',array(&$combo_action));
 echo dcPage::breadcrumb(
 	array(
 		html::escapeHTML($core->blog->name) => '',
-		__('Tags') => $p_url.'&amp;m=tags',
-		'<span class="page-title">'.__('Edit serie').' &ldquo;'.html::escapeHTML($serie).'&rdquo;'.'</span>' => ''
+		__('Series') => $p_url.'&amp;m=series',
+		'<span class="page-title">'.__('Serie').' &ldquo;'.html::escapeHTML($serie).'&rdquo;'.'</span>' => ''
 	));
 ?>
 
