@@ -3,7 +3,7 @@
 #
 # This file is part of Dotclear 2.
 #
-# Copyright (c) 2003-2012 Franck Paul
+# Copyright (c) 2003-2013 Franck Paul
 # Licensed under the GPL version 2.0 license.
 # See LICENSE file or
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -19,12 +19,17 @@ if (!defined('DC_CONTEXT_ADMIN')) { return; }
 </head>
 
 <body>
-<h2><?php echo html::escapeHTML($core->blog->name); ?> &rsaquo;
-<span class="page-title"><?php echo __('Series'); ?></span></h2>
+<?php
+echo dcPage::breadcrumb(
+	array(
+		html::escapeHTML($core->blog->name) => '',
+		'<span class="page-title">'.__('Series').'</span>' => ''
+	));
+?>
 
 <?php
 if (!empty($_GET['del'])) {
-	dcPage::message(__('Serie has been successfully removed'));
+	dcPage::success(__('Serie has been successfully removed'));
 }
 
 $series = $core->meta->getMetadata(array('meta_type' => 'serie'));
@@ -37,14 +42,14 @@ $col = 0;
 while ($series->fetch())
 {
 	$letter = mb_strtoupper(mb_substr($series->meta_id,0,1));
-	
+
 	if ($last_letter != $letter) {
 		if ($series->index() >= round($series->count()/2)) {
 			$col = 1;
 		}
 		$cols[$col] .= '<tr class="serieLetter"><td colspan="2"><span>'.$letter.'</span></td></tr>';
 	}
-	
+
 	$cols[$col] .=
 	'<tr class="line">'.
 		'<td class="maximal"><a href="'.$p_url.
@@ -52,7 +57,7 @@ while ($series->fetch())
 		'<td class="nowrap"><strong>'.$series->count.'</strong> '.
 		(($series->count==1) ? __('entry') : __('entries')).'</td>'.
 	'</tr>';
-	
+
 	$last_letter = $letter;
 }
 
@@ -60,7 +65,7 @@ $table = '<div class="col"><table class="series">%s</table></div>';
 
 if ($cols[0])
 {
-	echo '<div class="two-cols">';
+	echo '<div class="two-cols clearfix">';
 	printf($table,$cols[0]);
 	if ($cols[1]) {
 		printf($table,$cols[1]);

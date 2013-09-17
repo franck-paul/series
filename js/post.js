@@ -3,7 +3,7 @@ $(function() {
 		var series_edit = $('#series-edit');
 		var post_id = $('#id');
 		var meta_field = null;
-		
+
 		if (series_edit.length > 0) {
 			post_id = (post_id.length > 0) ? post_id.get(0).value : false;
 			if (post_id == false) {
@@ -13,11 +13,11 @@ $(function() {
 			var mEdit = new metaEditor(series_edit,meta_field,'serie');
 			mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 			mEdit.displayMeta('serie',post_id);
-			
+
 			// mEdit object reference for toolBar
 			window.dc_serie_editor = mEdit;
 		}
-		
+
 		$('#post_meta_input').autocomplete(mEdit.service_uri, {
 			extraParams: {
 				'f': 'searchMeta',
@@ -27,7 +27,7 @@ $(function() {
 			multiple: true,
 			matchSubset: false,
 			matchContains: true,
-			parse: function(xml) { 
+			parse: function(xml) {
 				var results = [];
 				$(xml).find('meta').each(function(){
 					results[results.length] = {
@@ -37,7 +37,7 @@ $(function() {
 							"percent":  $(this).attr("roundpercent")
 						},
 						result: $(this).text()
-					}; 
+					};
 				});
 				return results;
 			},
@@ -52,8 +52,8 @@ $(function() {
 					) +
 				')</em>';
 			},
-			formatResult: function(serie) { 
-				return serie.result; 
+			formatResult: function(serie) {
+				return serie.result;
 			}
 		});
 	});
@@ -102,10 +102,10 @@ jsToolBar.prototype.elements.serie.fn.xhtml = function() {
 };
 jsToolBar.prototype.elements.serie.fn.wysiwyg = function() {
 	var t = this.getSelectedText();
-	
+
 	if (t == '') { window.alert(dotclear.msg.no_selection); return; }
 	if (t.indexOf(',') != -1) { return; }
-	
+
 	var n = this.getSelectedNode();
 	var a = document.createElement('a');
 	a.href = this.stripBaseURL(this.elements.serie.url+'/'+t);

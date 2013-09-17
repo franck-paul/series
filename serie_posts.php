@@ -3,7 +3,7 @@
 #
 # This file is part of Dotclear 2.
 #
-# Copyright (c) 2003-2012 Franck Paul
+# Copyright (c) 2003-2013 Franck Paul
 # Licensed under the GPL version 2.0 license.
 # See LICENSE file or
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -108,12 +108,18 @@ $core->callBehavior('adminPostsActionsCombo',array(&$combo_action));
 </head>
 <body>
 
-<h2><?php echo html::escapeHTML($core->blog->name); ?> &rsaquo;
-<span class="page-title"><?php echo __('Edit serie').' &ldquo;'.html::escapeHTML($serie).'&rdquo;'; ?></span></h2>
+<?php
+echo dcPage::breadcrumb(
+	array(
+		html::escapeHTML($core->blog->name) => '',
+		__('Tags') => $p_url.'&amp;m=tags',
+		'<span class="page-title">'.__('Edit serie').' &ldquo;'.html::escapeHTML($serie).'&rdquo;'.'</span>' => ''
+	));
+?>
 
 <?php
 if (!empty($_GET['renamed'])) {
-	dcPage::message(__('Serie has been successfully renamed'));
+	dcPage::success(__('Serie has been successfully renamed'));
 }
 
 echo '<p><a href="'.$p_url.'&amp;m=series">'.__('Back to series list').'</a></p>';
@@ -123,10 +129,11 @@ if (!$core->error->flag())
 	if (!$posts->isEmpty())
 	{
 		echo
+		'<div class="fieldset">'.
 		'<form action="'.$this_url.'" method="post">'.
-		'<div class="fieldset"><h3>'.__('Actions for this serie').'</h3>'.
+		'<h3>'.__('Actions for this serie').'</h3>'.
 		'<p><label for="new_serie_id">'.__('Edit serie name:').'</label>'.
-		form::field('new_serie_id',20,255,html::escapeHTML($serie)).
+		form::field('new_serie_id',40,255,html::escapeHTML($serie)).
 		'<input type="submit" value="'.__('Rename').'" />'.
 		$core->formNonce().
 		'</form>';
@@ -134,24 +141,24 @@ if (!$core->error->flag())
 		if (!$posts->isEmpty() && $core->auth->check('contentadmin',$core->blog->id)) {
 			echo
 			'<form id="serie_delete" action="'.$this_url.'" method="post">'.
-			'<p class="no-margin">'.__('Delete this serie:').'</p>'.
+			'<p>'.__('Delete this serie:').' '.
 			'<input type="submit" class="delete" name="delete" value="'.__('Delete').'" />'.
 			$core->formNonce().
-			'</form>';
+			'</p></form>';
 		}
 		echo '</p></div>';
 	}
-	
+
 	# Show posts
 	echo '<h3>'.__('List of entries in this serie').'</h3>';
 	$post_list->display($page,$nb_per_page,
 	'<form action="posts_actions.php" method="post" id="form-entries">'.
-	
+
 	'%s'.
-	
+
 	'<div class="two-cols">'.
 	'<p class="col checkboxes-helpers"></p>'.
-	
+
 	'<p class="col right"><label for="action" class="classic">'.__('Selected entries action:').'</label> '.
 	form::combo('action',$combo_action).
 	'<input type="submit" value="'.__('ok').'" /></p>'.

@@ -3,7 +3,7 @@
 #
 # This file is part of Dotclear 2.
 #
-# Copyright (c) 2003-2012 Franck Paul
+# Copyright (c) 2003-2013 Franck Paul
 # Licensed under the GPL version 2.0 license.
 # See LICENSE file or
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -65,7 +65,7 @@ class seriesWidgets
 		$w->seriesPosts->setting('content_only',__('Content only'),0,'check');
 		$w->seriesPosts->setting('class',__('CSS class:'),'');
 	}
-	
+
 	public static function initDefaultWidgets($w,$d)
 	{
 		$d['nav']->append($w->series);
