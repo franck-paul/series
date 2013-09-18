@@ -306,8 +306,8 @@ class seriesBehaviors
 		}
 
 		$combo = array();
-		$combo[__('short')] = 'more';
-		$combo[__('extended')] = 'all';
+		$combo[__('Short')] = 'more';
+		$combo[__('Extended')] = 'all';
 
 		$value = array_key_exists('serie_list_format',$opts) ? $opts['serie_list_format'] : 'more';
 
