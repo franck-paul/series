@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-18 17:14+0200\n"
+"POT-Creation-Date: 2013-09-19 08:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../hg-plugins/series/__html_tpl_dummy.php:8
-#: ../hg-plugins/series/_admin.php:122 ../hg-plugins/series/_public.php:465
+#: ../hg-plugins/series/_admin.php:126 ../hg-plugins/series/_public.php:465
 #: ../hg-plugins/series/serie_posts.php:116
 msgid "Serie"
 msgstr ""
 
 #: ../hg-plugins/series/__html_tpl_dummy.php:9
-#: ../hg-plugins/series/_admin.php:14 ../hg-plugins/series/_admin.php:163
-#: ../hg-plugins/series/_admin.php:166 ../hg-plugins/series/_widgets.php:22
-#: ../hg-plugins/series/_widgets.php:23
+#: ../hg-plugins/series/_admin.php:15 ../hg-plugins/series/_admin.php:18
+#: ../hg-plugins/series/_admin.php:167 ../hg-plugins/series/_admin.php:170
+#: ../hg-plugins/series/_widgets.php:22 ../hg-plugins/series/_widgets.php:23
 #: ../hg-plugins/series/serie_posts.php:95
 #: ../hg-plugins/series/serie_posts.php:115 ../hg-plugins/series/series.php:17
 #: ../hg-plugins/series/series.php:26
@@ -42,43 +42,47 @@ msgstr ""
 msgid "This serie's entries Atom feed"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:84
+#: ../hg-plugins/series/_admin.php:16
+msgid "Series of posts"
+msgstr ""
+
+#: ../hg-plugins/series/_admin.php:88
 msgid "Series:"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:151
+#: ../hg-plugins/series/_admin.php:155
 msgid "Enter series separated by coma"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:163
+#: ../hg-plugins/series/_admin.php:167
 msgid "Add series"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:167
+#: ../hg-plugins/series/_admin.php:171
 msgid "Remove series"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:233
+#: ../hg-plugins/series/_admin.php:237
 msgid "Add series to entries"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:235
+#: ../hg-plugins/series/_admin.php:239
 msgid "Series to add:"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:263
+#: ../hg-plugins/series/_admin.php:267
 msgid "Remove selected series from entries"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:266
+#: ../hg-plugins/series/_admin.php:270
 msgid "No series for selected entries"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:274
+#: ../hg-plugins/series/_admin.php:278
 msgid "Following series have been found in selected entries:"
 msgstr ""
 
-#: ../hg-plugins/series/_admin.php:315
+#: ../hg-plugins/series/_admin.php:319
 msgid "Series list format:"
 msgstr ""
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-18 17:14+0200\n"
+"POT-Creation-Date: 2013-09-19 08:30+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>\n"
 "Language-Team: \n"
@@ -23,6 +23,9 @@ msgstr "Flux Atom des commentaires de cette série"
 
 msgid "This serie's entries Atom feed"
 msgstr "Flux Atom des billets de cette série"
+
+msgid "Series of posts"
+msgstr "Séries de billets"
 
 msgid "Series:"
 msgstr "Séries :"
@@ -116,9 +119,6 @@ msgstr "La série a été supprimée avec succès"
 
 msgid "No series on this blog."
 msgstr "Aucune série sur ce blog."
-
-#~ msgid "Series of posts"
-#~ msgstr "Séries de billets"
 
 #~ msgid "Edit serie"
 #~ msgstr "Modifier la série"
