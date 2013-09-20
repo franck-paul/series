@@ -230,13 +230,18 @@ class seriesBehaviors
 	{
 		if ($action == 'series')
 		{
-			echo
-			'<h2 class="page-title">'.__('Add series to entries').'</h2>'.
+			echo dcPage::breadcrumb(
+				array(
+					html::escapeHTML($core->blog->name) => '',
+					__('Entries') => 'posts.php',
+					'<span class="page-title">'.__('Add series to entries').'</span>' => ''
+			)).
 			'<form action="'.$form_uri.'" method="post">'.
+			$hidden_fields->getEntries().
 			'<div><label for="new_series" class="area">'.__('Series to add:').'</label> '.
 			form::textarea('new_series',60,3).
 			'</div>'.
-			$hidden_fields.
+			$hidden_fields->getHidden().
 			$core->formNonce().
 			form::hidden(array('action'),'series').
 			'<p><input type="submit" value="'.__('Save').'" '.
@@ -261,7 +266,12 @@ class seriesBehaviors
 				}
 			}
 
-			echo '<h2 class="page-title">'.__('Remove selected series from entries').'</h2>';
+			echo dcPage::breadcrumb(
+				array(
+					html::escapeHTML($core->blog->name) => '',
+					__('Entries') => 'posts.php',
+					'<span class="page-title">'.__('Remove selected series from entries').'</span>' => ''
+			));
 
 			if (empty($series)) {
 				echo '<p>'.__('No series for selected entries').'</p>';
