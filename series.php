@@ -62,7 +62,7 @@ while ($series->fetch())
 	$last_letter = $letter;
 }
 
-$table = '<div class="col"><div class="table-outer"><table class="series">%s</table></div></div>';
+$table = '<div class="col"><table class="series">%s</table></div>';
 
 if ($cols[0])
 {
