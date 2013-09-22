@@ -237,11 +237,10 @@ class seriesBehaviors
 					'<span class="page-title">'.__('Add series to entries').'</span>' => ''
 			)).
 			'<form action="'.$form_uri.'" method="post">'.
-			$hidden_fields->getEntries().
 			'<div><label for="new_series" class="area">'.__('Series to add:').'</label> '.
 			form::textarea('new_series',60,3).
 			'</div>'.
-			$hidden_fields->getHidden().
+			$hidden_fields.
 			$core->formNonce().
 			form::hidden(array('action'),'series').
 			'<p><input type="submit" value="'.__('Save').'" '.
