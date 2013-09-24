@@ -28,18 +28,15 @@ $core->addBehavior('adminAfterPostCreate',array('seriesBehaviors','setSeries'));
 $core->addBehavior('adminAfterPostUpdate',array('seriesBehaviors','setSeries'));
 
 $core->addBehavior('adminPostHeaders',array('seriesBehaviors','postHeaders'));
-$core->addBehavior('adminPostsActionsHeaders',array('seriesBehaviors','postsActionsHeaders'));
 
-$core->addBehavior('adminPostsActionsCombo',array('seriesBehaviors','adminPostsActionsCombo'));
-$core->addBehavior('adminPostsActions',array('seriesBehaviors','adminPostsActions'));
-$core->addBehavior('adminPostsActionsContent',array('seriesBehaviors','adminPostsActionsContent'));
+$core->addBehavior('adminPostsActionsPage',array('seriesBehaviors','adminPostsActionsPage'));
+
+$core->addBehavior('adminPreferencesForm',array('seriesBehaviors','adminUserForm'));
+$core->addBehavior('adminBeforeUserOptionsUpdate',array('seriesBehaviors','setSerieListFormat'));
 
 $core->addBehavior('adminUserForm',array('seriesBehaviors','adminUserForm'));
 $core->addBehavior('adminBeforeUserCreate',array('seriesBehaviors','setSerieListFormat'));
 $core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieListFormat'));
-
-$core->addBehavior('adminPreferencesForm',array('seriesBehaviors','adminUserForm'));
-$core->addBehavior('adminBeforeUserOptionsUpdate',array('seriesBehaviors','setSerieListFormat'));
 
 $core->addBehavior('coreInitWikiPost',array('seriesBehaviors','coreInitWikiPost'));
 
@@ -104,6 +101,165 @@ class seriesBehaviors
 		}
 	}
 
+	public static function adminPostsActionsPage($core,$ap)
+	{
+		$ap->addAction(
+			array(__('Series') => array(__('Add series') => 'series')),
+			array('seriesBehaviors','adminAddSeries')
+		);
+
+		if ($core->auth->check('delete,contentadmin',$core->blog->id)) {
+			$ap->addAction(
+				array(__('Series') => array(__('Remove series') => 'series_remove')),
+				array('seriesBehaviors','adminRemoveSeries')
+			);
+		}
+	}
+
+	public static function adminAddSeries($core, dcPostsActionsPage $ap, $post)
+	{
+		if (!empty($post['new_series']))
+		{
+			$meta =& $core->meta;
+			$series = $meta->splitMetaValues($_POST['new_series']);
+			$posts = $ap->getRS();
+
+			while ($posts->fetch())
+			{
+				# Get series for post
+				$post_meta = $meta->getMetadata(array(
+					'meta_type' => 'serie',
+					'post_id' => $posts->post_id));
+				$pm = array();
+				while ($post_meta->fetch()) {
+					$pm[] = $post_meta->meta_id;
+				}
+
+				foreach ($series as $s) {
+					if (!in_array($s,$pm)) {
+						$meta->setPostMeta($posts->post_id,'serie',$s);
+					}
+				}
+			}
+			$ap->redirect(array('upd' => 1),true);
+		}
+		else
+		{
+			$opts = $core->auth->getOptions();
+			$type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
+
+			$ap->beginPage(
+				dcPage::breadcrumb(
+					array(
+						html::escapeHTML($core->blog->name) => '',
+						__('Entries') => $ap->getRedirection(array(),true),
+						'<span class="page-title">'.__('Add series to this selection').'</span>' => ''
+				)),
+				dcPage::jsLoad('js/jquery/jquery.autocomplete.js').
+				dcPage::jsMetaEditor().
+				'<script type="text/javascript" src="index.php?pf=series/js/jquery.autocomplete.js"></script>'.
+				'<script type="text/javascript" src="index.php?pf=series/js/posts_actions.js"></script>'.
+				'<script type="text/javascript">'."\n".
+				"//<![CDATA[\n".
+				"metaEditor.prototype.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';\n".
+				"metaEditor.prototype.meta_type = '".html::escapeJS($type)."';\n".
+				"metaEditor.prototype.text_confirm_remove = '".html::escapeJS(__('Are you sure you want to remove this %s?'))."';\n".
+				"metaEditor.prototype.text_add_meta = '".html::escapeJS(__('Add a %s to this entry'))."';\n".
+				"metaEditor.prototype.text_choose = '".html::escapeJS(__('Choose from list'))."';\n".
+				"metaEditor.prototype.text_all = '".html::escapeJS(__('all'))."';\n".
+				"metaEditor.prototype.text_separation = '".html::escapeJS(__('Enter series separated by coma'))."';\n".
+				"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".
+				"dotclear.msg.entry = '".html::escapeJS(__('entry'))."';\n".
+				"dotclear.msg.entries = '".html::escapeJS(__('entries'))."';\n".
+				"\n//]]>\n".
+				"</script>\n".
+				'<link rel="stylesheet" type="text/css" href="index.php?pf=series/style.css" />'
+			);
+			echo
+				'<form action="'.$ap->getURI().'" method="post">'.
+				$ap->getCheckboxes().
+				'<div><label for="new_series" class="area">'.__('Series to add:').'</label> '.
+				form::textarea('new_series',60,3).
+				'</div>'.
+				$core->formNonce().$ap->getHiddenFields().
+				form::hidden(array('action'),'series').
+				'<p><input type="submit" value="'.__('Save').'" '.
+				'name="save_series" /></p>'.
+				'</form>';
+			$ap->endPage();
+		}
+	}
+
+	public static function adminRemoveSeries($core, dcPostsActionsPage $ap, $post)
+	{
+		if (!empty($post['meta_id']) &&
+			$core->auth->check('delete,contentadmin',$core->blog->id))
+		{
+			$meta =& $core->meta;
+			$posts = $ap->getRS();
+			while ($posts->fetch())
+			{
+				foreach ($_POST['meta_id'] as $v)
+				{
+					$meta->delPostMeta($posts->post_id,'serie',$v);
+				}
+			}
+			$ap->redirect(array('upd' => 1),true);
+		}
+		else
+		{
+			$meta =& $core->meta;
+			$series = array();
+
+			foreach ($ap->getIDS() as $id) {
+				$post_series = $meta->getMetadata(array(
+					'meta_type' => 'serie',
+					'post_id' => (integer) $id))->toStatic()->rows();
+				foreach ($post_series as $v) {
+					if (isset($series[$v['meta_id']])) {
+						$series[$v['meta_id']]++;
+					} else {
+						$series[$v['meta_id']] = 1;
+					}
+				}
+			}
+			if (empty($series)) {
+				throw new Exception(__('No series for selected entries'));
+			}
+			$ap->beginPage(
+				dcPage::breadcrumb(
+						array(
+							html::escapeHTML($core->blog->name) => '',
+							__('Entries') => 'posts.php',
+							'<span class="page-title">'.__('Remove selected series from this selection').'</span>' => ''
+			)));
+			$posts_count = count($_POST['entries']);
+
+			echo
+			'<form action="'.$ap->getURI().'" method="post">'.
+			$ap->getCheckboxes().
+			'<div><p>'.__('Following series have been found in selected entries:').'</p>';
+
+			foreach ($series as $k => $n) {
+				$label = '<label class="classic">%s %s</label>';
+				if ($posts_count == $n) {
+					$label = sprintf($label,'%s','<strong>%s</strong>');
+				}
+				echo '<p>'.sprintf($label,
+						form::checkbox(array('meta_id[]'),html::escapeHTML($k)),
+						html::escapeHTML($k)).
+					'</p>';
+			}
+
+			echo
+			'<p><input type="submit" value="'.__('ok').'" />'.
+			$core->formNonce().$ap->getHiddenFields().
+			form::hidden(array('action'),'series_remove').
+			'</p></div></form>';
+			$ap->endPage();
+		}
+	}
+
 	public static function postHeaders()
 	{
 		$serie_url = $GLOBALS['core']->blog->url.$GLOBALS['core']->url->getURLFor('serie');
@@ -131,179 +287,6 @@ class seriesBehaviors
 		"\n//]]>\n".
 		"</script>\n".
 		'<link rel="stylesheet" type="text/css" href="index.php?pf=series/style.css" />';
-	}
-
-	public static function postsActionsHeaders()
-	{
-		if (($_POST['action'] == 'series') || ($_POST['action'] == 'series_remove')) {
-			$serie_url = $GLOBALS['core']->blog->url.$GLOBALS['core']->url->getURLFor('serie');
-
-			$opts = $GLOBALS['core']->auth->getOptions();
-			$type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
-
-			return
-			'<script type="text/javascript" src="index.php?pf=series/js/jquery.autocomplete.js"></script>'.
-			'<script type="text/javascript" src="index.php?pf=series/js/posts_actions.js"></script>'.
-			'<script type="text/javascript">'."\n".
-			"//<![CDATA[\n".
-			"metaEditor.prototype.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';\n".
-			"metaEditor.prototype.meta_type = '".html::escapeJS($type)."';\n".
-			"metaEditor.prototype.text_confirm_remove = '".html::escapeJS(__('Are you sure you want to remove this %s?'))."';\n".
-			"metaEditor.prototype.text_add_meta = '".html::escapeJS(__('Add a %s to this entry'))."';\n".
-			"metaEditor.prototype.text_choose = '".html::escapeJS(__('Choose from list'))."';\n".
-			"metaEditor.prototype.text_all = '".html::escapeJS(__('all'))."';\n".
-			"metaEditor.prototype.text_separation = '".html::escapeJS(__('Enter series separated by coma'))."';\n".
-			"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".
-			"dotclear.msg.entry = '".html::escapeJS(__('entry'))."';\n".
-			"dotclear.msg.entries = '".html::escapeJS(__('entries'))."';\n".
-			"\n//]]>\n".
-			"</script>\n".
-			'<link rel="stylesheet" type="text/css" href="index.php?pf=series/style.css" />';
-		}
-	}
-
-	public static function adminPostsActionsCombo($args)
-	{
-		$args[0][__('Series')] = array(__('Add series') => 'series');
-
-		if ($GLOBALS['core']->auth->check('delete,contentadmin',$GLOBALS['core']->blog->id)) {
-			$args[0][__('Series')] = array_merge($args[0][__('Series')],
-				array(__('Remove series') => 'series_remove'));
-		}
-	}
-
-	public static function adminPostsActions($core,$posts,$action,$redir)
-	{
-		if ($action == 'series' && !empty($_POST['new_series']))
-		{
-			try
-			{
-
-				$meta =& $GLOBALS['core']->meta;
-				$series = $meta->splitMetaValues($_POST['new_series']);
-
-				while ($posts->fetch())
-				{
-					# Get series for post
-					$post_meta = $meta->getMetadata(array(
-						'meta_type' => 'serie',
-						'post_id' => $posts->post_id));
-					$pm = array();
-					while ($post_meta->fetch()) {
-						$pm[] = $post_meta->meta_id;
-					}
-
-					foreach ($series as $s) {
-						if (!in_array($s,$pm)) {
-							$meta->setPostMeta($posts->post_id,'serie',$s);
-						}
-					}
-				}
-
-				http::redirect($redir);
-			}
-			catch (Exception $e)
-			{
-				$core->error->add($e->getMessage());
-			}
-		}
-		elseif ($action == 'series_remove' && !empty($_POST['meta_id']) && $core->auth->check('delete,contentadmin',$core->blog->id))
-		{
-			try
-			{
-				$meta =& $GLOBALS['core']->meta;
-				while ($posts->fetch())
-				{
-					foreach ($_POST['meta_id'] as $v)
-					{
-						$meta->delPostMeta($posts->post_id,'serie',$v);
-					}
-				}
-
-				http::redirect($redir);
-			}
-			catch (Exception $e)
-			{
-				$core->error->add($e->getMessage());
-			}
-		}
-	}
-
-	public static function adminPostsActionsContent($core,$action,$hidden_fields,$form_uri="posts_actions.php")
-	{
-		if ($action == 'series')
-		{
-			echo dcPage::breadcrumb(
-				array(
-					html::escapeHTML($core->blog->name) => '',
-					__('Entries') => 'posts.php',
-					'<span class="page-title">'.__('Add series to entries').'</span>' => ''
-			)).
-			'<form action="'.$form_uri.'" method="post">'.
-			'<div><label for="new_series" class="area">'.__('Series to add:').'</label> '.
-			form::textarea('new_series',60,3).
-			'</div>'.
-			$hidden_fields.
-			$core->formNonce().
-			form::hidden(array('action'),'series').
-			'<p><input type="submit" value="'.__('Save').'" '.
-			'name="save_series" /></p>'.
-			'</form>';
-		}
-		elseif ($action == 'series_remove')
-		{
-			$meta =& $GLOBALS['core']->meta;
-			$series = array();
-
-			foreach ($_POST['entries'] as $id) {
-				$post_series = $meta->getMetadata(array(
-					'meta_type' => 'serie',
-					'post_id' => (integer) $id))->toStatic()->rows();
-				foreach ($post_series as $v) {
-					if (isset($series[$v['meta_id']])) {
-						$series[$v['meta_id']]++;
-					} else {
-						$series[$v['meta_id']] = 1;
-					}
-				}
-			}
-
-			echo dcPage::breadcrumb(
-				array(
-					html::escapeHTML($core->blog->name) => '',
-					__('Entries') => 'posts.php',
-					'<span class="page-title">'.__('Remove selected series from entries').'</span>' => ''
-			));
-
-			if (empty($series)) {
-				echo '<p>'.__('No series for selected entries').'</p>';
-				return;
-			}
-
-			$posts_count = count($_POST['entries']);
-
-			echo
-			'<form action="'.$form_uri.'" method="post">'.
-			'<fieldset><legend>'.__('Following series have been found in selected entries:').'</legend>';
-
-			foreach ($series as $k => $n) {
-				$label = '<label class="classic">%s %s</label>';
-				if ($posts_count == $n) {
-					$label = sprintf($label,'%s','<strong>%s</strong>');
-				}
-				echo '<p>'.sprintf($label,
-						form::checkbox(array('meta_id[]'),html::escapeHTML($k)),
-						html::escapeHTML($k)).
-					'</p>';
-			}
-
-			echo
-			'<p><input type="submit" value="'.__('ok').'" /></p>'.
-			$hidden_fields.
-			$core->formNonce().
-			form::hidden(array('action'),'series_remove').
-			'</fieldset></form>';
-		}
 	}
 
 	public static function adminUserForm($args)
