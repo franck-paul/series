@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-24 13:25+0200\n"
+"POT-Creation-Date: 2013-09-24 18:05+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>\n"
 "Language-Team: \n"
@@ -30,26 +30,26 @@ msgstr "Séries de billets"
 msgid "Series:"
 msgstr "Séries :"
 
-msgid "Enter series separated by coma"
-msgstr "Entrer les séries séparées par des virgules"
-
 msgid "Add series"
 msgstr "Ajouter des séries"
 
 msgid "Remove series"
 msgstr "Supprimer des séries"
 
-msgid "Add series to entries"
-msgstr "Ajouter des séries aux billets"
+msgid "Add series to this selection"
+msgstr "Ajouter des séries à cette sélection"
+
+msgid "Enter series separated by coma"
+msgstr "Entrer les séries séparées par des virgules"
 
 msgid "Series to add:"
 msgstr "Séries à ajouter :"
 
-msgid "Remove selected series from entries"
-msgstr "Supprimer les séries sélectionnées des billets"
-
 msgid "No series for selected entries"
 msgstr "Aucune série pour les billets sélectionnés"
+
+msgid "Remove selected series from this selection"
+msgstr "Supprimer les séries sélectionnées de cette sélection"
 
 msgid "Following series have been found in selected entries:"
 msgstr "Les séries suivantes ont été trouvées pour les billets sélectionnés :"

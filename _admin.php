@@ -116,7 +116,7 @@ class seriesBehaviors
 		}
 	}
 
-	public static function adminAddSeries($core, dcPostsActionsPage $ap, $post)
+	public static function adminAddSeries($core,dcPostsActionsPage $ap,$post)
 	{
 		if (!empty($post['new_series']))
 		{
@@ -190,7 +190,7 @@ class seriesBehaviors
 		}
 	}
 
-	public static function adminRemoveSeries($core, dcPostsActionsPage $ap, $post)
+	public static function adminRemoveSeries($core,dcPostsActionsPage $ap,$post)
 	{
 		if (!empty($post['meta_id']) &&
 			$core->auth->check('delete,contentadmin',$core->blog->id))
