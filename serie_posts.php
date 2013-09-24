@@ -100,7 +100,7 @@ if (!empty($_GET['renamed'])) {
 	dcPage::success(__('Serie has been successfully renamed'));
 }
 
-echo '<p><a href="'.$p_url.'&amp;m=series">'.__('Back to series list').'</a></p>';
+echo '<p><a class="back" href="'.$p_url.'&amp;m=series">'.__('Back to series list').'</a></p>';
 
 if (!$core->error->flag())
 {
