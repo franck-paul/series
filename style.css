@@ -97,3 +97,8 @@ a.metaRemove:hover, a.metaRemove:focus {
 	background-color: #06c;
 	color: white;
 }
+
+.series-actions form {
+	display: inline-block;
+	margin-right: 1.5em;
+}

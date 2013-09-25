@@ -107,28 +107,27 @@ if (!$core->error->flag())
 	if (!$posts->isEmpty())
 	{
 		echo
-		'<div class="fieldset">'.
+		'<div class="series-actions vertical-separator">'.
+		'<h3>'.html::escapeHTML($serie).'</h3>'.
 		'<form action="'.$this_url.'" method="post">'.
-		'<h3>'.__('Actions for this serie').'</h3>'.
-		'<p><label for="new_serie_id">'.__('Edit serie name:').'</label>'.
+		'<p><label for="new_serie_id" class="classic">'.__('Rename:').'</label> '.
 		form::field('new_serie_id',40,255,html::escapeHTML($serie)).
-		'<input type="submit" value="'.__('Rename').'" />'.
+		'<input type="submit" value="'.__('OK').'" />'.
 		$core->formNonce().
-		'</form>';
+		'</p></form>';
 		# Remove serie
 		if (!$posts->isEmpty() && $core->auth->check('contentadmin',$core->blog->id)) {
 			echo
 			'<form id="serie_delete" action="'.$this_url.'" method="post">'.
-			'<p>'.__('Delete this serie:').' '.
-			'<input type="submit" class="delete" name="delete" value="'.__('Delete').'" />'.
+			'<p>'.'<input type="submit" class="delete" name="delete" value="'.__('Delete this serie').'" />'.
 			$core->formNonce().
 			'</p></form>';
 		}
-		echo '</p></div>';
+		echo '</div>';
 	}
 
 	# Show posts
-	echo '<h3>'.__('List of entries in this serie').'</h3>';
+	echo '<h4 class="vertical-separator pretty-title">'.__('List of entries in this serie').'</h4>';
 	$post_list->display($page,$nb_per_page,
 	'<form action="plugin.php" method="post" id="form-entries">'.
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-24 18:05+0200\n"
+"POT-Creation-Date: 2013-09-25 06:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: ../hg-plugins/series/__html_tpl_dummy.php:8
 #: ../hg-plugins/series/_admin.php:282 ../hg-plugins/series/_public.php:466
-#: ../hg-plugins/series/serie_posts.php:117
+#: ../hg-plugins/series/serie_posts.php:94
 msgid "Serie"
 msgstr ""
 
@@ -26,8 +26,8 @@ msgstr ""
 #: ../hg-plugins/series/_admin.php:16 ../hg-plugins/series/_admin.php:18
 #: ../hg-plugins/series/_admin.php:107 ../hg-plugins/series/_admin.php:113
 #: ../hg-plugins/series/_widgets.php:23 ../hg-plugins/series/_widgets.php:24
-#: ../hg-plugins/series/serie_posts.php:96
-#: ../hg-plugins/series/serie_posts.php:116 ../hg-plugins/series/series.php:18
+#: ../hg-plugins/series/serie_posts.php:73
+#: ../hg-plugins/series/serie_posts.php:93 ../hg-plugins/series/series.php:18
 #: ../hg-plugins/series/series.php:27
 msgid "Series"
 msgstr ""
@@ -134,31 +134,27 @@ msgstr ""
 msgid "Order entries by:"
 msgstr ""
 
-#: ../hg-plugins/series/serie_posts.php:101
+#: ../hg-plugins/series/serie_posts.php:78
 msgid "serie"
 msgstr ""
 
-#: ../hg-plugins/series/serie_posts.php:123
+#: ../hg-plugins/series/serie_posts.php:100
 msgid "Serie has been successfully renamed"
 msgstr ""
 
-#: ../hg-plugins/series/serie_posts.php:126
+#: ../hg-plugins/series/serie_posts.php:103
 msgid "Back to series list"
 msgstr ""
 
-#: ../hg-plugins/series/serie_posts.php:135
-msgid "Actions for this serie"
+#: ../hg-plugins/series/serie_posts.php:113
+msgid "Rename:"
 msgstr ""
 
-#: ../hg-plugins/series/serie_posts.php:136
-msgid "Edit serie name:"
+#: ../hg-plugins/series/serie_posts.php:122
+msgid "Delete this serie"
 msgstr ""
 
-#: ../hg-plugins/series/serie_posts.php:145
-msgid "Delete this serie:"
-msgstr ""
-
-#: ../hg-plugins/series/serie_posts.php:154
+#: ../hg-plugins/series/serie_posts.php:130
 msgid "List of entries in this serie"
 msgstr ""
 
