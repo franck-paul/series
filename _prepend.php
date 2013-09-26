@@ -12,7 +12,6 @@
 
 if (!defined('DC_RC_PATH')) { return; }
 
-$GLOBALS['core']->url->register('serie','serie','^serie/(.+)$',array('urlSeries','serie'));
-$GLOBALS['core']->url->register('series','series','^series$',array('urlSeries','series'));
-$GLOBALS['core']->url->register('serie_feed','feed/serie','^feed/serie/(.+)$',array('urlSeries','serieFeed'));
-?>
+$core->url->register('serie','serie','^serie/(.+)$',array('urlSeries','serie'));
+$core->url->register('series','series','^series$',array('urlSeries','series'));
+$core->url->register('serie_feed','feed/serie','^feed/serie/(.+)$',array('urlSeries','serieFeed'));

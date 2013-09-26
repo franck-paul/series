@@ -486,4 +486,3 @@ class urlSeries extends dcUrlHandlers
 		}
 	}
 }
-?>
