@@ -42,6 +42,10 @@ $core->addBehavior('coreInitWikiPost',array('seriesBehaviors','coreInitWikiPost'
 
 $core->addBehavior('adminDashboardFavs',array('seriesBehaviors','dashboardFavs'));
 
+$core->addBehavior('adminSimpleMenuAddType',array('seriesBehaviors','adminSimpleMenuAddType'));
+$core->addBehavior('adminSimpleMenuSelect',array('seriesBehaviors','adminSimpleMenuSelect'));
+$core->addBehavior('adminSimpleMenuBeforeEdit',array('seriesBehaviors','adminSimpleMenuBeforeEdit'));
+
 # BEHAVIORS
 class seriesBehaviors
 {
@@ -55,6 +59,58 @@ class seriesBehaviors
 	public static function coreInitWikiPost($wiki2xhtml)
 	{
 		$wiki2xhtml->registerFunction('url:serie',array('seriesBehaviors','wiki2xhtmlSerie'));
+	}
+
+	public static function adminSimpleMenuGetCombo()
+	{
+		global $core;
+
+		$series_combo = array();
+		try {
+			$rs = $core->meta->getMetadata(array('meta_type' => 'serie'));
+			$series_combo[__('All series')] = '-';
+			while ($rs->fetch()) {
+				$series_combo[$rs->meta_id] = $rs->meta_id;
+			}
+			unset($rs);
+		} catch (Exception $e) { }
+
+		return $series_combo;
+	}
+
+	public static function adminSimpleMenuAddType($items)
+	{
+		$series_combo = self::adminSimpleMenuGetCombo();
+		if (count($series_combo) > 1)
+			$items['series'] = new ArrayObject(array(__('Series'),true));
+	}
+
+	public static function adminSimpleMenuSelect($item_type,$input_name)
+	{
+		if ($item_type == 'series') {
+			$series_combo = self::adminSimpleMenuGetCombo();
+			return '<p class="field"><label for="item_select" class="classic">'.__('Select serie (if necessary):').'</label>'.
+				form::combo('item_select',$series_combo,'');
+		}
+	}
+
+	public static function adminSimpleMenuBeforeEdit($item_type,$item_select,$menu_item)
+	{
+		global $core;
+
+		if ($item_type == 'series') {
+			$series_combo = self::adminSimpleMenuGetCombo();
+			$menu_item[3] = array_search($item_select,$series_combo);
+			if ($item_select == '-') {
+				$menu_item[0] = __('All series');
+				$menu_item[1] = '';
+				$menu_item[2] .= $core->url->getURLFor('series');
+			} else {
+				$menu_item[0] = $menu_item[3];
+				$menu_item[1] = sprintf(__('Recent posts for %s serie'),$menu_item[3]);
+				$menu_item[2] .= $core->url->getURLFor('serie',$item_select);
+			}
+		}
 	}
 
 	public static function wiki2xhtmlSerie($url,$content)
