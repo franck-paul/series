@@ -209,7 +209,7 @@ class seriesBehaviors
 					array(
 						html::escapeHTML($core->blog->name) => '',
 						__('Entries') => $ap->getRedirection(array(),true),
-						'<span class="page-title">'.__('Add series to this selection').'</span>' => ''
+						__('Add series to this selection') => ''
 				)),
 				dcPage::jsLoad('js/jquery/jquery.autocomplete.js').
 				dcPage::jsMetaEditor().
@@ -287,7 +287,7 @@ class seriesBehaviors
 						array(
 							html::escapeHTML($core->blog->name) => '',
 							__('Entries') => 'posts.php',
-							'<span class="page-title">'.__('Remove selected series from this selection').'</span>' => ''
+							__('Remove selected series from this selection') => ''
 			)));
 			$posts_count = count($_POST['entries']);
 
