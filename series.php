@@ -26,13 +26,10 @@ echo dcPage::breadcrumb(
 		html::escapeHTML($core->blog->name) => '',
 		__('Series') => ''
 	));
+echo dcPage::notices();
 ?>
 
 <?php
-if (!empty($_GET['del'])) {
-	dcPage::success(__('Serie has been successfully removed'));
-}
-
 $series = $core->meta->getMetadata(array('meta_type' => 'serie'));
 $series = $core->meta->computeMetaStats($series);
 $series->sort('meta_id_lower','asc');

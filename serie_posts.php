@@ -16,7 +16,6 @@ $serie = (!empty($_REQUEST['serie']) || $_REQUEST['serie'] == '0') ? $_REQUEST['
 
 $this_url = $p_url.'&amp;m=serie_posts&amp;serie='.rawurlencode($serie);
 
-
 $page = !empty($_GET['page']) ? max(1,(integer) $_GET['page']) : 1;
 $nb_per_page =  30;
 
@@ -26,7 +25,8 @@ if (!empty($_POST['new_serie_id']) || $_POST['new_serie_id'] == '0')
 	$new_id = dcMeta::sanitizeMetaID($_POST['new_serie_id']);
 	try {
 		if ($core->meta->updateMeta($serie,$new_id,'serie')) {
-			http::redirect($p_url.'&m=serie_posts&serie='.$new_id.'&renamed=1');
+			dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'),html::escapeHTML($serie),html::escapeHTML($new_id)));
+			http::redirect($p_url.'&m=serie_posts&serie='.$new_id);
 		}
 	} catch (Exception $e) {
 		$core->error->add($e->getMessage());
@@ -38,7 +38,8 @@ if (!empty($_POST['delete']) && $core->auth->check('publish,contentadmin',$core-
 {
 	try {
 		$core->meta->delMeta($serie,'serie');
-		http::redirect($p_url.'&m=series&del=1');
+		dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'),html::escapeHTML($serie)));
+		http::redirect($p_url.'&m=series');
 	} catch (Exception $e) {
 		$core->error->add($e->getMessage());
 	}
@@ -75,7 +76,7 @@ if ($posts_actions_page->process()) {
   <script type="text/javascript" src="js/_posts_list.js"></script>
   <script type="text/javascript">
   //<![CDATA[
-  dotclear.msg.confirm_serie_delete = '<?php echo html::escapeJS(sprintf(__('Are you sure you want to remove this %s?'),__('serie'))) ?>';
+  dotclear.msg.confirm_serie_delete = '<?php echo html::escapeJS(__('Are you sure you want to remove this serie?')) ?>';
   $(function() {
     $('#serie_delete').submit(function() {
       return window.confirm(dotclear.msg.confirm_serie_delete);
@@ -93,12 +94,7 @@ echo dcPage::breadcrumb(
 		__('Series') => $p_url.'&amp;m=series',
 		__('Serie').' &ldquo;'.html::escapeHTML($serie).'&rdquo;' => ''
 	));
-?>
-
-<?php
-if (!empty($_GET['renamed'])) {
-	dcPage::success(__('Serie has been successfully renamed'));
-}
+echo dcPage::notices();
 
 echo '<p><a class="back" href="'.$p_url.'&amp;m=series">'.__('Back to series list').'</a></p>';
 

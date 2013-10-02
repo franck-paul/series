@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-27 23:04+0200\n"
+"POT-Creation-Date: 2013-10-02 12:14+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>\n"
 "Language-Team: \n"
@@ -100,11 +100,16 @@ msgstr "Avec l'URL"
 msgid "Order entries by:"
 msgstr "Trier les billets par :"
 
-msgid "serie"
-msgstr "série"
+#, php-format
+msgid "The serie “%s” has been successfully renamed to “%s”"
+msgstr "La série « %s » a été renommée avec succès en « %s »"
 
-msgid "Serie has been successfully renamed"
-msgstr "La série a été renommée avec succès"
+#, php-format
+msgid "The serie “%s” has been successfully deleted"
+msgstr "La série « %s » a été supprimée avec succès"
+
+msgid "Are you sure you want to remove this serie?"
+msgstr "Êtes-vous sûr de vouloir supprimer cette série ?"
 
 msgid "Back to series list"
 msgstr "Retour à la liste des séries"
@@ -118,11 +123,14 @@ msgstr "Supprimer cette série"
 msgid "List of entries in this serie"
 msgstr "Liste des billets de cette série"
 
-msgid "Serie has been successfully removed"
-msgstr "La série a été supprimée avec succès"
-
 msgid "No series on this blog."
 msgstr "Aucune série sur ce blog."
+
+#~ msgid "serie"
+#~ msgstr "série"
+
+#~ msgid "Serie has been successfully removed"
+#~ msgstr "La série a été supprimée avec succès"
 
 #~ msgid "Edit serie name:"
 #~ msgstr "Modifier le nom de la série :"
