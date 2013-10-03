@@ -40,7 +40,8 @@ $core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieList
 
 $core->addBehavior('coreInitWikiPost',array('seriesBehaviors','coreInitWikiPost'));
 
-$core->addBehavior('adminDashboardFavs',array('seriesBehaviors','dashboardFavs'));
+/* Register favorite */
+$core->addBehavior('adminDashboardFavorites',array('seriesBehaviors','adminDashboardFavorites'));
 
 $core->addBehavior('adminSimpleMenuAddType',array('seriesBehaviors','adminSimpleMenuAddType'));
 $core->addBehavior('adminSimpleMenuSelect',array('seriesBehaviors','adminSimpleMenuSelect'));
@@ -49,11 +50,15 @@ $core->addBehavior('adminSimpleMenuBeforeEdit',array('seriesBehaviors','adminSim
 # BEHAVIORS
 class seriesBehaviors
 {
-	public static function dashboardFavs($core,$favs)
+	public static function adminDashboardFavorites($core,$favs)
 	{
-		$favs['series'] = new ArrayObject(array('series','Series','plugin.php?p=series&amp;m=series',
-			'index.php?pf=series/icon.png','index.php?pf=series/icon-big.png',
-			'usage,contentadmin',null,null));
+		$favs->register('series', array(
+			'title' => __('Series'),
+			'url' => 'plugin.php?p=series&amp;m=series',
+			'small-icon' => 'index.php?pf=series/icon.png',
+			'large-icon' => 'index.php?pf=series/icon-big.png',
+			'permissions' => 'usage,contentadmin'
+		));
 	}
 
 	public static function coreInitWikiPost($wiki2xhtml)
