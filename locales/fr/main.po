@@ -102,11 +102,11 @@ msgstr "Trier les billets par :"
 
 #, php-format
 msgid "The serie “%s” has been successfully renamed to “%s”"
-msgstr "La série « %s » a été renommée avec succès en « %s »"
+msgstr "La série « %s » a été renommée en « %s »."
 
 #, php-format
 msgid "The serie “%s” has been successfully deleted"
-msgstr "La série « %s » a été supprimée avec succès"
+msgstr "La série « %s » a été supprimée."
 
 msgid "Are you sure you want to remove this serie?"
 msgstr "Êtes-vous sûr de vouloir supprimer cette série ?"
@@ -130,7 +130,7 @@ msgstr "Aucune série sur ce blog."
 #~ msgstr "série"
 
 #~ msgid "Serie has been successfully removed"
-#~ msgstr "La série a été supprimée avec succès"
+#~ msgstr "La série a été supprimée."
 
 #~ msgid "Edit serie name:"
 #~ msgstr "Modifier le nom de la série :"
