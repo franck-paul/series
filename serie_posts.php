@@ -12,7 +12,7 @@
 
 if (!defined('DC_CONTEXT_ADMIN')) { return; }
 
-$serie = (!empty($_REQUEST['serie']) || $_REQUEST['serie'] == '0') ? $_REQUEST['serie'] : '';
+$serie = isset($_REQUEST['serie']) ? $_REQUEST['serie'] : '';
 
 $this_url = $p_url.'&amp;m=serie_posts&amp;serie='.rawurlencode($serie);
 
@@ -20,7 +20,7 @@ $page = !empty($_GET['page']) ? max(1,(integer) $_GET['page']) : 1;
 $nb_per_page =  30;
 
 # Rename a serie
-if (!empty($_POST['new_serie_id']) || $_POST['new_serie_id'] == '0')
+if (isset($_POST['new_serie_id']))
 {
 	$new_id = dcMeta::sanitizeMetaID($_POST['new_serie_id']);
 	try {
