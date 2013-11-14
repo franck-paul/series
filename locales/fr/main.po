@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-02 12:14+0200\n"
+"POT-Creation-Date: 2013-11-14 14:00+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>\n"
 "Language-Team: \n"
@@ -49,8 +49,14 @@ msgstr "Supprimer des séries"
 msgid "Add series to this selection"
 msgstr "Ajouter des séries à cette sélection"
 
+msgid "Are you sure you want to remove this serie?"
+msgstr "Êtes-vous sûr de vouloir supprimer cette série ?"
+
+msgid "Add a serie to this entry"
+msgstr "Ajouter une série à cette entrée"
+
 msgid "Enter series separated by coma"
-msgstr "Entrer les séries séparées par des virgules"
+msgstr "Séparez les séries par des virgules"
 
 msgid "Series to add:"
 msgstr "Séries à ajouter :"
@@ -63,6 +69,9 @@ msgstr "Supprimer les séries sélectionnées de cette sélection"
 
 msgid "Following series have been found in selected entries:"
 msgstr "Les séries suivantes ont été trouvées pour les billets sélectionnés :"
+
+msgid "all series"
+msgstr "toutes"
 
 msgid "Series list format:"
 msgstr "Format de la liste des séries :"
@@ -107,9 +116,6 @@ msgstr "La série « %s » a été renommée en « %s »."
 #, php-format
 msgid "The serie “%s” has been successfully deleted"
 msgstr "La série « %s » a été supprimée."
-
-msgid "Are you sure you want to remove this serie?"
-msgstr "Êtes-vous sûr de vouloir supprimer cette série ?"
 
 msgid "Back to series list"
 msgstr "Retour à la liste des séries"

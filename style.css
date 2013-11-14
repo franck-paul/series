@@ -40,7 +40,7 @@ a.metaRemove {
 	border: none;
 }
 a.metaRemove:hover, a.metaRemove:focus {
-	color : #06c !important;
+	color : #2373A8 !important;
 }
 
 .addMeta a {
@@ -94,9 +94,16 @@ a.metaRemove:hover, a.metaRemove:focus {
 	background-color: #eee;
 }
 .ac_over {
-	background-color: #06c;
+	background-color: #2373A8;
 	color: white;
 }
+
+#post_meta_input:focus {
+	-moz-box-sizing: content-box;
+	}
+#series-edit input[type=text] {
+	width: 11.5em;
+	}
 
 .series-actions form {
 	display: inline-block;

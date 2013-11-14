@@ -5,7 +5,7 @@ $(function() {
 	serie_field.hide();
 
 	var target = $('#series_list');
-	var mEdit = new metaEditor(target,serie_field,'serie');
+	var mEdit = new metaEditor(target,serie_field,'serie',editor_series_options);
 	mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 
 	mEdit.meta_dialog = $('<input type="text" />');

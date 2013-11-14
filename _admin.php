@@ -218,17 +218,23 @@ class seriesBehaviors
 				)),
 				dcPage::jsLoad('js/jquery/jquery.autocomplete.js').
 				dcPage::jsMetaEditor().
+				'<script type="text/javascript">'."\n".
+				"//<![CDATA[\n".
+				"var editor_series_options = {\n".
+					"meta_url : 'plugin.php?p=series&m=serie_posts&amp;serie=',\n".
+					"list_type : '".html::escapeJS($type)."',\n".
+					"text_confirm_remove : '".html::escapeJS(__('Are you sure you want to remove this serie?'))."',\n".
+					"text_add_meta : '".html::escapeJS(__('Add a serie to this entry'))."',\n".
+					"text_choose : '".html::escapeJS(__('Choose from list'))."',\n".
+					"text_all : '".html::escapeJS(__('all'))."',\n".
+					"text_separation : '".html::escapeJS(__('Enter series separated by coma'))."',\n".
+				"};\n".
+				"\n//]]>\n".
+				"</script>\n".
 				'<script type="text/javascript" src="index.php?pf=series/js/jquery.autocomplete.js"></script>'.
 				'<script type="text/javascript" src="index.php?pf=series/js/posts_actions.js"></script>'.
 				'<script type="text/javascript">'."\n".
 				"//<![CDATA[\n".
-				"metaEditor.prototype.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';\n".
-				"metaEditor.prototype.meta_type = '".html::escapeJS($type)."';\n".
-				"metaEditor.prototype.text_confirm_remove = '".html::escapeJS(__('Are you sure you want to remove this %s?'))."';\n".
-				"metaEditor.prototype.text_add_meta = '".html::escapeJS(__('Add a %s to this entry'))."';\n".
-				"metaEditor.prototype.text_choose = '".html::escapeJS(__('Choose from list'))."';\n".
-				"metaEditor.prototype.text_all = '".html::escapeJS(__('all'))."';\n".
-				"metaEditor.prototype.text_separation = '".html::escapeJS(__('Enter series separated by coma'))."';\n".
 				"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".
 				"dotclear.msg.entry = '".html::escapeJS(__('entry'))."';\n".
 				"dotclear.msg.entries = '".html::escapeJS(__('entries'))."';\n".
@@ -329,17 +335,23 @@ class seriesBehaviors
 		$type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
 
 		return
+		'<script type="text/javascript">'."\n".
+		"//<![CDATA[\n".
+		"var editor_series_options = {\n".
+			"meta_url : 'plugin.php?p=series&m=serie_posts&amp;serie=',\n".
+			"list_type : '".html::escapeJS($type)."',\n".
+			"text_confirm_remove : '".html::escapeJS(__('Are you sure you want to remove this serie?'))."',\n".
+			"text_add_meta : '".html::escapeJS(__('Add a serie to this entry'))."',\n".
+			"text_choose : '".html::escapeJS(__('Choose from list'))."',\n".
+			"text_all : '".html::escapeJS(__('all series'))."',\n".
+			"text_separation : '".html::escapeJS(__('Enter series separated by coma'))."',\n".
+		"};\n".
+		"\n//]]>\n".
+		"</script>\n".
 		'<script type="text/javascript" src="index.php?pf=series/js/jquery.autocomplete.js"></script>'.
 		'<script type="text/javascript" src="index.php?pf=series/js/post.js"></script>'.
 		'<script type="text/javascript">'."\n".
 		"//<![CDATA[\n".
-		"metaEditor.prototype.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';\n".
-		"metaEditor.prototype.meta_type = '".html::escapeJS($type)."';\n".
-		"metaEditor.prototype.text_confirm_remove = '".html::escapeJS(__('Are you sure you want to remove this %s?'))."';\n".
-		"metaEditor.prototype.text_add_meta = '".html::escapeJS(__('Add a %s to this entry'))."';\n".
-		"metaEditor.prototype.text_choose = '".html::escapeJS(__('Choose from list'))."';\n".
-		"metaEditor.prototype.text_all = '".html::escapeJS(__('all'))."';\n".
-		"metaEditor.prototype.text_separation = '';\n".
 		"jsToolBar.prototype.elements.serie.title = '".html::escapeJS(__('Serie'))."';\n".
 		"jsToolBar.prototype.elements.serie.url = '".html::escapeJS($serie_url)."';\n".
 		"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".

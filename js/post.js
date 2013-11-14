@@ -10,7 +10,7 @@ $(function() {
 				meta_field = $('<input type="hidden" name="post_series" />');
 				meta_field.val($('#post_series').val());
 			}
-			var mEdit = new metaEditor(series_edit,meta_field,'serie');
+			var mEdit = new metaEditor(series_edit,meta_field,'serie',editor_series_options);
 			mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 			mEdit.displayMeta('serie',post_id);
 
