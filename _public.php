@@ -263,10 +263,22 @@ EOT;
 		($w->title ? '<h2>'.html::escapeHTML($w->title).'</h2>' : '').
 		'<ul>';
 
+		if ($core->url->type == 'post' && $_ctx->posts instanceof record) {
+			$_ctx->meta = $core->meta->getMetaRecordset($_ctx->posts->post_meta,'serie');
+		}
 		while ($rs->fetch())
 		{
+			$class = '';
+			if ($core->url->type == 'post' && $_ctx->posts instanceof record) {
+				while ($_ctx->meta->fetch()) {
+					if ($_ctx->meta->meta_id == $rs->meta_id) {
+						$class = ' class="serie-current"';
+						break;
+					}
+				}
+			}
 			$res .=
-			'<li><a href="'.$core->blog->url.$core->url->getURLFor('serie',rawurlencode($rs->meta_id)).'" '.
+			'<li'.$class.'><a href="'.$core->blog->url.$core->url->getURLFor('serie',rawurlencode($rs->meta_id)).'" '.
 			'class="serie'.$rs->roundpercent.'" rel="serie">'.
 			$rs->meta_id.'</a></li>';
 		}
