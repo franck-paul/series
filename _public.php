@@ -226,7 +226,7 @@ EOT;
 	# Widget function
 	public static function seriesWidget($w)
 	{
-		global $core;
+		global $core, $_ctx;
 
 		if (($w->homeonly == 1 && $core->url->type != 'default') ||
 			($w->homeonly == 2 && $core->url->type == 'default')) {
@@ -260,7 +260,7 @@ EOT;
 
 		$res =
 		($w->content_only ? '' : '<div class="series'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">').
-		($w->title ? '<h2>'.html::escapeHTML($w->title).'</h2>' : '').
+		($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '').
 		'<ul>';
 
 		if ($core->url->type == 'post' && $_ctx->posts instanceof record) {
@@ -347,7 +347,7 @@ EOT;
 		}
 
 		$res = ($w->content_only ? '' : '<div class="series-posts'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">'."\n");
-		$res .= ($w->title ? '<h2>'.html::escapeHTML($w->title).'</h2>'."\n" : '');
+		$res .= ($w->title ? $w->renderTitle(html::escapeHTML($w->title))."\n" : '');
 
 		$serie = '';
 		$list = '';
