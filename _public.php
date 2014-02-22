@@ -258,10 +258,7 @@ EOT;
 
 		$rs->sort($sort,$order);
 
-		$res =
-		($w->content_only ? '' : '<div class="series'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">').
-		($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '').
-		'<ul>';
+		$res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '').'<ul>';
 
 		if ($core->url->type == 'post' && $_ctx->posts instanceof record) {
 			$_ctx->meta = $core->meta->getMetaRecordset($_ctx->posts->post_meta,'serie');
@@ -292,9 +289,7 @@ EOT;
 			html::escapeHTML($w->allserieslinktitle).'</a></strong></p>';
 		}
 
-		$res .= ($w->content_only ? '' : '</div>');
-
-		return $res;
+		return $w->renderDiv($w->content_only,'series '.$w->class,'',$res);
 	}
 
 	public static function seriePostsWidget($w)
@@ -346,8 +341,7 @@ EOT;
 			return;
 		}
 
-		$res = ($w->content_only ? '' : '<div class="series-posts'.($w->class ? ' '.html::escapeHTML($w->class) : '').'">'."\n");
-		$res .= ($w->title ? $w->renderTitle(html::escapeHTML($w->title))."\n" : '');
+		$res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title))."\n" : '');
 
 		$serie = '';
 		$list = '';
@@ -387,9 +381,8 @@ EOT;
 			return;
 		}
 		$res .= $list.'</ul>'."\n";
-		$res .= ($w->content_only ? '' : '</div>'."\n");
 
-		return $res;
+		return $w->renderDiv($w->content_only,'series-posts '.$w->class,'',$res);
 	}
 }
 
