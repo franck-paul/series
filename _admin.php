@@ -47,9 +47,22 @@ $core->addBehavior('adminSimpleMenuAddType',array('seriesBehaviors','adminSimple
 $core->addBehavior('adminSimpleMenuSelect',array('seriesBehaviors','adminSimpleMenuSelect'));
 $core->addBehavior('adminSimpleMenuBeforeEdit',array('seriesBehaviors','adminSimpleMenuBeforeEdit'));
 
+//$core->addBehavior('ckeditorExtraPlugins', array('seriesBehaviors', 'ckeditorExtraPlugins'));
+
 # BEHAVIORS
 class seriesBehaviors
 {
+    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins)
+    {
+        global $core;
+
+        $extraPlugins[] = array(
+            'name' => 'dcseries',
+            'button' => 'dcSeries',
+            'url' => html::stripHostURL($core->blog->getQmarkURL().'pf=series/js/ckeditor-series-plugin.js')
+        );
+    }
+
 	public static function adminDashboardFavorites($core,$favs)
 	{
 		$favs->register('series', array(
