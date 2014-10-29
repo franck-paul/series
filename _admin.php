@@ -47,15 +47,18 @@ $core->addBehavior('adminSimpleMenuAddType',array('seriesBehaviors','adminSimple
 $core->addBehavior('adminSimpleMenuSelect',array('seriesBehaviors','adminSimpleMenuSelect'));
 $core->addBehavior('adminSimpleMenuBeforeEdit',array('seriesBehaviors','adminSimpleMenuBeforeEdit'));
 
-//$core->addBehavior('ckeditorExtraPlugins', array('seriesBehaviors', 'ckeditorExtraPlugins'));
+$core->addBehavior('ckeditorExtraPlugins', array('seriesBehaviors', 'ckeditorExtraPlugins'));
 
 # BEHAVIORS
 class seriesBehaviors
 {
-    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins)
+    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, $context)
     {
         global $core;
 
+        if ($context!='post') {
+            return;
+        }
         $extraPlugins[] = array(
             'name' => 'dcseries',
             'button' => 'dcSeries',
