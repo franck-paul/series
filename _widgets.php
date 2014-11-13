@@ -39,6 +39,7 @@ class seriesWidgets
 		);
 		$w->series->setting('content_only',__('Content only'),0,'check');
 		$w->series->setting('class',__('CSS class:'),'');
+		$w->series->setting('offline',__('Offline'),0,'check');
 
 		// Widget for currently displayed post
 		$w->create('seriesPosts',__('Siblings'),array('tplSeries','seriePostsWidget'),null,__('Other posts of the same serie(s)'));
@@ -65,6 +66,7 @@ class seriesWidgets
 		);
 		$w->seriesPosts->setting('content_only',__('Content only'),0,'check');
 		$w->seriesPosts->setting('class',__('CSS class:'),'');
+		$w->seriesPosts->setting('offline',__('Offline'),0,'check');
 	}
 
 	public static function initDefaultWidgets($w,$d)
