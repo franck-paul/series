@@ -84,6 +84,7 @@ if ($posts_actions_page->process()) {
   });
   //]]>
   </script>
+  <?php echo dcPage::jsConfirmClose('serie_rename'); ?>
 </head>
 <body>
 
@@ -105,7 +106,7 @@ if (!$core->error->flag())
 		echo
 		'<div class="series-actions vertical-separator">'.
 		'<h3>'.html::escapeHTML($serie).'</h3>'.
-		'<form action="'.$this_url.'" method="post">'.
+		'<form action="'.$this_url.'" method="post" id="serie_rename">'.
 		'<p><label for="new_serie_id" class="classic">'.__('Rename:').'</label> '.
 		form::field('new_serie_id',40,255,html::escapeHTML($serie)).
 		'<input type="submit" value="'.__('OK').'" />'.
