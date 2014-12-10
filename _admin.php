@@ -62,7 +62,7 @@ class seriesBehaviors
         $extraPlugins[] = array(
             'name' => 'dcseries',
             'button' => 'dcSeries',
-            'url' => html::stripHostURL($core->blog->getQmarkURL().'pf=series/js/ckeditor-series-plugin.js')
+            'url' => DC_ADMIN_URL.'index.php?pf=series/js/ckeditor-series-plugin.js'
         );
     }
 
