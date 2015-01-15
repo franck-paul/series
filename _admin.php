@@ -39,6 +39,9 @@ $core->addBehavior('adminBeforeUserCreate',array('seriesBehaviors','setSerieList
 $core->addBehavior('adminBeforeUserUpdate',array('seriesBehaviors','setSerieListFormat'));
 
 $core->addBehavior('coreInitWikiPost',array('seriesBehaviors','coreInitWikiPost'));
+$core->addBehavior('adminPostEditor', array('seriesBehaviors','adminPostEditor'));
+
+$core->addBehavior('ckeditorExtraPlugins', array('seriesBehaviors', 'ckeditorExtraPlugins'));
 
 /* Register favorite */
 $core->addBehavior('adminDashboardFavorites',array('seriesBehaviors','adminDashboardFavorites'));
@@ -47,25 +50,9 @@ $core->addBehavior('adminSimpleMenuAddType',array('seriesBehaviors','adminSimple
 $core->addBehavior('adminSimpleMenuSelect',array('seriesBehaviors','adminSimpleMenuSelect'));
 $core->addBehavior('adminSimpleMenuBeforeEdit',array('seriesBehaviors','adminSimpleMenuBeforeEdit'));
 
-$core->addBehavior('ckeditorExtraPlugins', array('seriesBehaviors', 'ckeditorExtraPlugins'));
-
 # BEHAVIORS
 class seriesBehaviors
 {
-    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, $context)
-    {
-        global $core;
-
-        if ($context!='post') {
-            return;
-        }
-        $extraPlugins[] = array(
-            'name' => 'dcseries',
-            'button' => 'dcSeries',
-            'url' => DC_ADMIN_URL.'index.php?pf=series/js/ckeditor-series-plugin.js'
-        );
-    }
-
 	public static function adminDashboardFavorites($core,$favs)
 	{
 		$favs->register('series', array(
@@ -75,11 +62,6 @@ class seriesBehaviors
 			'large-icon' => 'index.php?pf=series/icon-big.png',
 			'permissions' => 'usage,contentadmin'
 		));
-	}
-
-	public static function coreInitWikiPost($wiki2xhtml)
-	{
-		$wiki2xhtml->registerFunction('url:serie',array('seriesBehaviors','wiki2xhtmlSerie'));
 	}
 
 	public static function adminSimpleMenuGetCombo()
@@ -345,8 +327,6 @@ class seriesBehaviors
 
 	public static function postHeaders()
 	{
-		$serie_url = $GLOBALS['core']->blog->url.$GLOBALS['core']->url->getURLFor('serie');
-
 		$opts = $GLOBALS['core']->auth->getOptions();
 		$type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
 
@@ -368,8 +348,6 @@ class seriesBehaviors
 		'<script type="text/javascript" src="index.php?pf=series/js/post.js"></script>'.
 		'<script type="text/javascript">'."\n".
 		"//<![CDATA[\n".
-		"jsToolBar.prototype.elements.serie.title = '".html::escapeJS(__('Serie'))."';\n".
-		"jsToolBar.prototype.elements.serie.url = '".html::escapeJS($serie_url)."';\n".
 		"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".
 		"dotclear.msg.entry = '".html::escapeJS(__('entry'))."';\n".
 		"dotclear.msg.entries = '".html::escapeJS(__('entries'))."';\n".
@@ -377,6 +355,41 @@ class seriesBehaviors
 		"</script>\n".
 		'<link rel="stylesheet" type="text/css" href="index.php?pf=series/style.css" />';
 	}
+
+	public static function coreInitWikiPost($wiki2xhtml)
+	{
+		$wiki2xhtml->registerFunction('url:serie',array('seriesBehaviors','wiki2xhtmlSerie'));
+	}
+
+	public static function adminPostEditor($editor='',$context='',array $tags=array())
+	{
+		if ($editor != 'dcLegacyEditor' || $context != 'post') return;
+
+		$serie_url = $GLOBALS['core']->blog->url.$GLOBALS['core']->url->getURLFor('serie');
+
+		return
+		'<script type="text/javascript" src="index.php?pf=series/js/legacy-post.js"></script>'."\n".
+		'<script type="text/javascript">'."\n".
+		"//<![CDATA[\n".
+		"jsToolBar.prototype.elements.serie.title = '".html::escapeJS(__('Serie'))."';\n".
+		"jsToolBar.prototype.elements.serie.url = '".html::escapeJS($serie_url)."';\n".
+		"\n//]]>\n".
+		"</script>\n";
+	}
+
+    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, $context)
+    {
+        global $core;
+
+        if ($context!='post') {
+            return;
+        }
+        $extraPlugins[] = array(
+            'name' => 'dcseries',
+            'button' => 'dcSeries',
+            'url' => DC_ADMIN_URL.'index.php?pf=series/js/ckeditor-series-plugin.js'
+        );
+    }
 
 	public static function adminUserForm($args)
 	{

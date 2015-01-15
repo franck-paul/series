@@ -16,10 +16,10 @@ $this->registerModule(
 	/* Name */			"Series",
 	/* Description*/		"Series of posts",
 	/* Author */			"Franck Paul",
-	/* Version */			'0.4.2',
+	/* Version */			'0.5',
 	array(
 		/* Permissions */	'permissions' =>	'usage,contentadmin',
-		/* Priority */		'priority' =>		998,	// Must be less than dcLegacyEditor priority (ie 1000)
+		/* Priority */		'priority' =>		1001,	// Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
 		/* Type */			'type' =>			'plugin'
 	)
 );
