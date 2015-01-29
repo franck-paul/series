@@ -322,25 +322,36 @@ class seriesBehaviors
 
 	public static function adminPostEditor($editor='',$context='',array $tags=array())
 	{
-		if ($editor != 'dcLegacyEditor' || $context != 'post') return;
+		if (($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor') || $context != 'post') return;
 
 		$serie_url = $GLOBALS['core']->blog->url.$GLOBALS['core']->url->getURLFor('serie');
 
-		return
-		'<script type="text/javascript" src="index.php?pf=series/js/legacy-post.js"></script>'."\n".
-		'<script type="text/javascript">'."\n".
-		"//<![CDATA[\n".
-		"jsToolBar.prototype.elements.serie.title = '".html::escapeJS(__('Serie'))."';\n".
-		"jsToolBar.prototype.elements.serie.url = '".html::escapeJS($serie_url)."';\n".
-		"\n//]]>\n".
-		"</script>\n";
+		if ($editor == 'dcLegacyEditor') {
+			return
+			'<script type="text/javascript" src="index.php?pf=series/js/legacy-post.js"></script>'."\n".
+			'<script type="text/javascript">'."\n".
+			"//<![CDATA[\n".
+			"jsToolBar.prototype.elements.serie.title = '".html::escapeJS(__('Serie'))."';\n".
+			"jsToolBar.prototype.elements.serie.url = '".html::escapeJS($serie_url)."';\n".
+			"\n//]]>\n".
+			"</script>\n";
+		} elseif ($editor == 'dcCKEditor') {
+			return
+			'<script type="text/javascript">'."\n".
+			"//<![CDATA[\n".
+			"dotclear.msg.serie_title = '".html::escapeJS(__('Serie'))."';\n".
+			"dotclear.msg.serie_url = '".html::escapeJS($serie_url)."';\n".
+			"\n//]]>\n".
+			"</script>\n";
+		}
+		return;
 	}
 
     public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, $context)
     {
         global $core;
 
-        if ($context!='post') {
+        if ($context != 'post') {
             return;
         }
         $extraPlugins[] = array(
