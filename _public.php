@@ -35,8 +35,35 @@ $core->addBehavior('templateBeforeBlock',array('behaviorsSeries','templateBefore
 $core->addBehavior('tplSysIfConditions',array('behaviorsSeries','tplSysIfConditions'));
 $core->addBehavior('publicBeforeDocument',array('behaviorsSeries','addTplPath'));
 
+$core->addBehavior('publicBreadcrumb',array('behaviorsSeries','publicBreadcrumb'));
+
 class behaviorsSeries
 {
+	public static function publicBreadcrumb($context,$separator)
+	{
+		global $core,$_ctx;
+
+		if ($context == 'series') {
+
+			// All series
+			return __('All series');
+
+		} elseif ($context == 'serie') {
+			// Serie
+
+			// Get current page if set
+			$page = isset($GLOBALS['_page_number']) ? (integer) $GLOBALS['_page_number'] : 0;
+			$ret = '<a href="'.$core->blog->url.$core->url->getBase("series").'">'.__('All series').'</a>';
+			if ($page == 0) {
+				$ret .= $separator.$_ctx->meta->meta_id;
+			} else {
+				$ret .= $separator.'<a href="'.$core->blog->url.$core->url->getBase("serie").'/'.rawurlencode($_ctx->meta->meta_id).'">'.$_ctx->meta->meta_id.'</a>';
+				$ret .= $separator.sprintf(__('page %d'),$page);
+			}
+			return $ret;
+		}
+	}
+
 	public static function templateBeforeBlock($core,$b,$attr)
 	{
 		if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie']))
