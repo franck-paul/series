@@ -1,69 +1,37 @@
-<!DOCTYPE html>
-<html lang="{{tpl:BlogLanguage}}">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="ROBOTS" content="{{tpl:BlogMetaRobots robots="NOINDEX"}}" />
+{{tpl:extends parent="__layout.html"}}
 
-  <title>{{tpl:lang Series}} - {{tpl:BlogName encode_html="1"}}</title>
-  <meta name="copyright" content="{{tpl:BlogCopyrightNotice encode_html="1"}}" />
-  <meta name="author" content="{{tpl:BlogEditor encode_html="1"}}" />
-  <meta name="date" scheme="W3CDTF" content="{{tpl:BlogUpdateDate iso8601="1"}}" />
+<tpl:Block name="head-title">
+	<title>{{tpl:lang Series}} - {{tpl:BlogName encode_html="1"}}</title>
+</tpl:Block>
 
-  <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
-  <meta name="dc.title" lang="{{tpl:BlogLanguage}}" content="{{tpl:lang Series}} - {{tpl:BlogName encode_html="1"}}" />
-  <meta name="dc.language" content="{{tpl:BlogLanguage}}" />
-  <meta name="dc.publisher" content="{{tpl:BlogEditor encode_html="1"}}" />
-  <meta name="dc.rights" content="{{tpl:BlogCopyrightNotice encode_html="1"}}" />
-  <meta name="dc.date" scheme="W3CDTF" content="{{tpl:BlogUpdateDate iso8601="1"}}" />
-  <meta name="dc.type" content="text" />
-  <meta name="dc.format" content="text/html" />
+<tpl:Block name="meta-robots">
+	<meta name="ROBOTS" content="{{tpl:BlogMetaRobots robots="NOINDEX"}}" />
+</tpl:Block>
 
-  <link rel="top" href="{{tpl:BlogURL}}" title="{{tpl:lang Home}}" />
-  <link rel="contents" href="{{tpl:BlogArchiveURL}}" title="{{tpl:lang Archives}}" />
+<tpl:Block name="dc-entry">
+	<meta name="dc.title" lang="{{tpl:BlogLanguage}}" content="{{tpl:lang Series}} - {{tpl:BlogName encode_html="1"}}" />
+	<meta name="dc.language" content="{{tpl:BlogLanguage}}" />
+	<meta name="dc.date" content="{{tpl:BlogUpdateDate iso8601="1"}}" />
+</tpl:Block>
 
-  <link rel="meta" type="application/xbel+xml" title="Blogroll" href="{{tpl:BlogrollXbelLink}}" />
+<tpl:Block name="head-linkrel">
+	<link rel="top" href="{{tpl:BlogURL}}" title="{{tpl:lang Home}}" />
+	<link rel="contents" href="{{tpl:BlogArchiveURL}}" title="{{tpl:lang Archives}}" />
+	<link rel="meta" type="application/xbel+xml" title="Blogroll" href="{{tpl:BlogrollXbelLink}}" />
+</tpl:Block>
 
-  {{tpl:include src="_head.html"}}
-</head>
+<tpl:Block name="body-tag"><body class="dc-series"></tpl:Block>
 
-<body class="dc-series">
-<div id="page">
-{{tpl:include src="_top.html"}}
+<tpl:Block name="main-content">
+	<div id="content-info">
+		<h2>{{tpl:lang Series}}</h2>
+	</div>
 
-<div id="wrapper">
-
-<div id="main">
-  {{tpl:Breadcrumb}}
-  <div id="content">
-
-  <div id="content-info">
-    <h2>{{tpl:lang Series}}</h2>
-  </div>
-
-  <div class="content-inner">
-  <ul class="series">
-    <tpl:Series>
-      <li><a href="{{tpl:SerieURL}}" class="serie{{tpl:SerieRoundPercent}}">{{tpl:SerieID}}</a></li>
-    </tpl:Series>
-    </ul>
-  </div>
-
-  </div>
-</div> <!-- End #main -->
-
-<div id="sidebar">
-  <div id="blognav">
-    {{tpl:Widgets type="nav"}}
-  </div> <!-- End #blognav -->
-
-  <div id="blogextra">
-    {{tpl:Widgets type="extra"}}
-  </div> <!-- End #blogextra -->
-</div>
-
-</div> <!-- End #wrapper -->
-
-{{tpl:include src="_footer.html"}}
-</div> <!-- End #page -->
-</body>
-</html>
+	<div class="content-inner">
+	<ul class="series">
+		<tpl:Series>
+			<li><a href="{{tpl:SerieURL}}" class="serie{{tpl:SerieRoundPercent}}">{{tpl:SerieID}}</a></li>
+		</tpl:Series>
+		</ul>
+	</div>
+</tpl:Block>
