@@ -320,7 +320,7 @@ class seriesBehaviors
 		$wiki2xhtml->registerFunction('url:serie',array('seriesBehaviors','wiki2xhtmlSerie'));
 	}
 
-	public static function adminPostEditor($editor='',$context='',array $tags=array())
+	public static function adminPostEditor($editor='',$context='',array $tags=array(),$syntax='')
 	{
 		if (($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor') || $context != 'post') return;
 
@@ -347,7 +347,7 @@ class seriesBehaviors
 		return;
 	}
 
-    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, $context)
+    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins,$context)
     {
         global $core;
 
