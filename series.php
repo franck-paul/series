@@ -39,7 +39,7 @@ $cols = array('','');
 $col = 0;
 while ($series->fetch())
 {
-	$letter = mb_strtoupper(mb_substr($series->meta_id,0,1));
+	$letter = mb_strtoupper(mb_substr($series->meta_id_lower,0,1));
 
 	if ($last_letter != $letter) {
 		if ($series->index() >= round($series->count()/2)) {
