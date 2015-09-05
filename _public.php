@@ -29,7 +29,6 @@ $core->tpl->addValue('SerieRoundPercent',array('tplSeries','SerieRoundPercent'))
 $core->tpl->addValue('SerieURL',array('tplSeries','SerieURL'));
 $core->tpl->addValue('SerieCloudURL',array('tplSeries','SerieCloudURL'));
 $core->tpl->addValue('SerieFeedURL',array('tplSeries','SerieFeedURL'));
-$core->tpl->addValue('SerieEntriesList',array('tplSeries','SerieEntriesList'));
 
 $core->addBehavior('templateBeforeBlock',array('behaviorsSeries','templateBeforeBlock'));
 $core->addBehavior('tplSysIfConditions',array('behaviorsSeries','tplSysIfConditions'));
@@ -235,26 +234,6 @@ class tplSeries
 		'rawurlencode($_ctx->meta->meta_id)."/'.$type.'")').'; ?>';
 	}
 
-	public static function SerieEntriesList($attr)
-	{
-		$option = !empty($attr['include_current']) ? $attr['include_current'] : 'std';
-
-		if (!preg_match('#^(std|link|none)$#',$option)) {
-			$option = 'std';
-		}
-
-		// $_ctx->meta->meta_id contient l'id de la série en cours
-		// $_ctx->posts->post_id contient l'id du billet en cours
-
-		$f = $GLOBALS['core']->tpl->getFilters($attr);
-
-		$res = <<<EOT
-			echo '<ul class="serie-entries-list">'."\n";
-			echo '</ul>'."\n";
-EOT;
-		return ($res != '' ? '<?php '.$res.' ?>' : '');
-	}
-
 	# Widget function
 	public static function seriesWidget($w)
 	{
@@ -333,11 +312,6 @@ EOT;
 
 		if ($w->offline)
 			return;
-
-		if (($w->homeonly == 1 && $core->url->type != 'default') ||
-			($w->homeonly == 2 && $core->url->type == 'default')) {
-			return;
-		}
 
 		if($core->url->type != 'post'){
 			return;
