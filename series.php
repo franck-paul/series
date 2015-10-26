@@ -16,7 +16,7 @@ if (!defined('DC_CONTEXT_ADMIN')) { return; }
 <html>
 <head>
   <title><?php echo __('Series'); ?></title>
-  <link rel="stylesheet" type="text/css" href="index.php?pf=series/style.css" />
+  <?php echo dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')),'screen',$core->getVersion('series')); ?>
 </head>
 
 <body>

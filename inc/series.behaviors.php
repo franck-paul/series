@@ -17,8 +17,8 @@ class seriesBehaviors
 		$favs->register('series', array(
 			'title' => __('Series'),
 			'url' => 'plugin.php?p=series&amp;m=series',
-			'small-icon' => 'index.php?pf=series/icon.png',
-			'large-icon' => 'index.php?pf=series/icon-big.png',
+			'small-icon' => urldecode(dcPage::getPF('series/icon.png')),
+			'large-icon' => urldecode(dcPage::getPF('series/icon-big.png')),
 			'permissions' => 'usage,contentadmin'
 		));
 	}
@@ -188,8 +188,8 @@ class seriesBehaviors
 				"};\n".
 				"\n//]]>\n".
 				"</script>\n".
-				'<script type="text/javascript" src="index.php?pf=series/js/jquery.autocomplete.js"></script>'.
-				'<script type="text/javascript" src="index.php?pf=series/js/posts_actions.js"></script>'.
+				dcPage::jsLoad(urldecode(dcPage::getPF('series/js/jquery.autocomplete.js')),$core->getVersion('series')).
+				dcPage::jsLoad(urldecode(dcPage::getPF('series/js/posts_actions.js')),$core->getVersion('series')).
 				'<script type="text/javascript">'."\n".
 				"//<![CDATA[\n".
 				"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".
@@ -197,7 +197,7 @@ class seriesBehaviors
 				"dotclear.msg.entries = '".html::escapeJS(__('entries'))."';\n".
 				"\n//]]>\n".
 				"</script>\n".
-				'<link rel="stylesheet" type="text/css" href="index.php?pf=series/style.css" />'
+				dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')),'screen',$core->getVersion('series'))
 			);
 			echo
 				'<form action="'.$ap->getURI().'" method="post">'.
@@ -286,6 +286,8 @@ class seriesBehaviors
 
 	public static function postHeaders()
 	{
+		global $core;
+
 		$opts = $GLOBALS['core']->auth->getOptions();
 		$type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
 
@@ -303,8 +305,8 @@ class seriesBehaviors
 		"};\n".
 		"\n//]]>\n".
 		"</script>\n".
-		'<script type="text/javascript" src="index.php?pf=series/js/jquery.autocomplete.js"></script>'.
-		'<script type="text/javascript" src="index.php?pf=series/js/post.js"></script>'.
+		dcPage::jsLoad(urldecode(dcPage::getPF('series/js/jquery.autocomplete.js')),$core->getVersion('series')).
+		dcPage::jsLoad(urldecode(dcPage::getPF('series/js/post.js')),$core->getVersion('series')).
 		'<script type="text/javascript">'."\n".
 		"//<![CDATA[\n".
 		"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".
@@ -312,7 +314,7 @@ class seriesBehaviors
 		"dotclear.msg.entries = '".html::escapeJS(__('entries'))."';\n".
 		"\n//]]>\n".
 		"</script>\n".
-		'<link rel="stylesheet" type="text/css" href="index.php?pf=series/style.css" />';
+		dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')),'screen',$core->getVersion('series'));
 	}
 
 	public static function coreInitWikiPost($wiki2xhtml)
@@ -322,13 +324,15 @@ class seriesBehaviors
 
 	public static function adminPostEditor($editor='',$context='',array $tags=array(),$syntax='')
 	{
+		global $core;
+
 		if (($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor') || $context != 'post') return;
 
 		$serie_url = $GLOBALS['core']->blog->url.$GLOBALS['core']->url->getURLFor('serie');
 
 		if ($editor == 'dcLegacyEditor') {
 			return
-			'<script type="text/javascript" src="index.php?pf=series/js/legacy-post.js"></script>'."\n".
+			dcPage::jsLoad(urldecode(dcPage::getPF('series/js/legacy-post.js')),$core->getVersion('series')).
 			'<script type="text/javascript">'."\n".
 			"//<![CDATA[\n".
 			"jsToolBar.prototype.elements.serie.title = '".html::escapeJS(__('Serie'))."';\n".
