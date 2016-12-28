@@ -290,7 +290,7 @@ class tplSeries
 			}
 			$res .=
 			'<li'.$class.'><a href="'.$core->blog->url.$core->url->getURLFor('serie',rawurlencode($rs->meta_id)).'" '.
-			'class="serie'.$rs->roundpercent.'" rel="serie">'.
+			'class="serie'.$rs->roundpercent.'">'.
 			$rs->meta_id.'</a></li>';
 		}
 
@@ -376,7 +376,7 @@ class tplSeries
 					$list .= '</ul>'."\n";
 				}
 				if ($w->serietitle) {
-					$list .= '<h3><a href="'.$core->blog->url.$core->url->getURLFor('serie',rawurlencode($rs->meta_id)).'" rel="serie">'.
+					$list .= '<h3><a href="'.$core->blog->url.$core->url->getURLFor('serie',rawurlencode($rs->meta_id)).'">'.
 					$rs->meta_id.'</a></h3>'."\n";
 				}
 				$list .= '<ul>'."\n";

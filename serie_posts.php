@@ -75,14 +75,12 @@ if ($posts_actions_page->process()) {
   <?php echo dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')),'screen',$core->getVersion('series')); ?>
   <script type="text/javascript" src="js/_posts_list.js"></script>
   <script type="text/javascript">
-  //<![CDATA[
   dotclear.msg.confirm_serie_delete = '<?php echo html::escapeJS(__('Are you sure you want to remove this serie?')) ?>';
   $(function() {
     $('#serie_delete').submit(function() {
       return window.confirm(dotclear.msg.confirm_serie_delete);
     });
   });
-  //]]>
   </script>
   <?php echo dcPage::jsConfirmClose('serie_rename'); ?>
 </head>

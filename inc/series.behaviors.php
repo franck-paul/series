@@ -176,7 +176,6 @@ class seriesBehaviors
 				dcPage::jsLoad('js/jquery/jquery.autocomplete.js').
 				dcPage::jsMetaEditor().
 				'<script type="text/javascript">'."\n".
-				"//<![CDATA[\n".
 				"var editor_series_options = {\n".
 					"meta_url : 'plugin.php?p=series&m=serie_posts&amp;serie=',\n".
 					"list_type : '".html::escapeJS($type)."',\n".
@@ -186,16 +185,13 @@ class seriesBehaviors
 					"text_all : '".html::escapeJS(__('all'))."',\n".
 					"text_separation : '".html::escapeJS(__('Enter series separated by coma'))."',\n".
 				"};\n".
-				"\n//]]>\n".
 				"</script>\n".
 				dcPage::jsLoad(urldecode(dcPage::getPF('series/js/jquery.autocomplete.js')),$core->getVersion('series')).
 				dcPage::jsLoad(urldecode(dcPage::getPF('series/js/posts_actions.js')),$core->getVersion('series')).
 				'<script type="text/javascript">'."\n".
-				"//<![CDATA[\n".
 				"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".
 				"dotclear.msg.entry = '".html::escapeJS(__('entry'))."';\n".
 				"dotclear.msg.entries = '".html::escapeJS(__('entries'))."';\n".
-				"\n//]]>\n".
 				"</script>\n".
 				dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')),'screen',$core->getVersion('series'))
 			);
@@ -293,7 +289,6 @@ class seriesBehaviors
 
 		return
 		'<script type="text/javascript">'."\n".
-		"//<![CDATA[\n".
 		"var editor_series_options = {\n".
 			"meta_url : 'plugin.php?p=series&m=serie_posts&amp;serie=',\n".
 			"list_type : '".html::escapeJS($type)."',\n".
@@ -303,16 +298,13 @@ class seriesBehaviors
 			"text_all : '".html::escapeJS(__('all series'))."',\n".
 			"text_separation : '".html::escapeJS(__('Enter series separated by coma'))."',\n".
 		"};\n".
-		"\n//]]>\n".
 		"</script>\n".
 		dcPage::jsLoad(urldecode(dcPage::getPF('series/js/jquery.autocomplete.js')),$core->getVersion('series')).
 		dcPage::jsLoad(urldecode(dcPage::getPF('series/js/post.js')),$core->getVersion('series')).
 		'<script type="text/javascript">'."\n".
-		"//<![CDATA[\n".
 		"dotclear.msg.series_autocomplete = '".html::escapeJS(__('used in %e - frequency %p%'))."';\n".
 		"dotclear.msg.entry = '".html::escapeJS(__('entry'))."';\n".
 		"dotclear.msg.entries = '".html::escapeJS(__('entries'))."';\n".
-		"\n//]]>\n".
 		"</script>\n".
 		dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')),'screen',$core->getVersion('series'));
 	}
@@ -334,18 +326,14 @@ class seriesBehaviors
 			return
 			dcPage::jsLoad(urldecode(dcPage::getPF('series/js/legacy-post.js')),$core->getVersion('series')).
 			'<script type="text/javascript">'."\n".
-			"//<![CDATA[\n".
 			"jsToolBar.prototype.elements.serie.title = '".html::escapeJS(__('Serie'))."';\n".
 			"jsToolBar.prototype.elements.serie.url = '".html::escapeJS($serie_url)."';\n".
-			"\n//]]>\n".
 			"</script>\n";
 		} elseif ($editor == 'dcCKEditor') {
 			return
 			'<script type="text/javascript">'."\n".
-			"//<![CDATA[\n".
 			"dotclear.msg.serie_title = '".html::escapeJS(__('Serie'))."';\n".
 			"dotclear.msg.serie_url = '".html::escapeJS($serie_url)."';\n".
-			"\n//]]>\n".
 			"</script>\n";
 		}
 		return;
@@ -384,9 +372,10 @@ class seriesBehaviors
 		$value = array_key_exists('serie_list_format',$opts) ? $opts['serie_list_format'] : 'more';
 
 		echo
+		'<div class="fieldset"><h5 id="series_prefs">'.__('Series').'</h5>'.
 		'<p><label for="user_serie_list_format" class="classic">'.__('Series list format:').'</label> '.
 		form::combo('user_serie_list_format',$combo,$value).
-		'</p>';
+		'</p></div>';
 	}
 
 	public static function setSerieListFormat($cur,$user_id = null)
