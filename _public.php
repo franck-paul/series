@@ -52,11 +52,11 @@ class behaviorsSeries
 
 			// Get current page if set
 			$page = isset($GLOBALS['_page_number']) ? (integer) $GLOBALS['_page_number'] : 0;
-			$ret = '<a href="'.$core->blog->url.$core->url->getBase("series").'">'.__('All series').'</a>';
+			$ret = '<a href="'.$core->blog->url.$core->url->getURLFor("series").'">'.__('All series').'</a>';
 			if ($page == 0) {
 				$ret .= $separator.$_ctx->meta->meta_id;
 			} else {
-				$ret .= $separator.'<a href="'.$core->blog->url.$core->url->getBase("serie").'/'.rawurlencode($_ctx->meta->meta_id).'">'.$_ctx->meta->meta_id.'</a>';
+				$ret .= $separator.'<a href="'.$core->blog->url.$core->url->getURLFor("serie").'/'.rawurlencode($_ctx->meta->meta_id).'">'.$_ctx->meta->meta_id.'</a>';
 				$ret .= $separator.sprintf(__('page %d'),$page);
 			}
 			return $ret;
@@ -296,7 +296,7 @@ class tplSeries
 
 		$res .= '</ul>';
 
-		if ($core->url->getBase('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '')
+		if ($core->url->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '')
 		{
 			$res .=
 			'<p><strong><a href="'.$core->blog->url.$core->url->getURLFor("series").'">'.
