@@ -1,134 +1,79 @@
 .serie0 {}
-
 .serie10 {}
-
 .serie20 {}
-
 .serie30 {}
-
 .serie40 {}
-
 .serie50 {}
-
 .serie60 {}
-
 .serie70 {}
-
 .serie80 {}
-
 .serie90 {}
-
 .serie100 {}
-
 table.series {
-	margin-left: 3em;
+  margin-left: 3em;
 }
-
 tr.serieLetter span {
-	font-size: 250%;
-	border: none;
-	display: block;
-	width: 1ex;
-	position: relative;
-	top: 0.80em;
-	left: -2ex;
+  font-size: 250%;
+  border: none;
+  display: block;
+  width: 1ex;
+  position: relative;
+  top: 0.80em;
+  left: -2ex;
 }
-
 ul.metaList {
-	margin: 0 0 1em 0;
-	padding: 0;
+  margin: 0 0 1em 0;
+  padding: 0;
 }
-
 ul.metaList li {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	list-style-position: inside;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-position: inside;
 }
-
-
-/*
-a.metaRemove {
-	color : #999 !important;
-	border: none;
-}
-a.metaRemove:hover, a.metaRemove:focus {
-	color : #2373A8 !important;
-}
-
-.addMeta a {
-	border: none;
-}
-.addMeta a:hover, .addMeta a:focus {
-	background: #fc0;
-	color: #000;
-}
-.addMeta a.metaGetMore {
-	font-weight: bold;
-}
-*/
-
-
 /* Auto Complete */
 
 .ac_results {
-	padding: 0px;
-	border: 1px dotted #f90;
-	background-color: white;
-	overflow: hidden;
-	z-index: 99999;
+  padding: 0px;
+  border: 1px dotted #f90;
+  background-color: white;
+  overflow: hidden;
+  z-index: 99999;
 }
-
 .ac_results ul {
-	width: 100%;
-	list-style-position: outside;
-	list-style: none;
-	padding: 0;
-	margin: 0;
+  width: 100%;
+  list-style-position: outside;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
-
 .ac_results li {
-	margin: 0px;
-	padding: 2px 5px;
-	cursor: default;
-	display: block;
-	/*
-	if width will be 100% horizontal scrollbar will apear
-	when scroll mode will be used
-	*/
-	/*width: 100%;*/
-	font: menu;
-	font-size: 1em;
-	/*
-	it is very important, if line-height not setted or setted
-	in relative units scroll will be broken in firefox
-	*/
-	line-height: 16px;
-	overflow: hidden;
+  margin: 0px;
+  padding: 2px 5px;
+  cursor: default;
+  display: block;
+  font: menu;
+  font-size: 1em;
+  line-height: 16px;
+  overflow: hidden;
 }
-
 .ac_loading {
-	background: transparent url('index.php?pf=series/img/loader.gif') right center no-repeat;
+  background: transparent url('index.php?pf=series/img/loader.gif') right center no-repeat;
 }
-
 .ac_odd {
-	background-color: #eee;
+  background-color: #eee;
 }
-
 .ac_over {
-	background-color: #2373A8;
-	color: white;
+  background-color: #2373A8;
+  color: white;
 }
-
 #post_meta_input:focus {
-	-moz-box-sizing: content-box;
+  -moz-box-sizing: content-box;
 }
-
 #series-edit input[type=text] {
-	width: 11.5em;
+  width: 11.5em;
 }
-
 .series-actions form {
-	display: inline-block;
-	margin-right: 1.5em;
+  display: inline-block;
+  margin-right: 1.5em;
 }
