@@ -8,7 +8,7 @@
  * @author Franck Paul
  *
  * @copyright Franck Paul carnet.franck.paul@gmail.com
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright GPL-2.0
  */
 
 if (!defined('DC_RC_PATH')) {return;}
@@ -17,7 +17,7 @@ $this->registerModule(
     "Series",          // Name
     "Series of posts", // Description
     "Franck Paul",     // Author
-    '0.7',             // Version
+    '0.7.1',           // Version
     array(
         'requires'    => array(array('core', '2.11')), // Dependencies
         'permissions' => 'usage,contentadmin',         // Permissions

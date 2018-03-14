@@ -318,9 +318,9 @@ class tplSeries
         if (isset($metas['serie'])) {
             $sql = 'SELECT * FROM ' . $core->prefix . 'meta as m,' .
             $core->prefix . 'post as p WHERE m.post_id = p.post_id AND post_type="post" AND post_status=1 AND blog_id = "' . $core->blog->id . '"' .
-                ' AND meta_type="serie" AND ( ';
+                " AND meta_type='serie' AND ( ";
             foreach ($metas['serie'] as $key => $meta) {
-                $sql .= ' meta_id = "' . $meta . '" ';
+                $sql .= " meta_id = '" . $meta . "' ";
                 if ($key < count($metas['serie']) - 1) {
                     $sql .= ' OR ';
                 }
