@@ -317,17 +317,17 @@ class tplSeries
         $metas = unserialize($_ctx->posts->post_meta);
         if (isset($metas['serie'])) {
             $sql = 'SELECT * FROM ' .
-                $core->prefix . "meta as m," .
-                $core->prefix . "post as p ".
-                " WHERE m.post_id = p.post_id " .
-                    " AND post_type = 'post' " .
-                    " AND post_status = 1 " .
-                    " AND blog_id = '" . $core->blog->id . "'" .
-                    " AND meta_type = 'serie' AND ( ";
+                $core->prefix . 'meta as m,' .
+                $core->prefix . 'post as p '.
+                ' WHERE m.post_id = p.post_id ' .
+                ' AND post_type = \'post\' ' .
+                ' AND post_status = 1 ' .
+                ' AND blog_id = \'' . $core->blog->id . '\'' .
+                ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {
                 $sql .= " meta_id = '" . $meta . "' ";
                 if ($key < count($metas['serie']) - 1) {
-                    $sql .= " OR ";
+                    $sql .= ' OR ';
                 }
             }
             $sql .= ')';
@@ -336,7 +336,7 @@ class tplSeries
             if ($order != 'desc') {
                 $order = 'asc';
             }
-            $sql .= " ORDER BY meta_id " . ($order == 'asc' ? "ASC" : "DESC") . ', ';
+            $sql .= ' ORDER BY meta_id ' . ($order == 'asc' ? 'ASC' : 'DESC') . ', ';
 
             $sort = $w->sortentriesby;
             if (!in_array($sort, array('date', 'title'))) {
@@ -346,7 +346,7 @@ class tplSeries
             if ($order != 'desc') {
                 $order = 'asc';
             }
-            $sql .= ($sort == 'date' ? "p.post_dt" : "p.post_title") . ' ' . ($order == 'asc' ? "ASC" : "DESC");
+            $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
             $rs = $core->con->select($sql);
             if ($rs->isEmpty()) {
                 return;
