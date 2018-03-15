@@ -122,9 +122,15 @@ class tplSeries
 
         $limit = isset($attr['limit']) ? (integer) $attr['limit'] : 'null';
 
+        if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
+            $combo = array('meta_id_lower', 'count', 'latest', 'oldest');
+        } else {
+            $combo = array('meta_id_lower', 'count');
+        }
+
         $sortby = 'meta_id_lower';
-        if (isset($attr['sortby']) && $attr['sortby'] == 'count') {
-            $sortby = 'count';
+        if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
+            $sortby = strtolower($attr['sortby']);
         }
 
         $order = 'asc';
@@ -135,7 +141,9 @@ class tplSeries
         $res =
             "<?php\n" .
             "\$_ctx->meta = \$core->meta->computeMetaStats(\$core->meta->getMetadata(array('meta_type'=>'"
-            . $type . "','limit'=>" . $limit . "))); " .
+            . $type . "','limit'=>" . $limit .
+            ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC' ) : '') . "'" .
+            "))); " .
             "\$_ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
@@ -166,9 +174,15 @@ class tplSeries
     {
         $type = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
 
+        if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
+            $combo = array('meta_id_lower', 'count', 'latest', 'oldest');
+        } else {
+            $combo = array('meta_id_lower', 'count');
+        }
+
         $sortby = 'meta_id_lower';
-        if (isset($attr['sortby']) && $attr['sortby'] == 'count') {
-            $sortby = 'count';
+        if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
+            $sortby = strtolower($attr['sortby']);
         }
 
         $order = 'asc';
@@ -245,7 +259,28 @@ class tplSeries
             return;
         }
 
+        if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
+            $combo = array('meta_id_lower', 'count', 'latest', 'oldest');
+        } else {
+            $combo = array('meta_id_lower', 'count');
+        }
+
+        $sort = $w->sortby;
+        if (!in_array($sort, $combo)) {
+            $sort = 'meta_id_lower';
+        }
+
+        $order = $w->orderby;
+        if ($order != 'asc') {
+            $order = 'desc';
+        }
+
         $params = array('meta_type' => 'serie');
+
+        if ($sort != 'meta_id_lower') {
+            // As optional limit may restrict result, we should set order (if not computed after)
+            $params['order'] = $sort . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
+        }
 
         if ($w->limit !== '') {
             $params['limit'] = abs((integer) $w->limit);
@@ -258,17 +293,10 @@ class tplSeries
             return;
         }
 
-        $sort = $w->sortby;
-        if (!in_array($sort, array('meta_id_lower', 'count'))) {
-            $sort = 'meta_id_lower';
+        if ($sort == 'meta_id_lower') {
+            // Sort resulting recordset on cleaned id
+            $rs->sort($sort, $order);
         }
-
-        $order = $w->orderby;
-        if ($order != 'asc') {
-            $order = 'desc';
-        }
-
-        $rs->sort($sort, $order);
 
         $res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '') . '<ul>';
 
@@ -317,12 +345,12 @@ class tplSeries
         $metas = unserialize($_ctx->posts->post_meta);
         if (isset($metas['serie'])) {
             $sql = 'SELECT * FROM ' .
-                $core->prefix . 'meta as m,' .
-                $core->prefix . 'post as p '.
-                ' WHERE m.post_id = p.post_id ' .
-                ' AND post_type = \'post\' ' .
-                ' AND post_status = 1 ' .
-                ' AND blog_id = \'' . $core->blog->id . '\'' .
+            $core->prefix . 'meta as m,' .
+            $core->prefix . 'post as p ' .
+            ' WHERE m.post_id = p.post_id ' .
+            ' AND post_type = \'post\' ' .
+            ' AND post_status = 1 ' .
+            ' AND blog_id = \'' . $core->blog->id . '\'' .
                 ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {
                 $sql .= " meta_id = '" . $meta . "' ";

@@ -20,13 +20,20 @@ class seriesWidgets
 {
     public static function initWidgets($w)
     {
+        $combo = array(
+            __('Serie name')     => 'meta_id_lower',
+            __('Entries count')  => 'count'
+        );
+        if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
+            $combo[__('Newest entry')] = 'latest';
+            $combo[__('Oldest entry')] = 'oldest';
+        }
+
         // Widget for all series
         $w->create('series', __('Series'), array('tplSeries', 'seriesWidget'), null, __('List of series'));
         $w->series->setting('title', __('Title:'), __('Series'));
         $w->series->setting('limit', __('Limit (empty means no limit):'), '20');
-        $w->series->setting('sortby', __('Order by:'), 'meta_id_lower', 'combo',
-            array(__('Serie name') => 'meta_id_lower', __('Entries count') => 'count')
-        );
+        $w->series->setting('sortby', __('Order by:'), 'meta_id_lower', 'combo', $combo);
         $w->series->setting('orderby', __('Sort:'), 'asc', 'combo',
             array(__('Ascending') => 'asc', __('Descending') => 'desc')
         );
