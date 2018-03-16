@@ -8,7 +8,7 @@
  * @author Franck Paul
  *
  * @copyright Franck Paul carnet.franck.paul@gmail.com
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright GPL-2.0
  */
 
 if (!defined('DC_RC_PATH')) {return;}
@@ -142,7 +142,7 @@ class tplSeries
             "<?php\n" .
             "\$_ctx->meta = \$core->meta->computeMetaStats(\$core->meta->getMetadata(array('meta_type'=>'"
             . $type . "','limit'=>" . $limit .
-            ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC' ) : '') . "'" .
+            ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC' ) . "'" : '') .
             "))); " .
             "\$_ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';

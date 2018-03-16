@@ -17,7 +17,7 @@ $this->registerModule(
     "Series",          // Name
     "Series of posts", // Description
     "Franck Paul",     // Author
-    '0.7.1',           // Version
+    '0.8',             // Version
     array(
         'requires'    => array(array('core', '2.11')), // Dependencies
         'permissions' => 'usage,contentadmin',         // Permissions

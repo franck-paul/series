@@ -8,7 +8,7 @@
  * @author Franck Paul
  *
  * @copyright Franck Paul carnet.franck.paul@gmail.com
- * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
+ * @copyright GPL-2.0
  */
 
 if (!defined('DC_CONTEXT_ADMIN')) {return;}
