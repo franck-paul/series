@@ -118,15 +118,9 @@ class tplSeries
 {
     public static function Series($attr, $content)
     {
-        $type = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
-
+        $type  = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
         $limit = isset($attr['limit']) ? (integer) $attr['limit'] : 'null';
-
-        if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
-            $combo = array('meta_id_lower', 'count', 'latest', 'oldest');
-        } else {
-            $combo = array('meta_id_lower', 'count');
-        }
+        $combo = array('meta_id_lower', 'count', 'latest', 'oldest');
 
         $sortby = 'meta_id_lower';
         if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
@@ -142,7 +136,7 @@ class tplSeries
             "<?php\n" .
             "\$_ctx->meta = \$core->meta->computeMetaStats(\$core->meta->getMetadata(array('meta_type'=>'"
             . $type . "','limit'=>" . $limit .
-            ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC' ) . "'" : '') .
+            ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC') . "'" : '') .
             "))); " .
             "\$_ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';

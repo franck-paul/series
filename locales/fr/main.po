@@ -51,7 +51,7 @@ msgid "Add series to this selection"
 msgstr "Ajouter des séries à cette sélection"
 
 msgid "Are you sure you want to remove this serie?"
-msgstr "Êtes-vous sûr de vouloir supprimer cette série ?"
+msgstr "Êtes-vous sûr·e de vouloir supprimer cette série ?"
 
 msgid "Add a serie to this entry"
 msgstr "Ajouter une série à cette entrée"

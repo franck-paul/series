@@ -22,12 +22,10 @@ class seriesWidgets
     {
         $combo = array(
             __('Serie name')     => 'meta_id_lower',
-            __('Entries count')  => 'count'
+            __('Entries count')  => 'count',
+            __('Newest entry')   => 'latest',
+            __('Oldest entry')   => 'oldest'
         );
-        if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
-            $combo[__('Newest entry')] = 'latest';
-            $combo[__('Oldest entry')] = 'oldest';
-        }
 
         // Widget for all series
         $w->create('series', __('Series'), array('tplSeries', 'seriesWidget'), null, __('List of series'));
