@@ -24,29 +24,28 @@ $_menu['Blog']->addItem(__('Series'),
 
 require dirname(__FILE__) . '/_widgets.php';
 
-//$core->addBehavior('adminPostFormSidebar',array('seriesBehaviors','seriesField'));
-$core->addBehavior('adminPostFormItems', array('seriesBehaviors', 'seriesField'));
+$core->addBehavior('adminPostFormItems', ['seriesBehaviors', 'seriesField']);
 
-$core->addBehavior('adminAfterPostCreate', array('seriesBehaviors', 'setSeries'));
-$core->addBehavior('adminAfterPostUpdate', array('seriesBehaviors', 'setSeries'));
+$core->addBehavior('adminAfterPostCreate', ['seriesBehaviors', 'setSeries']);
+$core->addBehavior('adminAfterPostUpdate', ['seriesBehaviors', 'setSeries']);
 
-$core->addBehavior('adminPostHeaders', array('seriesBehaviors', 'postHeaders'));
+$core->addBehavior('adminPostHeaders', ['seriesBehaviors', 'postHeaders']);
 
-$core->addBehavior('adminPostsActionsPage', array('seriesBehaviors', 'adminPostsActionsPage'));
+$core->addBehavior('adminPostsActionsPage', ['seriesBehaviors', 'adminPostsActionsPage']);
 
-$core->addBehavior('adminPreferencesForm', array('seriesBehaviors', 'adminUserForm'));
-$core->addBehavior('adminBeforeUserOptionsUpdate', array('seriesBehaviors', 'setSerieListFormat'));
+$core->addBehavior('adminPreferencesForm', ['seriesBehaviors', 'adminUserForm']);
+$core->addBehavior('adminBeforeUserOptionsUpdate', ['seriesBehaviors', 'setSerieListFormat']);
 
-$core->addBehavior('adminUserForm', array('seriesBehaviors', 'adminUserForm'));
-$core->addBehavior('adminBeforeUserCreate', array('seriesBehaviors', 'setSerieListFormat'));
-$core->addBehavior('adminBeforeUserUpdate', array('seriesBehaviors', 'setSerieListFormat'));
+$core->addBehavior('adminUserForm', ['seriesBehaviors', 'adminUserForm']);
+$core->addBehavior('adminBeforeUserCreate', ['seriesBehaviors', 'setSerieListFormat']);
+$core->addBehavior('adminBeforeUserUpdate', ['seriesBehaviors', 'setSerieListFormat']);
 
-$core->addBehavior('adminPostEditor', array('seriesBehaviors', 'adminPostEditor'));
-$core->addBehavior('ckeditorExtraPlugins', array('seriesBehaviors', 'ckeditorExtraPlugins'));
+$core->addBehavior('adminPostEditor', ['seriesBehaviors', 'adminPostEditor']);
+$core->addBehavior('ckeditorExtraPlugins', ['seriesBehaviors', 'ckeditorExtraPlugins']);
 
 /* Register favorite */
-$core->addBehavior('adminDashboardFavorites', array('seriesBehaviors', 'adminDashboardFavorites'));
+$core->addBehavior('adminDashboardFavorites', ['seriesBehaviors', 'adminDashboardFavorites']);
 
-$core->addBehavior('adminSimpleMenuAddType', array('seriesBehaviors', 'adminSimpleMenuAddType'));
-$core->addBehavior('adminSimpleMenuSelect', array('seriesBehaviors', 'adminSimpleMenuSelect'));
-$core->addBehavior('adminSimpleMenuBeforeEdit', array('seriesBehaviors', 'adminSimpleMenuBeforeEdit'));
+$core->addBehavior('adminSimpleMenuAddType', ['seriesBehaviors', 'adminSimpleMenuAddType']);
+$core->addBehavior('adminSimpleMenuSelect', ['seriesBehaviors', 'adminSimpleMenuSelect']);
+$core->addBehavior('adminSimpleMenuBeforeEdit', ['seriesBehaviors', 'adminSimpleMenuBeforeEdit']);

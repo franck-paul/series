@@ -23,20 +23,20 @@ if (!defined('DC_CONTEXT_ADMIN')) {return;}
 <body>
 <?php
 echo dcPage::breadcrumb(
-    array(
+    [
         html::escapeHTML($core->blog->name) => '',
         __('Series')                        => ''
-    ));
+    ]);
 echo dcPage::notices();
 ?>
 
 <?php
-$series = $core->meta->getMetadata(array('meta_type' => 'serie'));
+$series = $core->meta->getMetadata(['meta_type' => 'serie']);
 $series = $core->meta->computeMetaStats($series);
 $series->sort('meta_id_lower', 'asc');
 
 $last_letter = null;
-$cols        = array('', '');
+$cols        = ['', ''];
 $col         = 0;
 while ($series->fetch()) {
     $letter = mb_strtoupper(mb_substr($series->meta_id_lower, 0, 1));

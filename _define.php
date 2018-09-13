@@ -17,14 +17,14 @@ $this->registerModule(
     "Series",          // Name
     "Series of posts", // Description
     "Franck Paul",     // Author
-    '0.9',             // Version
-    array(
-        'requires'    => array(array('core', '2.14')), // Dependencies
-        'permissions' => 'usage,contentadmin',         // Permissions
-        'priority'    => 1001,                         // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000) // Priority
-        'type'        => 'plugin',                     // Type
-        'settings'    => array(
+    '1.0',             // Version
+    [
+        'requires'    => [['core', '2.14']],   // Dependencies
+        'permissions' => 'usage,contentadmin', // Permissions
+        'priority'    => 1001,                 // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000) // Priority
+        'type'        => 'plugin',             // Type
+        'settings'    => [
             'pref' => '#user-options.series_prefs'
-        )
-    )
+        ]
+    ]
 );

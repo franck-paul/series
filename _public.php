@@ -19,22 +19,22 @@ __("This serie's entries Atom feed");
 
 require dirname(__FILE__) . '/_widgets.php';
 
-$core->tpl->addBlock('Series', array('tplSeries', 'Series'));
-$core->tpl->addBlock('SeriesHeader', array('tplSeries', 'SeriesHeader'));
-$core->tpl->addBlock('SeriesFooter', array('tplSeries', 'SeriesFooter'));
-$core->tpl->addBlock('EntrySeries', array('tplSeries', 'EntrySeries'));
-$core->tpl->addValue('SerieID', array('tplSeries', 'SerieID'));
-$core->tpl->addValue('SeriePercent', array('tplSeries', 'SeriePercent'));
-$core->tpl->addValue('SerieRoundPercent', array('tplSeries', 'SerieRoundPercent'));
-$core->tpl->addValue('SerieURL', array('tplSeries', 'SerieURL'));
-$core->tpl->addValue('SerieCloudURL', array('tplSeries', 'SerieCloudURL'));
-$core->tpl->addValue('SerieFeedURL', array('tplSeries', 'SerieFeedURL'));
+$core->tpl->addBlock('Series', ['tplSeries', 'Series']);
+$core->tpl->addBlock('SeriesHeader', ['tplSeries', 'SeriesHeader']);
+$core->tpl->addBlock('SeriesFooter', ['tplSeries', 'SeriesFooter']);
+$core->tpl->addBlock('EntrySeries', ['tplSeries', 'EntrySeries']);
+$core->tpl->addValue('SerieID', ['tplSeries', 'SerieID']);
+$core->tpl->addValue('SeriePercent', ['tplSeries', 'SeriePercent']);
+$core->tpl->addValue('SerieRoundPercent', ['tplSeries', 'SerieRoundPercent']);
+$core->tpl->addValue('SerieURL', ['tplSeries', 'SerieURL']);
+$core->tpl->addValue('SerieCloudURL', ['tplSeries', 'SerieCloudURL']);
+$core->tpl->addValue('SerieFeedURL', ['tplSeries', 'SerieFeedURL']);
 
-$core->addBehavior('templateBeforeBlock', array('behaviorsSeries', 'templateBeforeBlock'));
-$core->addBehavior('tplSysIfConditions', array('behaviorsSeries', 'tplSysIfConditions'));
-$core->addBehavior('publicBeforeDocument', array('behaviorsSeries', 'addTplPath'));
+$core->addBehavior('templateBeforeBlock', ['behaviorsSeries', 'templateBeforeBlock']);
+$core->addBehavior('tplSysIfConditions', ['behaviorsSeries', 'tplSysIfConditions']);
+$core->addBehavior('publicBeforeDocument', ['behaviorsSeries', 'addTplPath']);
 
-$core->addBehavior('publicBreadcrumb', array('behaviorsSeries', 'publicBreadcrumb'));
+$core->addBehavior('publicBreadcrumb', ['behaviorsSeries', 'publicBreadcrumb']);
 
 class behaviorsSeries
 {
@@ -68,7 +68,7 @@ class behaviorsSeries
         if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie'])) {
             return
             "<?php\n" .
-            "if (!isset(\$params)) { \$params = array(); }\n" .
+            "if (!isset(\$params)) { \$params = []; }\n" .
             "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
             "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
             "\$params['from'] .= ', '.\$core->prefix.'meta METAS ';\n" .
@@ -79,7 +79,7 @@ class behaviorsSeries
         } elseif (empty($attr['no_context']) && ($b == 'Entries' || $b == 'Comments')) {
             return
                 '<?php if ($_ctx->exists("meta") && ($_ctx->meta->meta_type == "serie")) { ' .
-                "if (!isset(\$params)) { \$params = array(); }\n" .
+                "if (!isset(\$params)) { \$params = []; }\n" .
                 "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
                 "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
                 "\$params['from'] .= ', '.\$core->prefix.'meta METAS ';\n" .
@@ -120,7 +120,7 @@ class tplSeries
     {
         $type  = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
         $limit = isset($attr['limit']) ? (integer) $attr['limit'] : 'null';
-        $combo = array('meta_id_lower', 'count', 'latest', 'oldest');
+        $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
         $sortby = 'meta_id_lower';
         if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
@@ -134,10 +134,10 @@ class tplSeries
 
         $res =
             "<?php\n" .
-            "\$_ctx->meta = \$core->meta->computeMetaStats(\$core->meta->getMetadata(array('meta_type'=>'"
-            . $type . "','limit'=>" . $limit .
+            "\$_ctx->meta = \$core->meta->computeMetaStats(\$core->meta->getMetadata(['meta_type'=>'" .
+            $type . "','limit'=>" . $limit .
             ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC') . "'" : '') .
-            "))); " .
+            "])); " .
             "\$_ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
@@ -169,9 +169,9 @@ class tplSeries
         $type = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
 
         if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
-            $combo = array('meta_id_lower', 'count', 'latest', 'oldest');
+            $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
         } else {
-            $combo = array('meta_id_lower', 'count');
+            $combo = ['meta_id_lower', 'count'];
         }
 
         $sortby = 'meta_id_lower';
@@ -254,9 +254,9 @@ class tplSeries
         }
 
         if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
-            $combo = array('meta_id_lower', 'count', 'latest', 'oldest');
+            $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
         } else {
-            $combo = array('meta_id_lower', 'count');
+            $combo = ['meta_id_lower', 'count'];
         }
 
         $sort = $w->sortby;
@@ -269,7 +269,7 @@ class tplSeries
             $order = 'desc';
         }
 
-        $params = array('meta_type' => 'serie');
+        $params = ['meta_type' => 'serie'];
 
         if ($sort != 'meta_id_lower') {
             // As optional limit may restrict result, we should set order (if not computed after)
@@ -361,7 +361,7 @@ class tplSeries
             $sql .= ' ORDER BY meta_id ' . ($order == 'asc' ? 'ASC' : 'DESC') . ', ';
 
             $sort = $w->sortentriesby;
-            if (!in_array($sort, array('date', 'title'))) {
+            if (!in_array($sort, ['date', 'title'])) {
                 $sort = 'date';
             }
             $order = $w->orderentriesby;
@@ -435,9 +435,9 @@ class urlSeries extends dcUrlHandlers
             $comments = !empty($m[3]);
 
             $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
-                $GLOBALS['core']->meta->getMetadata(array(
+                $GLOBALS['core']->meta->getMetadata([
                     'meta_type' => 'serie',
-                    'meta_id'   => $m[1])));
+                    'meta_id'   => $m[1]]));
 
             if ($GLOBALS['_ctx']->meta->isEmpty()) {
                 self::p404();
@@ -456,9 +456,9 @@ class urlSeries extends dcUrlHandlers
             }
 
             $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
-                $GLOBALS['core']->meta->getMetadata(array(
+                $GLOBALS['core']->meta->getMetadata([
                     'meta_type' => 'serie',
-                    'meta_id'   => $args)));
+                    'meta_id'   => $args]));
 
             if ($GLOBALS['_ctx']->meta->isEmpty()) {
                 self::p404();
@@ -483,9 +483,9 @@ class urlSeries extends dcUrlHandlers
             $comments = !empty($m[3]);
 
             $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
-                $GLOBALS['core']->meta->getMetadata(array(
+                $GLOBALS['core']->meta->getMetadata([
                     'meta_type' => 'serie',
-                    'meta_id'   => $serie)));
+                    'meta_id'   => $serie]));
 
             if ($GLOBALS['_ctx']->meta->isEmpty()) {
                 # The specified serie does not exist.

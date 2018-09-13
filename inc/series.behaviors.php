@@ -15,22 +15,22 @@ class seriesBehaviors
 {
     public static function adminDashboardFavorites($core, $favs)
     {
-        $favs->register('series', array(
+        $favs->register('series', [
             'title'       => __('Series'),
             'url'         => 'plugin.php?p=series&amp;m=series',
             'small-icon'  => urldecode(dcPage::getPF('series/icon.png')),
             'large-icon'  => urldecode(dcPage::getPF('series/icon-big.png')),
             'permissions' => 'usage,contentadmin'
-        ));
+        ]);
     }
 
     public static function adminSimpleMenuGetCombo()
     {
         global $core;
 
-        $series_combo = array();
+        $series_combo = [];
         try {
-            $rs                             = $core->meta->getMetadata(array('meta_type' => 'serie'));
+            $rs                             = $core->meta->getMetadata(['meta_type' => 'serie']);
             $series_combo[__('All series')] = '-';
             while ($rs->fetch()) {
                 $series_combo[$rs->meta_id] = $rs->meta_id;
@@ -45,7 +45,7 @@ class seriesBehaviors
     {
         $series_combo = self::adminSimpleMenuGetCombo();
         if (count($series_combo) > 1) {
-            $items['series'] = new ArrayObject(array(__('Series'), true));
+            $items['series'] = new ArrayObject([__('Series'), true]);
         }
 
     }
@@ -125,14 +125,14 @@ class seriesBehaviors
     public static function adminPostsActionsPage($core, $ap)
     {
         $ap->addAction(
-            array(__('Series') => array(__('Add series') => 'series')),
-            array('seriesBehaviors', 'adminAddSeries')
+            [__('Series') => [__('Add series') => 'series']],
+            ['seriesBehaviors', 'adminAddSeries']
         );
 
         if ($core->auth->check('delete,contentadmin', $core->blog->id)) {
             $ap->addAction(
-                array(__('Series') => array(__('Remove series') => 'series_remove')),
-                array('seriesBehaviors', 'adminRemoveSeries')
+                [__('Series') => [__('Remove series') => 'series_remove']],
+                ['seriesBehaviors', 'adminRemoveSeries']
             );
         }
     }
@@ -146,10 +146,10 @@ class seriesBehaviors
 
             while ($posts->fetch()) {
                 # Get series for post
-                $post_meta = $meta->getMetadata(array(
+                $post_meta = $meta->getMetadata([
                     'meta_type' => 'serie',
-                    'post_id'   => $posts->post_id));
-                $pm = array();
+                    'post_id'   => $posts->post_id]);
+                $pm = [];
                 while ($post_meta->fetch()) {
                     $pm[] = $post_meta->meta_id;
                 }
@@ -160,18 +160,18 @@ class seriesBehaviors
                     }
                 }
             }
-            $ap->redirect(true, array('upd' => 1));
+            $ap->redirect(true, ['upd' => 1]);
         } else {
             $opts = $core->auth->getOptions();
             $type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
 
             $ap->beginPage(
                 dcPage::breadcrumb(
-                    array(
+                    [
                         html::escapeHTML($core->blog->name) => '',
                         __('Entries')                       => $ap->getRedirection(true),
                         __('Add series to this selection')  => ''
-                    )),
+                    ]),
                 dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
                 dcPage::jsMetaEditor() .
                 '<script type="text/javascript">' . "\n" .
@@ -201,7 +201,7 @@ class seriesBehaviors
             form::textarea('new_series', 60, 3) .
             '</div>' .
             $core->formNonce() . $ap->getHiddenFields() .
-            form::hidden(array('action'), 'series') .
+            form::hidden(['action'], 'series') .
             '<p><input type="submit" value="' . __('Save') . '" ' .
                 'name="save_series" /></p>' .
                 '</form>';
@@ -220,15 +220,15 @@ class seriesBehaviors
                     $meta->delPostMeta($posts->post_id, 'serie', $v);
                 }
             }
-            $ap->redirect(true, array('upd' => 1));
+            $ap->redirect(true, ['upd' => 1]);
         } else {
             $meta   = &$core->meta;
-            $series = array();
+            $series = [];
 
             foreach ($ap->getIDS() as $id) {
-                $post_series = $meta->getMetadata(array(
+                $post_series = $meta->getMetadata([
                     'meta_type' => 'serie',
-                    'post_id'   => (integer) $id))->toStatic()->rows();
+                    'post_id'   => (integer) $id])->toStatic()->rows();
                 foreach ($post_series as $v) {
                     if (isset($series[$v['meta_id']])) {
                         $series[$v['meta_id']]++;
@@ -242,11 +242,11 @@ class seriesBehaviors
             }
             $ap->beginPage(
                 dcPage::breadcrumb(
-                    array(
+                    [
                         html::escapeHTML($core->blog->name)              => '',
                         __('Entries')                                    => 'posts.php',
                         __('Remove selected series from this selection') => ''
-                    )));
+                    ]));
             $posts_count = count($_POST['entries']);
 
             echo
@@ -260,7 +260,7 @@ class seriesBehaviors
                     $label = sprintf($label, '%s', '<strong>%s</strong>');
                 }
                 echo '<p>' . sprintf($label,
-                    form::checkbox(array('meta_id[]'), html::escapeHTML($k)),
+                    form::checkbox(['meta_id[]'], html::escapeHTML($k)),
                     html::escapeHTML($k)) .
                     '</p>';
             }
@@ -268,7 +268,7 @@ class seriesBehaviors
             echo
             '<p><input type="submit" value="' . __('ok') . '" />' .
             $core->formNonce() . $ap->getHiddenFields() .
-            form::hidden(array('action'), 'series_remove') .
+            form::hidden(['action'], 'series_remove') .
                 '</p></div></form>';
             $ap->endPage();
         }
@@ -305,10 +305,10 @@ class seriesBehaviors
 
     public static function coreInitWikiPost($wiki2xhtml)
     {
-        $wiki2xhtml->registerFunction('url:serie', array('seriesBehaviors', 'wiki2xhtmlSerie'));
+        $wiki2xhtml->registerFunction('url:serie', ['seriesBehaviors', 'wiki2xhtmlSerie']);
     }
 
-    public static function adminPostEditor($editor = '', $context = '', array $tags = array(), $syntax = '')
+    public static function adminPostEditor($editor = '', $context = '', array $tags = [], $syntax = '')
     {
         global $core;
 
@@ -342,11 +342,11 @@ class seriesBehaviors
         if ($context != 'post') {
             return;
         }
-        $extraPlugins[] = array(
+        $extraPlugins[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
             'url'    => DC_ADMIN_URL . 'index.php?pf=series/js/ckeditor-series-plugin.js'
-        );
+        ];
     }
 
     public static function adminUserForm($args)
@@ -356,10 +356,10 @@ class seriesBehaviors
         } elseif ($args instanceof record) {
             $opts = $args->options();
         } else {
-            $opts = array();
+            $opts = [];
         }
 
-        $combo                 = array();
+        $combo                 = [];
         $combo[__('Short')]    = 'more';
         $combo[__('Extended')] = 'all';
 

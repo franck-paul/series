@@ -44,8 +44,8 @@ if (!empty($_POST['delete']) && $core->auth->check('publish,contentadmin', $core
     }
 }
 
-$params               = array();
-$params['limit']      = array((($page - 1) * $nb_per_page), $nb_per_page);
+$params               = [];
+$params['limit']      = [(($page - 1) * $nb_per_page), $nb_per_page];
 $params['no_content'] = true;
 
 $params['meta_id']   = $serie;
@@ -61,7 +61,7 @@ try {
     $core->error->add($e->getMessage());
 }
 
-$posts_actions_page = new dcPostsActionsPage($core, 'plugin.php', array('p' => 'series', 'm' => 'serie_posts', 'serie' => $serie));
+$posts_actions_page = new dcPostsActionsPage($core, 'plugin.php', ['p' => 'series', 'm' => 'serie_posts', 'serie' => $serie]);
 
 if ($posts_actions_page->process()) {
     return;
@@ -74,12 +74,12 @@ if ($posts_actions_page->process()) {
   <?php echo dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series')); ?>
   <script type="text/javascript" src="js/_posts_list.js"></script>
   <script type="text/javascript">
-  dotclear.msg.confirm_serie_delete = '<?php echo html::escapeJS(__('Are you sure you want to remove this serie?')) ?>';
-  $(function() {
+    dotclear.msg.confirm_serie_delete = '<?php echo html::escapeJS(__('Are you sure you want to remove this serie?')) ?>';
+    $(function() {
     $('#serie_delete').submit(function() {
       return window.confirm(dotclear.msg.confirm_serie_delete);
     });
-  });
+    });
   </script>
   <?php echo dcPage::jsConfirmClose('serie_rename'); ?>
 </head>
@@ -87,11 +87,11 @@ if ($posts_actions_page->process()) {
 
 <?php
 echo dcPage::breadcrumb(
-    array(
+    [
         html::escapeHTML($core->blog->name)                             => '',
         __('Series')                                                    => $p_url . '&amp;m=series',
         __('Serie') . ' &ldquo;' . html::escapeHTML($serie) . '&rdquo;' => ''
-    ));
+    ]);
 echo dcPage::notices();
 
 echo '<p><a class="back" href="' . $p_url . '&amp;m=series">' . __('Back to series list') . '</a></p>';
