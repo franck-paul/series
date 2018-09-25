@@ -3,10 +3,10 @@
 
 $(function() {
   $('#edit-entry').onetabload(function() {
-    var series_edit = $('#series-edit');
-    var post_id = $('#id');
-    var meta_field = null;
-    var mEdit = null;
+    const series_edit = $('#series-edit');
+    let post_id = $('#id');
+    let meta_field = null;
+    let mEdit = null;
 
     if (series_edit.length > 0) {
       post_id = (post_id.length > 0) ? post_id.get(0).value : false;
@@ -33,7 +33,7 @@ $(function() {
       matchSubset: false,
       matchContains: true,
       parse: function(xml) {
-        var results = [];
+        let results = [];
         $(xml).find('meta').each(function() {
           results[results.length] = {
             data: {

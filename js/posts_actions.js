@@ -2,13 +2,13 @@
 'use strict';
 
 $(function() {
-  var serie_field = $('#new_series');
+  const serie_field = $('#new_series');
 
   serie_field.after('<div id="series_list"></div>');
   serie_field.hide();
 
-  var target = $('#series_list');
-  var mEdit = new metaEditor(target, serie_field, 'serie', editor_series_options);
+  const target = $('#series_list');
+  let mEdit = new metaEditor(target, serie_field, 'serie', editor_series_options);
   mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 
   mEdit.meta_dialog = $('<input type="text" />');
@@ -32,7 +32,7 @@ $(function() {
     matchSubset: false,
     matchContains: true,
     parse: function(xml) {
-      var results = [];
+      let results = [];
       $(xml).find('meta').each(function() {
         results[results.length] = {
           data: {

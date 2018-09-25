@@ -7,11 +7,11 @@
       editor.addCommand('dcSeriesCommand', {
         exec: function(editor) {
           if (editor.getSelection().getNative().toString().replace(/\s*/, '') != '') {
-            var str = editor.getSelection().getNative().toString().replace(/\s*/, '');
-            var url = dotclear.msg.serie_url;
+            const str = editor.getSelection().getNative().toString().replace(/\s*/, '');
+            const url = dotclear.msg.serie_url;
             window.dc_serie_editor.addMeta(str);
-            var link = '<a href="' + $.stripBaseURL(url + '/' + str) + '">' + str + '</a>';
-            var element = CKEDITOR.dom.element.createFromHtml(link);
+            const link = `<a href="${$.stripBaseURL(url + '/' + str)}">${str}</a>`;
+            const element = CKEDITOR.dom.element.createFromHtml(link);
             editor.insertElement(element);
           }
         }

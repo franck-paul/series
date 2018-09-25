@@ -22,6 +22,11 @@ if (version_compare($old_version, $new_version, '>=')) {
 
 try
 {
+    if (version_compare($old_version, '1.0', '<')) {
+        // Remove js/jquery.autocomplete.js
+        @unlink(__DIR__ . '/' . 'js/jquery.autocomplete.js');
+    }
+
     $core->setVersion('series', $new_version);
 
     return true;
