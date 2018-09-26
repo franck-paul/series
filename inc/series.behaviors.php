@@ -185,7 +185,6 @@ class seriesBehaviors
                 "text_separation : '" . html::escapeJS(__('Enter series separated by coma')) . "',\n" .
                 "};\n" .
                 "</script>\n" .
-                dcPage::jsLoad(urldecode(dcPage::getPF('series/js/jquery.autocomplete.js')), $core->getVersion('series')) .
                 dcPage::jsLoad(urldecode(dcPage::getPF('series/js/posts_actions.js')), $core->getVersion('series')) .
                 '<script type="text/javascript">' . "\n" .
                 "dotclear.msg.series_autocomplete = '" . html::escapeJS(__('used in %e - frequency %p%')) . "';\n" .
@@ -293,7 +292,7 @@ class seriesBehaviors
         "text_separation : '" . html::escapeJS(__('Enter series separated by coma')) . "',\n" .
         "};\n" .
         "</script>\n" .
-        dcPage::jsLoad(urldecode(dcPage::getPF('series/js/jquery.autocomplete.js')), $core->getVersion('series')) .
+        dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
         dcPage::jsLoad(urldecode(dcPage::getPF('series/js/post.js')), $core->getVersion('series')) .
         '<script type="text/javascript">' . "\n" .
         "dotclear.msg.series_autocomplete = '" . html::escapeJS(__('used in %e - frequency %p%')) . "';\n" .
