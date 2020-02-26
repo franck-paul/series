@@ -31,9 +31,6 @@ ul.metaList li {
   list-style: none;
   list-style-position: inside;
 }
-#post_meta_input:focus {
-  -moz-box-sizing: content-box;
-}
 #series-edit input[type=text] {
   width: 11.5em;
 }

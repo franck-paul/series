@@ -16,13 +16,13 @@ $(function() {
       }
       mEdit = new metaEditor(series_edit, meta_field, 'serie', editor_series_options);
       mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
-      mEdit.displayMeta('serie', post_id);
+      mEdit.displayMeta('serie', post_id, 'post_meta_serie_input');
 
       // mEdit object reference for toolBar
       window.dc_serie_editor = mEdit;
     }
 
-    $('#post_meta_input').autocomplete(mEdit.service_uri, {
+    $('#post_meta_serie_input').autocomplete(mEdit.service_uri, {
       extraParams: {
         'f': 'searchMeta',
         'metaType': 'serie'

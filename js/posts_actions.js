@@ -13,16 +13,16 @@ $(function() {
 
   mEdit.meta_dialog = $('<input type="text" />');
   mEdit.meta_dialog.attr('title', mEdit.text_add_meta.replace(/%s/, mEdit.meta_type));
-  mEdit.meta_dialog.attr('id', 'post_meta_input');
+  mEdit.meta_dialog.attr('id', 'post_meta_serie_input');
   mEdit.meta_dialog.css('width', '90%');
 
   mEdit.addMetaDialog();
 
-  $('input[name="save_series"]').click(function() {
-    serie_field.val($('#post_meta_input').val());
+  $('input[name="save_series"]').on('click', function() {
+    serie_field.val($('#post_meta_serie_input').val());
   });
 
-  $('#post_meta_input').autocomplete(mEdit.service_uri, {
+  $('#post_meta_serie_input').autocomplete(mEdit.service_uri, {
     extraParams: {
       'f': 'searchMeta',
       'metaType': 'serie'
