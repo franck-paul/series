@@ -160,10 +160,33 @@ class seriesBehaviors
                     }
                 }
             }
+            dcPage::addSuccessNotice(sprintf(
+                __(
+                    'Serie has been successfully added to selected entries',
+                    'Series have been successfully added to selected entries',
+                    count($series))
+            )
+            );
             $ap->redirect(true, ['upd' => 1]);
         } else {
             $opts = $core->auth->getOptions();
             $type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
+
+            $editor_series_options = [
+                'meta_url'            => 'plugin.php?p=series&m=serie_posts&amp;serie=',
+                'list_type'           => $type,
+                'text_confirm_remove' => __('Are you sure you want to remove this serie?'),
+                'text_add_meta'       => __('Add a serie to this entry'),
+                'text_choose'         => __('Choose from list'),
+                'text_all'            => __('all series'),
+                'text_separation'     => __('Enter series separated by comma')
+            ];
+
+            $msg = [
+                'series_autocomplete' => __('used in %e - frequency %p%'),
+                'entry'               => __('entry'),
+                'entries'             => __('entries')
+            ];
 
             $ap->beginPage(
                 dcPage::breadcrumb(
@@ -174,23 +197,10 @@ class seriesBehaviors
                     ]),
                 dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
                 dcPage::jsMetaEditor() .
-                '<script type="text/javascript">' . "\n" .
-                "var editor_series_options = {\n" .
-                "meta_url : 'plugin.php?p=series&m=serie_posts&amp;serie=',\n" .
-                "list_type : '" . html::escapeJS($type) . "',\n" .
-                "text_confirm_remove : '" . html::escapeJS(__('Are you sure you want to remove this serie?')) . "',\n" .
-                "text_add_meta : '" . html::escapeJS(__('Add a serie to this entry')) . "',\n" .
-                "text_choose : '" . html::escapeJS(__('Choose from list')) . "',\n" .
-                "text_all : '" . html::escapeJS(__('all')) . "',\n" .
-                "text_separation : '" . html::escapeJS(__('Enter series separated by coma')) . "',\n" .
-                "};\n" .
-                "</script>\n" .
+                dcPage::jsJson('editor_series_options', $editor_series_options) .
+                dcPage::jsJson('editor_series_msg', $msg) .
+                dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
                 dcPage::jsLoad(urldecode(dcPage::getPF('series/js/posts_actions.js')), $core->getVersion('series')) .
-                '<script type="text/javascript">' . "\n" .
-                "dotclear.msg.series_autocomplete = '" . html::escapeJS(__('used in %e - frequency %p%')) . "';\n" .
-                "dotclear.msg.entry = '" . html::escapeJS(__('entry')) . "';\n" .
-                "dotclear.msg.entries = '" . html::escapeJS(__('entries')) . "';\n" .
-                "</script>\n" .
                 dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series'))
             );
             echo
@@ -280,25 +290,27 @@ class seriesBehaviors
         $opts = $GLOBALS['core']->auth->getOptions();
         $type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
 
+        $editor_series_options = [
+            'meta_url'            => 'plugin.php?p=series&m=serie_posts&amp;serie=',
+            'list_type'           => $type,
+            'text_confirm_remove' => __('Are you sure you want to remove this serie?'),
+            'text_add_meta'       => __('Add a serie to this entry'),
+            'text_choose'         => __('Choose from list'),
+            'text_all'            => __('all series'),
+            'text_separation'     => __('Enter series separated by comma')
+        ];
+
+        $msg = [
+            'series_autocomplete' => __('used in %e - frequency %p%'),
+            'entry'               => __('entry'),
+            'entries'             => __('entries')
+        ];
+
         return
-        '<script type="text/javascript">' . "\n" .
-        "var editor_series_options = {\n" .
-        "meta_url : 'plugin.php?p=series&m=serie_posts&amp;serie=',\n" .
-        "list_type : '" . html::escapeJS($type) . "',\n" .
-        "text_confirm_remove : '" . html::escapeJS(__('Are you sure you want to remove this serie?')) . "',\n" .
-        "text_add_meta : '" . html::escapeJS(__('Add a serie to this entry')) . "',\n" .
-        "text_choose : '" . html::escapeJS(__('Choose from list')) . "',\n" .
-        "text_all : '" . html::escapeJS(__('all series')) . "',\n" .
-        "text_separation : '" . html::escapeJS(__('Enter series separated by coma')) . "',\n" .
-        "};\n" .
-        "</script>\n" .
+        dcPage::jsJson('editor_series_options', $editor_series_options) .
+        dcPage::jsJson('editor_tags_msg', $msg) .
         dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
         dcPage::jsLoad(urldecode(dcPage::getPF('series/js/post.js')), $core->getVersion('series')) .
-        '<script type="text/javascript">' . "\n" .
-        "dotclear.msg.series_autocomplete = '" . html::escapeJS(__('used in %e - frequency %p%')) . "';\n" .
-        "dotclear.msg.entry = '" . html::escapeJS(__('entry')) . "';\n" .
-        "dotclear.msg.entries = '" . html::escapeJS(__('entries')) . "';\n" .
-        "</script>\n" .
         dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series'));
     }
 
@@ -319,17 +331,19 @@ class seriesBehaviors
 
         if ($editor == 'dcLegacyEditor') {
             return
-            dcPage::jsLoad(urldecode(dcPage::getPF('series/js/legacy-post.js')), $core->getVersion('series')) .
-            '<script type="text/javascript">' . "\n" .
-            "jsToolBar.prototype.elements.serie.title = '" . html::escapeJS(__('Serie')) . "';\n" .
-            "jsToolBar.prototype.elements.serie.url = '" . html::escapeJS($serie_url) . "';\n" .
-                "</script>\n";
+            dcPage::jsJson('legacy_editor_series', [
+                'serie' => [
+                    'title' => __('Serie'),
+                    'url'   => $serie_url
+                ]
+            ]) .
+            dcPage::jsLoad(urldecode(dcPage::getPF('series/js/legacy-post.js')), $core->getVersion('series'));
         } elseif ($editor == 'dcCKEditor') {
             return
-            '<script type="text/javascript">' . "\n" .
-            "dotclear.msg.serie_title = '" . html::escapeJS(__('Serie')) . "';\n" .
-            "dotclear.msg.serie_url = '" . html::escapeJS($serie_url) . "';\n" .
-                "</script>\n";
+            dcPage::jsJson('ck_editor_series', [
+                'serie_title' => __('Serie'),
+                'serie_url'   => $serie_url
+            ]);
         }
         return;
     }

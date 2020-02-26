@@ -71,17 +71,15 @@ if ($posts_actions_page->process()) {
 <html>
 <head>
   <title><?php echo __('Series'); ?></title>
-  <?php echo dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series')); ?>
-  <script type="text/javascript" src="js/_posts_list.js"></script>
-  <script type="text/javascript">
-    dotclear.msg.confirm_serie_delete = '<?php echo html::escapeJS(__('Are you sure you want to remove this serie?')) ?>';
-    $(function() {
-    $('#serie_delete').submit(function() {
-      return window.confirm(dotclear.msg.confirm_serie_delete);
-    });
-    });
-  </script>
-  <?php echo dcPage::jsConfirmClose('serie_rename'); ?>
+<?php
+echo dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series')) .
+dcPage::jsLoad('js/_posts_list.js') .
+dcPage::jsJson('posts_series_msg', [
+    'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), html::escapeHTML($serie))
+]) .
+dcPage::jsLoad(urldecode(dcPage::getPF('series/js/posts.js')), $core->getVersion('serie')) .
+dcPage::jsConfirmClose('serie_rename');
+?>
 </head>
 <body>
 

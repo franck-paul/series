@@ -1,5 +1,7 @@
-/*global $, dotclear, metaEditor, editor_series_options */
+/*global $, dotclear, metaEditor, mergeDeep, getData */
 'use strict';
+
+mergeDeep(dotclear.msg, getData('editor_series_msg'));
 
 $(function() {
   const serie_field = $('#new_series');
@@ -8,7 +10,7 @@ $(function() {
   serie_field.hide();
 
   const target = $('#series_list');
-  let mEdit = new metaEditor(target, serie_field, 'serie', editor_series_options);
+  let mEdit = new metaEditor(target, serie_field, 'serie', getData('editor_series_options'));
   mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 
   mEdit.meta_dialog = $('<input type="text" />');

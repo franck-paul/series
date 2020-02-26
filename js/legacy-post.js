@@ -1,4 +1,4 @@
-/*global dotclear, jsToolBar */
+/*global dotclear, jsToolBar, mergeDeep, getData */
 'use strict';
 
 // Toolbar button for series
@@ -14,9 +14,12 @@ jsToolBar.prototype.elements.serieSpace = {
 
 jsToolBar.prototype.elements.serie = {
   type: 'button',
-  title: 'Keyword',
+  title: 'Serie',
   fn: {}
 };
+
+mergeDeep(jsToolBar.prototype.elements, getData('legacy_editor_series'));
+
 jsToolBar.prototype.elements.serie.context = 'post';
 jsToolBar.prototype.elements.serie.icon = 'index.php?pf=series/img/serie-add.png';
 jsToolBar.prototype.elements.serie.fn.wiki = function() {

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-14 14:00+0100\n"
+"POT-Creation-Date: 2020-02-26 13:53+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>\n"
 "Language-Team: \n"
@@ -31,57 +31,11 @@ msgstr "Séries de billets"
 msgid "All series"
 msgstr "Toutes les séries"
 
-msgid "Select serie (if necessary):"
-msgstr "Sélectionnez la série (si nécessaire) :"
-
-#, php-format
-msgid "Recent posts for %s serie"
-msgstr "Billets récents pour la série %s"
-
-msgid "Series:"
-msgstr "Séries :"
-
-msgid "Add series"
-msgstr "Ajouter des séries"
-
-msgid "Remove series"
-msgstr "Supprimer des séries"
-
-msgid "Add series to this selection"
-msgstr "Ajouter des séries à cette sélection"
-
-msgid "Are you sure you want to remove this serie?"
-msgstr "Êtes-vous sûr·e de vouloir supprimer cette série ?"
-
-msgid "Add a serie to this entry"
-msgstr "Ajouter une série à cette publication"
-
-msgid "Enter series separated by coma"
-msgstr "Séparez les séries par des virgules"
-
-msgid "Series to add:"
-msgstr "Séries à ajouter :"
-
-msgid "No series for selected entries"
-msgstr "Aucune série pour les billets sélectionnés"
-
-msgid "Remove selected series from this selection"
-msgstr "Supprimer les séries sélectionnées de cette sélection"
-
-msgid "Following series have been found in selected entries:"
-msgstr "Les séries suivantes ont été trouvées pour les billets sélectionnés :"
-
-msgid "all series"
-msgstr "toutes"
-
-msgid "Series list format:"
-msgstr "Format de la liste des séries :"
+msgid "Serie name"
+msgstr "Nom de série"
 
 msgid "List of series"
 msgstr "Liste des séries"
-
-msgid "Serie name"
-msgstr "Nom de série"
 
 msgid "Link to all series:"
 msgstr "Lien vers toutes les séries :"
@@ -110,6 +64,57 @@ msgstr "Avec l'URL"
 msgid "Order entries by:"
 msgstr "Trier les billets par :"
 
+msgid "Select serie (if necessary):"
+msgstr "Sélectionnez la série (si nécessaire) :"
+
+#, php-format
+msgid "Recent posts for %s serie"
+msgstr "Billets récents pour la série %s"
+
+msgid "Series:"
+msgstr "Séries :"
+
+msgid "Add series"
+msgstr "Ajouter des séries"
+
+msgid "Remove series"
+msgstr "Supprimer des séries"
+
+msgid "Serie has been successfully added to selected entries"
+msgid_plural "Series have been successfully added to selected entries"
+msgstr[0] "La série a été ajoutée aux publications sélectionnées."
+msgstr[1] "Les séries ont été ajoutées aux publications sélectionnées."
+
+msgid "Are you sure you want to remove this serie?"
+msgstr "Êtes-vous sûr·e de vouloir supprimer cette série ?"
+
+msgid "Add a serie to this entry"
+msgstr "Ajouter une série à cette publication"
+
+msgid "all series"
+msgstr "toutes"
+
+msgid "Enter series separated by comma"
+msgstr "Séparez les séries par des virgules"
+
+msgid "Add series to this selection"
+msgstr "Ajouter des séries à cette sélection"
+
+msgid "Series to add:"
+msgstr "Séries à ajouter :"
+
+msgid "No series for selected entries"
+msgstr "Aucune série pour les billets sélectionnés"
+
+msgid "Remove selected series from this selection"
+msgstr "Supprimer les séries sélectionnées de cette sélection"
+
+msgid "Following series have been found in selected entries:"
+msgstr "Les séries suivantes ont été trouvées pour les billets sélectionnés :"
+
+msgid "Series list format:"
+msgstr "Format de la liste des séries :"
+
 #, php-format
 msgid "The serie “%s” has been successfully renamed to “%s”"
 msgstr "La série « %s » a été renommée en « %s »."
@@ -117,6 +122,10 @@ msgstr "La série « %s » a été renommée en « %s »."
 #, php-format
 msgid "The serie “%s” has been successfully deleted"
 msgstr "La série « %s » a été supprimée."
+
+#, php-format
+msgid "Are you sure you want to remove serie: “%s”?"
+msgstr "Êtes-vous sûr·e de vouloir supprimer la série : « %s » ?"
 
 msgid "Back to series list"
 msgstr "Retour à la liste des séries"
@@ -135,9 +144,6 @@ msgstr "Aucune série sur ce blog."
 
 #~ msgid "serie"
 #~ msgstr "série"
-
-#~ msgid "Serie has been successfully removed"
-#~ msgstr "La série a été supprimée."
 
 #~ msgid "Edit serie name:"
 #~ msgstr "Modifier le nom de la série :"

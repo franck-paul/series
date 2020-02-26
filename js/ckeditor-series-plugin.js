@@ -1,5 +1,7 @@
-/*global $, CKEDITOR, dotclear */
+/*global $, CKEDITOR, dotclear, getData */
 'use strict';
+
+Object.assign(dotclear.msg, getData('ck_editor_series'));
 
 (function() {
   CKEDITOR.plugins.add('dcseries', {

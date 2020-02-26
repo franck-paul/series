@@ -1,5 +1,7 @@
-/*global $, dotclear, metaEditor, editor_series_options */
+/*global $, dotclear, metaEditor, mergeDeep, getData */
 'use strict';
+
+mergeDeep(dotclear.msg, getData('editor_series_msg'));
 
 $(function() {
   $('#edit-entry').onetabload(function() {
@@ -14,7 +16,7 @@ $(function() {
         meta_field = $('<input type="hidden" name="post_series" />');
         meta_field.val($('#post_series').val());
       }
-      mEdit = new metaEditor(series_edit, meta_field, 'serie', editor_series_options);
+      mEdit = new metaEditor(series_edit, meta_field, 'serie', getData('editor_series_options'));
       mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
       mEdit.displayMeta('serie', post_id, 'post_meta_serie_input');
 
