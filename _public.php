@@ -253,11 +253,7 @@ class tplSeries
             return;
         }
 
-        if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
-            $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
-        } else {
-            $combo = ['meta_id_lower', 'count'];
-        }
+        $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
         $sort = $w->sortby;
         if (!in_array($sort, $combo)) {
