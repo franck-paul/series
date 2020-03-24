@@ -308,7 +308,7 @@ class seriesBehaviors
 
         return
         dcPage::jsJson('editor_series_options', $editor_series_options) .
-        dcPage::jsJson('editor_tags_msg', $msg) .
+        dcPage::jsJson('editor_series_msg', $msg) .
         dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
         dcPage::jsLoad(urldecode(dcPage::getPF('series/js/post.js')), $core->getVersion('series')) .
         dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series'));
