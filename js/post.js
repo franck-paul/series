@@ -4,7 +4,7 @@
 mergeDeep(dotclear.msg, getData('editor_series_msg'));
 
 $(function() {
-  $('#edit-entry').onetabload(function() {
+  $('#edit-entry').on('onetabload', function() {
     const series_edit = $('#series-edit');
     let post_id = $('#id');
     let meta_field = null;
