@@ -10,14 +10,15 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 $this->registerModule(
-    "Series",          // Name
-    "Series of posts", // Description
-    "Franck Paul",     // Author
-    '1.0.1',           // Version
+    'Series',          // Name
+    'Series of posts', // Description
+    'Franck Paul',     // Author
+    '1.0.2',           // Version
     [
         'requires'    => [['core', '2.16']],                          // Dependencies
         'permissions' => 'usage,contentadmin',                        // Permissions
