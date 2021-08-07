@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 $core->url->register('serie', 'serie', '^serie/(.+)$', ['urlSeries', 'serie']);
 $core->url->register('series', 'series', '^series$', ['urlSeries', 'series']);

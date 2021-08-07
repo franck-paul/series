@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 $core->addBehavior('initWidgets', ['seriesWidgets', 'initWidgets']);
 $core->addBehavior('initDefaultWidgets', ['seriesWidgets', 'initDefaultWidgets']);
@@ -34,7 +35,7 @@ class seriesWidgets
                 ])
             ->setting('orderby', __('Sort:'), 'asc', 'combo',
                 [
-                    __('Ascending') => 'asc',
+                    __('Ascending')  => 'asc',
                     __('Descending') => 'desc'
                 ])
             ->setting('allserieslinktitle', __('Link to all series:'), __('All series'))
@@ -50,23 +51,23 @@ class seriesWidgets
             ->setting('serietitle', __('Show titles of series'), 1, 'check')
             ->setting('orderseriesby', __('Order series by:'), 'asc', 'combo',
                 [
-                    __('Ascending') => 'asc',
+                    __('Ascending')  => 'asc',
                     __('Descending') => 'desc'
                 ])
             ->setting('current', __('Include current entry:'), 'std', 'combo',
                 [
-                    __('Standard') => 'std',
+                    __('Standard')  => 'std',
                     __('With link') => 'link',
-                    __('None') => 'none'
+                    __('None')      => 'none'
                 ])
             ->setting('sortentriesby', __('Order entries by:'), 'date', 'combo',
                 [
-                    __('Date') => 'date',
+                    __('Date')        => 'date',
                     __('Entry title') => 'title'
                 ])
             ->setting('orderentriesby', __('Sort:'), 'asc', 'combo',
                 [
-                    __('Ascending') => 'asc',
+                    __('Ascending')  => 'asc',
                     __('Descending') => 'desc'
                 ])
             ->addContentOnly()

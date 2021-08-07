@@ -1,16 +1,16 @@
-/*global $, dotclear, metaEditor, mergeDeep, getData */
+/*global $, dotclear, metaEditor */
 'use strict';
 
-mergeDeep(dotclear.msg, getData('editor_series_msg'));
+dotclear.mergeDeep(dotclear.msg, dotclear.getData('editor_series_msg'));
 
-$(function() {
+$(function () {
   const serie_field = $('#new_series');
 
   serie_field.after('<div id="series_list"></div>');
   serie_field.hide();
 
   const target = $('#series_list');
-  let mEdit = new metaEditor(target, serie_field, 'serie', getData('editor_series_options'));
+  let mEdit = new metaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'));
   mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 
   mEdit.meta_dialog = $('<input type="text" />');
@@ -20,46 +20,47 @@ $(function() {
 
   mEdit.addMetaDialog();
 
-  $('input[name="save_series"]').on('click', function() {
+  $('input[name="save_series"]').on('click', function () {
     serie_field.val($('#post_meta_serie_input').val());
   });
 
   $('#post_meta_serie_input').autocomplete(mEdit.service_uri, {
     extraParams: {
-      'f': 'searchMeta',
-      'metaType': 'serie'
+      f: 'searchMeta',
+      metaType: 'serie',
     },
     delay: 1000,
     multiple: true,
     matchSubset: false,
     matchContains: true,
-    parse: function(xml) {
+    parse: function (xml) {
       let results = [];
-      $(xml).find('meta').each(function() {
-        results[results.length] = {
-          data: {
-            'id': $(this).text(),
-            'count': $(this).attr('count'),
-            'percent': $(this).attr('roundpercent')
-          },
-          result: $(this).text()
-        };
-      });
+      $(xml)
+        .find('meta')
+        .each(function () {
+          results[results.length] = {
+            data: {
+              id: $(this).text(),
+              count: $(this).attr('count'),
+              percent: $(this).attr('roundpercent'),
+            },
+            result: $(this).text(),
+          };
+        });
       return results;
     },
-    formatItem: function(serie) {
-      return serie.id + ' <em>(' +
-        dotclear.msg.series_autocomplete.
-      replace('%p', serie.percent).
-      replace('%e', serie.count + ' ' +
-          (serie.count > 1 ?
-            dotclear.msg.entries :
-            dotclear.msg.entry)
-        ) +
-        ')</em>';
+    formatItem: function (serie) {
+      return (
+        serie.id +
+        ' <em>(' +
+        dotclear.msg.series_autocomplete
+          .replace('%p', serie.percent)
+          .replace('%e', serie.count + ' ' + (serie.count > 1 ? dotclear.msg.entries : dotclear.msg.entry)) +
+        ')</em>'
+      );
     },
-    formatResult: function(serie) {
+    formatResult: function (serie) {
       return serie.result;
-    }
+    },
   });
 });

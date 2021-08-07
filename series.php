@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-
-if (!defined('DC_CONTEXT_ADMIN')) {return;}
+if (!defined('DC_CONTEXT_ADMIN')) {
+    return;
+}
 
 ?>
 <html>
@@ -48,8 +49,7 @@ while ($series->fetch()) {
         $cols[$col] .= '<tr class="serieLetter"><td colspan="2"><span>' . $letter . '</span></td></tr>';
     }
 
-    $cols[$col] .=
-    '<tr class="line">' .
+    $cols[$col] .= '<tr class="line">' .
     '<td class="maximal"><a href="' . $p_url .
     '&amp;m=serie_posts&amp;serie=' . rawurlencode($series->meta_id) . '">' . $series->meta_id . '</a></td>' .
     '<td class="nowrap"><strong>' . $series->count . '</strong> ' .

@@ -1,39 +1,33 @@
-.serie0 {}
-.serie10 {}
-.serie20 {}
-.serie30 {}
-.serie40 {}
-.serie50 {}
-.serie60 {}
-.serie70 {}
-.serie80 {}
-.serie90 {}
-.serie100 {}
 table.series {
   margin-left: 3em;
 }
+
 tr.serieLetter span {
   font-size: 250%;
   border: none;
   display: block;
   width: 1ex;
   position: relative;
-  top: 0.80em;
+  top: 0.8em;
   left: -2ex;
 }
+
 ul.metaList {
   margin: 0 0 1em 0;
   padding: 0;
 }
+
 ul.metaList li {
   margin: 0;
   padding: 0;
   list-style: none;
   list-style-position: inside;
 }
+
 #series-edit input[type=text] {
   width: 11.5em;
 }
+
 .series-actions form {
   display: inline-block;
   margin-right: 1.5em;

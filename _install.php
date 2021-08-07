@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-
-if (!defined('DC_CONTEXT_ADMIN')) {return;}
+if (!defined('DC_CONTEXT_ADMIN')) {
+    return;
+}
 
 $new_version = $core->plugins->moduleInfo('series', 'version');
 $old_version = $core->getVersion('series');
@@ -20,8 +21,7 @@ if (version_compare($old_version, $new_version, '>=')) {
     return;
 }
 
-try
-{
+try {
     if (version_compare($old_version, '1.0', '<')) {
         // Remove js/jquery.autocomplete.js
         @unlink(__DIR__ . '/' . 'js/jquery.autocomplete.js');
@@ -33,4 +33,5 @@ try
 } catch (Exception $e) {
     $core->error->add($e->getMessage());
 }
+
 return false;

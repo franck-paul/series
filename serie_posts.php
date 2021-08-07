@@ -10,10 +10,11 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
+if (!defined('DC_CONTEXT_ADMIN')) {
+    return;
+}
 
-if (!defined('DC_CONTEXT_ADMIN')) {return;}
-
-$serie = isset($_REQUEST['serie']) ? $_REQUEST['serie'] : '';
+$serie = $_REQUEST['serie'] ?? '';
 
 $this_url = $p_url . '&amp;m=serie_posts&amp;serie=' . rawurlencode($serie);
 
@@ -23,6 +24,7 @@ $nb_per_page = 30;
 # Rename a serie
 if (isset($_POST['new_serie_id'])) {
     $new_id = dcMeta::sanitizeMetaID($_POST['new_serie_id']);
+
     try {
         if ($core->meta->updateMeta($serie, $new_id, 'serie')) {
             dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), html::escapeHTML($serie), html::escapeHTML($new_id)));

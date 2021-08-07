@@ -1,4 +1,4 @@
-/*global dotclear, jsToolBar, mergeDeep, getData */
+/*global dotclear, jsToolBar */
 'use strict';
 
 // Toolbar button for series
@@ -8,22 +8,22 @@ jsToolBar.prototype.elements.serieSpace = {
     wysiwyg: true,
     wiki: true,
     xhtml: true,
-    markdown: true
-  }
+    markdown: true,
+  },
 };
 
 jsToolBar.prototype.elements.serie = {
   type: 'button',
   title: 'Serie',
-  fn: {}
+  fn: {},
 };
 
-mergeDeep(jsToolBar.prototype.elements, getData('legacy_editor_series'));
+dotclear.mergeDeep(jsToolBar.prototype.elements, dotclear.getData('legacy_editor_series'));
 
 jsToolBar.prototype.elements.serie.context = 'post';
 jsToolBar.prototype.elements.serie.icon = 'index.php?pf=series/img/serie-add.png';
-jsToolBar.prototype.elements.serie.fn.wiki = function() {
-  this.encloseSelection('', '', function(str) {
+jsToolBar.prototype.elements.serie.fn.wiki = function () {
+  this.encloseSelection('', '', function (str) {
     if (str == '') {
       window.alert(dotclear.msg.no_selection);
       return '';
@@ -36,9 +36,9 @@ jsToolBar.prototype.elements.serie.fn.wiki = function() {
     }
   });
 };
-jsToolBar.prototype.elements.serie.fn.markdown = function() {
+jsToolBar.prototype.elements.serie.fn.markdown = function () {
   const url = this.elements.serie.url;
-  this.encloseSelection('', '', function(str) {
+  this.encloseSelection('', '', function (str) {
     if (str == '') {
       window.alert(dotclear.msg.no_selection);
       return '';
@@ -51,9 +51,9 @@ jsToolBar.prototype.elements.serie.fn.markdown = function() {
     }
   });
 };
-jsToolBar.prototype.elements.serie.fn.xhtml = function() {
+jsToolBar.prototype.elements.serie.fn.xhtml = function () {
   const url = this.elements.serie.url;
-  this.encloseSelection('', '', function(str) {
+  this.encloseSelection('', '', function (str) {
     if (str == '') {
       window.alert(dotclear.msg.no_selection);
       return '';
@@ -66,7 +66,7 @@ jsToolBar.prototype.elements.serie.fn.xhtml = function() {
     }
   });
 };
-jsToolBar.prototype.elements.serie.fn.wysiwyg = function() {
+jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {
   const t = this.getSelectedText();
 
   if (t == '') {

@@ -18,9 +18,9 @@ $this->registerModule(
     'Series',          // Name
     'Series of posts', // Description
     'Franck Paul',     // Author
-    '1.0.2',           // Version
+    '1.1',             // Version
     [
-        'requires'    => [['core', '2.16']],                          // Dependencies
+        'requires'    => [['core', '2.19']],                          // Dependencies
         'permissions' => 'usage,contentadmin',                        // Permissions
         'priority'    => 1001,                                        // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
         'type'        => 'plugin',                                    // Type

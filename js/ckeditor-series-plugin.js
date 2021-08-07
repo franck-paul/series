@@ -1,13 +1,13 @@
-/*global $, CKEDITOR, dotclear, getData */
+/*global $, CKEDITOR, dotclear */
 'use strict';
 
-Object.assign(dotclear.msg, getData('ck_editor_series'));
+Object.assign(dotclear.msg, dotclear.getData('ck_editor_series'));
 
-(function() {
+(function () {
   CKEDITOR.plugins.add('dcseries', {
-    init: function(editor) {
+    init: function (editor) {
       editor.addCommand('dcSeriesCommand', {
-        exec: function(editor) {
+        exec: function (editor) {
           if (editor.getSelection().getNative().toString().replace(/\s*/, '') != '') {
             const str = editor.getSelection().getNative().toString().replace(/\s*/, '');
             const url = dotclear.msg.serie_url;
@@ -16,15 +16,15 @@ Object.assign(dotclear.msg, getData('ck_editor_series'));
             const element = CKEDITOR.dom.element.createFromHtml(link);
             editor.insertElement(element);
           }
-        }
+        },
       });
 
       editor.ui.addButton('dcSeries', {
         label: dotclear.msg.serie_title,
         command: 'dcSeriesCommand',
         toolbar: 'insert',
-        icon: this.path + 'serie.png'
+        icon: this.path + 'serie.png',
       });
-    }
+    },
   });
 })();

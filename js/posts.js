@@ -1,10 +1,10 @@
-/*global $, dotclear, mergeDeep, getData */
+/*global $, dotclear */
 'use strict';
 
-mergeDeep(dotclear.msg, getData('posts_series_msg'));
+dotclear.mergeDeep(dotclear.msg, dotclear.getData('posts_series_msg'));
 
-$(function() {
-  $('#serie_delete').on('submit', function() {
+$(function () {
+  $('#serie_delete').on('submit', function () {
     return window.confirm(dotclear.msg.confirm_serie_delete);
   });
 });

@@ -10,7 +10,6 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-
 class seriesBehaviors
 {
     public static function adminDashboardFavorites($core, $favs)
@@ -29,6 +28,7 @@ class seriesBehaviors
         global $core;
 
         $series_combo = [];
+
         try {
             $rs                             = $core->meta->getMetadata(['meta_type' => 'serie']);
             $series_combo[__('All series')] = '-';
@@ -36,7 +36,8 @@ class seriesBehaviors
                 $series_combo[$rs->meta_id] = $rs->meta_id;
             }
             unset($rs);
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+        }
 
         return $series_combo;
     }
@@ -47,13 +48,13 @@ class seriesBehaviors
         if (count($series_combo) > 1) {
             $items['series'] = new ArrayObject([__('Series'), true]);
         }
-
     }
 
     public static function adminSimpleMenuSelect($item_type, $input_name)
     {
         if ($item_type == 'series') {
             $series_combo = self::adminSimpleMenuGetCombo();
+
             return '<p class="field"><label for="item_select" class="classic">' . __('Select serie (if necessary):') . '</label>' .
             form::combo('item_select', $series_combo);
         }
@@ -102,8 +103,7 @@ class seriesBehaviors
             $value = ($post) ? $meta->getMetaStr($post->post_meta, 'serie') : '';
         }
 
-        $sidebar['metas-box']['items']['post_series'] =
-        '<h5><label class="s-series" for="post_series">' . __('Series:') . '</label></h5>' .
+        $sidebar['metas-box']['items']['post_series'] = '<h5><label class="s-series" for="post_series">' . __('Series:') . '</label></h5>' .
         '<div class="p s-series" id="series-edit">' . form::textarea('post_series', 20, 3, $value, 'maximal') . '</div>';
     }
 
@@ -170,7 +170,7 @@ class seriesBehaviors
             $ap->redirect(true, ['upd' => 1]);
         } else {
             $opts = $core->auth->getOptions();
-            $type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
+            $type = $opts['serie_list_format'] ?? 'more';
 
             $editor_series_options = [
                 'meta_url'            => 'plugin.php?p=series&m=serie_posts&amp;serie=',
@@ -220,8 +220,7 @@ class seriesBehaviors
 
     public static function adminRemoveSeries($core, dcPostsActionsPage $ap, $post)
     {
-        if (!empty($post['meta_id']) &&
-            $core->auth->check('delete,contentadmin', $core->blog->id)) {
+        if (!empty($post['meta_id']) && $core->auth->check('delete,contentadmin', $core->blog->id)) {
             $meta  = &$core->meta;
             $posts = $ap->getRS();
             while ($posts->fetch()) {
@@ -288,7 +287,7 @@ class seriesBehaviors
         global $core;
 
         $opts = $GLOBALS['core']->auth->getOptions();
-        $type = isset($opts['serie_list_format']) ? $opts['serie_list_format'] : 'more';
+        $type = $opts['serie_list_format'] ?? 'more';
 
         $editor_series_options = [
             'meta_url'            => 'plugin.php?p=series&m=serie_posts&amp;serie=',
@@ -345,7 +344,6 @@ class seriesBehaviors
                 'serie_url'   => $serie_url
             ]);
         }
-        return;
     }
 
     public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, $context)

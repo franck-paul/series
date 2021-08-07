@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 # Localized string we find in template
 __("This serie's comments Atom feed");
@@ -46,19 +47,19 @@ class behaviorsSeries
 
             // All series
             return __('All series');
-
         } elseif ($context == 'serie') {
             // Serie
 
             // Get current page if set
             $page = isset($GLOBALS['_page_number']) ? (integer) $GLOBALS['_page_number'] : 0;
-            $ret  = '<a href="' . $core->blog->url . $core->url->getURLFor("series") . '">' . __('All series') . '</a>';
+            $ret  = '<a href="' . $core->blog->url . $core->url->getURLFor('series') . '">' . __('All series') . '</a>';
             if ($page == 0) {
                 $ret .= $separator . $_ctx->meta->meta_id;
             } else {
-                $ret .= $separator . '<a href="' . $core->blog->url . $core->url->getURLFor("serie") . '/' . rawurlencode($_ctx->meta->meta_id) . '">' . $_ctx->meta->meta_id . '</a>';
+                $ret .= $separator . '<a href="' . $core->blog->url . $core->url->getURLFor('serie') . '/' . rawurlencode($_ctx->meta->meta_id) . '">' . $_ctx->meta->meta_id . '</a>';
                 $ret .= $separator . sprintf(__('page %d'), $page);
             }
+
             return $ret;
         }
     }
@@ -111,7 +112,6 @@ class behaviorsSeries
             $core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__) . '/default-templates/' . DC_DEFAULT_TPLSET);
         }
     }
-
 }
 
 class tplSeries
@@ -132,17 +132,15 @@ class tplSeries
             $order = 'desc';
         }
 
-        $res =
-            "<?php\n" .
+        $res = "<?php\n" .
             "\$_ctx->meta = \$core->meta->computeMetaStats(\$core->meta->getMetadata(['meta_type'=>'" .
             $type . "','limit'=>" . $limit .
             ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC') . "'" : '') .
-            "])); " .
+            '])); ' .
             "\$_ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
-        $res .=
-            '<?php while ($_ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
+        $res .= '<?php while ($_ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
             '$_ctx->meta = null; ?>';
 
         return $res;
@@ -151,17 +149,17 @@ class tplSeries
     public static function SeriesHeader($attr, $content)
     {
         return
-            "<?php if (\$_ctx->meta->isStart()) : ?>" .
+            '<?php if ($_ctx->meta->isStart()) : ?>' .
             $content .
-            "<?php endif; ?>";
+            '<?php endif; ?>';
     }
 
     public static function SeriesFooter($attr, $content)
     {
         return
-            "<?php if (\$_ctx->meta->isEnd()) : ?>" .
+            '<?php if ($_ctx->meta->isEnd()) : ?>' .
             $content .
-            "<?php endif; ?>";
+            '<?php endif; ?>';
     }
 
     public static function EntrySeries($attr, $content)
@@ -184,14 +182,12 @@ class tplSeries
             $order = 'desc';
         }
 
-        $res =
-            "<?php\n" .
+        $res = "<?php\n" .
             "\$_ctx->meta = \$core->meta->getMetaRecordset(\$_ctx->posts->post_meta,'" . $type . "'); " .
             "\$_ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
-        $res .=
-            '<?php while ($_ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
+        $res .= '<?php while ($_ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
             '$_ctx->meta = null; ?>';
 
         return $res;
@@ -200,6 +196,7 @@ class tplSeries
     public static function SerieID($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$_ctx->meta->meta_id') . '; ?>';
     }
 
@@ -216,6 +213,7 @@ class tplSeries
     public static function SerieURL($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$core->blog->url.$core->url->getURLFor("serie",' .
             'rawurlencode($_ctx->meta->meta_id))') . '; ?>';
     }
@@ -223,6 +221,7 @@ class tplSeries
     public static function SerieCloudURL($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$core->blog->url.$core->url->getURLFor("series")') . '; ?>';
     }
 
@@ -235,6 +234,7 @@ class tplSeries
         }
 
         $f = $GLOBALS['core']->tpl->getFilters($attr);
+
         return '<?php echo ' . sprintf($f, '$core->blog->url.$core->url->getURLFor("serie_feed",' .
             'rawurlencode($_ctx->meta->meta_id)."/' . $type . '")') . '; ?>';
     }
@@ -248,8 +248,7 @@ class tplSeries
             return;
         }
 
-        if (($w->homeonly == 1 && !$core->url->isHome($core->url->type)) ||
-            ($w->homeonly == 2 && $core->url->isHome($core->url->type))) {
+        if (($w->homeonly == 1 && !$core->url->isHome($core->url->type)) || ($w->homeonly == 2 && $core->url->isHome($core->url->type))) {
             return;
         }
 
@@ -299,12 +298,12 @@ class tplSeries
                 while ($_ctx->meta->fetch()) {
                     if ($_ctx->meta->meta_id == $rs->meta_id) {
                         $class = ' class="serie-current"';
+
                         break;
                     }
                 }
             }
-            $res .=
-            '<li' . $class . '><a href="' . $core->blog->url . $core->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
+            $res .= '<li' . $class . '><a href="' . $core->blog->url . $core->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
             'class="serie' . $rs->roundpercent . '">' .
             $rs->meta_id . '</a></li>';
         }
@@ -312,8 +311,7 @@ class tplSeries
         $res .= '</ul>';
 
         if ($core->url->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '') {
-            $res .=
-            '<p><strong><a href="' . $core->blog->url . $core->url->getURLFor("series") . '">' .
+            $res .= '<p><strong><a href="' . $core->blog->url . $core->url->getURLFor('series') . '">' .
             html::escapeHTML($w->allserieslinktitle) . '</a></strong></p>';
         }
 
