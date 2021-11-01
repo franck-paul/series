@@ -30,6 +30,6 @@ $this->registerModule(
 
         'details'    => 'https://open-time.net/docs/plugins/series',       // Details URL
         'support'    => 'https://github.com/franck-paul/series',            // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/series/main/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/series/master/dcstore.xml'
     ]
 );
