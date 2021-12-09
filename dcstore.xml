@@ -1,8 +1,8 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="series">
-    <name>Series of posts</name>
+    <name>Series</name>
     <version>1.2</version>
-    <author>Series of posts</author>
+    <author>Franck Paul</author>
     <desc>Series of posts</desc>
     <file>https://github.com/franck-paul/series/releases/download/1.2/plugin-series-1.2.zip</file>
     <da:dcmin>2.20</da:dcmin>
