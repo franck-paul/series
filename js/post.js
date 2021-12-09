@@ -3,8 +3,8 @@
 
 dotclear.mergeDeep(dotclear.msg, dotclear.getData('editor_series_msg'));
 
-$(function () {
-  $('#edit-entry').on('onetabload', function () {
+$(() => {
+  $('#edit-entry').on('onetabload', () => {
     const series_edit = $('#series-edit');
     let post_id = $('#id');
     let meta_field = null;
@@ -34,7 +34,7 @@ $(function () {
       multipleSeparator: ', ',
       matchSubset: false,
       matchContains: true,
-      parse: function (xml) {
+      parse(xml) {
         let results = [];
         $(xml)
           .find('meta')
@@ -50,17 +50,17 @@ $(function () {
           });
         return results;
       },
-      formatItem: function (serie) {
+      formatItem(serie) {
         return (
           serie.id +
           ' <em>(' +
           dotclear.msg.series_autocomplete
             .replace('%p', serie.percent)
-            .replace('%e', serie.count + ' ' + (serie.count > 1 ? dotclear.msg.entries : dotclear.msg.entry)) +
+            .replace('%e', `${serie.count} ${serie.count > 1 ? dotclear.msg.entries : dotclear.msg.entry}`) +
           ')</em>'
         );
       },
-      formatResult: function (serie) {
+      formatResult(serie) {
         return serie.result;
       },
     });

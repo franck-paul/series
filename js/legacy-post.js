@@ -21,19 +21,18 @@ jsToolBar.prototype.elements.serie = {
 dotclear.mergeDeep(jsToolBar.prototype.elements, dotclear.getData('legacy_editor_series'));
 
 jsToolBar.prototype.elements.serie.context = 'post';
-jsToolBar.prototype.elements.serie.icon = 'index.php?pf=series/img/serie-add.png';
+jsToolBar.prototype.elements.serie.icon = 'index.php?pf=series/icon.svg';
 jsToolBar.prototype.elements.serie.fn.wiki = function () {
-  this.encloseSelection('', '', function (str) {
+  this.encloseSelection('', '', (str) => {
     if (str == '') {
       window.alert(dotclear.msg.no_selection);
       return '';
     }
-    if (str.indexOf(',') != -1) {
+    if (str.includes(',')) {
       return str;
-    } else {
-      window.dc_serie_editor.addMeta(str);
-      return `[${str}|serie:${str}]`;
     }
+    window.dc_serie_editor.addMeta(str);
+    return `[${str}|serie:${str}]`;
   });
 };
 jsToolBar.prototype.elements.serie.fn.markdown = function () {
@@ -43,12 +42,11 @@ jsToolBar.prototype.elements.serie.fn.markdown = function () {
       window.alert(dotclear.msg.no_selection);
       return '';
     }
-    if (str.indexOf(',') != -1) {
+    if (str.includes(',')) {
       return str;
-    } else {
-      window.dc_serie_editor.addMeta(str);
-      return `[${str}](${this.stripBaseURL(url + '/' + str)})`;
     }
+    window.dc_serie_editor.addMeta(str);
+    return `[${str}](${this.stripBaseURL(`${url}/${str}`)})`;
   });
 };
 jsToolBar.prototype.elements.serie.fn.xhtml = function () {
@@ -58,12 +56,11 @@ jsToolBar.prototype.elements.serie.fn.xhtml = function () {
       window.alert(dotclear.msg.no_selection);
       return '';
     }
-    if (str.indexOf(',') != -1) {
+    if (str.includes(',')) {
       return str;
-    } else {
-      window.dc_serie_editor.addMeta(str);
-      return `<a href="${this.stripBaseURL(url + '/' + str)}">${str}</a>`;
     }
+    window.dc_serie_editor.addMeta(str);
+    return `<a href="${this.stripBaseURL(`${url}/${str}`)}">${str}</a>`;
   });
 };
 jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {
@@ -73,13 +70,13 @@ jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {
     window.alert(dotclear.msg.no_selection);
     return;
   }
-  if (t.indexOf(',') != -1) {
+  if (t.includes(',')) {
     return;
   }
 
   const n = this.getSelectedNode();
   const a = document.createElement('a');
-  a.href = this.stripBaseURL(this.elements.serie.url + '/' + t);
+  a.href = this.stripBaseURL(`${this.elements.serie.url}/${t}`);
   a.appendChild(n);
   this.insertNode(a);
   window.dc_serie_editor.addMeta(t);

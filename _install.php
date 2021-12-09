@@ -27,6 +27,13 @@ try {
         @unlink(__DIR__ . '/' . 'js/jquery.autocomplete.js');
     }
 
+    if (version_compare($old_version, '1.2', '<')) {
+        // Remove default-templates/currwurst
+        @unlink(__DIR__ . '/' . 'default-templates/currwurst/serie.html');
+        @unlink(__DIR__ . '/' . 'default-templates/currwurst/series.html');
+        @rmdir(__DIR__ . '/' . 'default-templates/currwurst');
+    }
+
     $core->setVersion('series', $new_version);
 
     return true;

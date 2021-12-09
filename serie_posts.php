@@ -18,7 +18,7 @@ $serie = $_REQUEST['serie'] ?? '';
 
 $this_url = $p_url . '&amp;m=serie_posts&amp;serie=' . rawurlencode($serie);
 
-$page        = !empty($_GET['page']) ? max(1, (integer) $_GET['page']) : 1;
+$page        = !empty($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
 $nb_per_page = 30;
 
 # Rename a serie
@@ -77,7 +77,7 @@ if ($posts_actions_page->process()) {
 echo dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series')) .
 dcPage::jsLoad('js/_posts_list.js') .
 dcPage::jsJson('posts_series_msg', [
-    'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), html::escapeHTML($serie))
+    'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), html::escapeHTML($serie)),
 ]) .
 dcPage::jsLoad(urldecode(dcPage::getPF('series/js/posts.js')), $core->getVersion('serie')) .
 dcPage::jsConfirmClose('serie_rename');
@@ -90,13 +90,15 @@ echo dcPage::breadcrumb(
     [
         html::escapeHTML($core->blog->name)                             => '',
         __('Series')                                                    => $p_url . '&amp;m=series',
-        __('Serie') . ' &ldquo;' . html::escapeHTML($serie) . '&rdquo;' => ''
-    ]);
+        __('Serie') . ' &ldquo;' . html::escapeHTML($serie) . '&rdquo;' => '',
+    ]
+);
 echo dcPage::notices();
 
 echo '<p><a class="back" href="' . $p_url . '&amp;m=series">' . __('Back to series list') . '</a></p>';
 
 if (!$core->error->flag()) {
+    /* @phpstan-ignore-next-line */
     if (!$posts->isEmpty()) {
         echo
         '<div class="series-actions vertical-separator">' .
@@ -108,6 +110,7 @@ if (!$core->error->flag()) {
         $core->formNonce() .
             '</p></form>';
         # Remove serie
+        /* @phpstan-ignore-next-line */
         if (!$posts->isEmpty() && $core->auth->check('contentadmin', $core->blog->id)) {
             echo
             '<form id="serie_delete" action="' . $this_url . '" method="post">' .
@@ -120,7 +123,10 @@ if (!$core->error->flag()) {
 
     # Show posts
     echo '<h4 class="vertical-separator pretty-title">' . __('List of entries in this serie') . '</h4>';
-    $post_list->display($page, $nb_per_page,
+    /* @phpstan-ignore-next-line */
+    $post_list->display(
+        $page,
+        $nb_per_page,
         '<form action="plugin.php" method="post" id="form-entries">' .
 
         '%s' .
@@ -137,7 +143,8 @@ if (!$core->error->flag()) {
         form::hidden('serie', $serie) .
         $core->formNonce() .
         '</div>' .
-        '</form>');
+        '</form>'
+    );
 }
 ?>
 </body>

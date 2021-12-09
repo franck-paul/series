@@ -17,9 +17,9 @@ class seriesBehaviors
         $favs->register('series', [
             'title'       => __('Series'),
             'url'         => 'plugin.php?p=series&amp;m=series',
-            'small-icon'  => urldecode(dcPage::getPF('series/icon.png')),
-            'large-icon'  => urldecode(dcPage::getPF('series/icon-big.png')),
-            'permissions' => 'usage,contentadmin'
+            'small-icon'  => urldecode(dcPage::getPF('series/icon.svg')),
+            'large-icon'  => urldecode(dcPage::getPF('series/icon.svg')),
+            'permissions' => 'usage,contentadmin',
         ]);
     }
 
@@ -109,7 +109,7 @@ class seriesBehaviors
 
     public static function setSeries($cur, $post_id)
     {
-        $post_id = (integer) $post_id;
+        $post_id = (int) $post_id;
 
         if (isset($_POST['post_series'])) {
             $series = $_POST['post_series'];
@@ -148,7 +148,8 @@ class seriesBehaviors
                 # Get series for post
                 $post_meta = $meta->getMetadata([
                     'meta_type' => 'serie',
-                    'post_id'   => $posts->post_id]);
+                    'post_id'   => $posts->post_id,
+                ]);
                 $pm = [];
                 while ($post_meta->fetch()) {
                     $pm[] = $post_meta->meta_id;
@@ -160,12 +161,14 @@ class seriesBehaviors
                     }
                 }
             }
-            dcPage::addSuccessNotice(sprintf(
-                __(
-                    'Serie has been successfully added to selected entries',
-                    'Series have been successfully added to selected entries',
-                    count($series))
-            )
+            dcPage::addSuccessNotice(
+                sprintf(
+                    __(
+                        'Serie has been successfully added to selected entries',
+                        'Series have been successfully added to selected entries',
+                        count($series)
+                    )
+                )
             );
             $ap->redirect(true, ['upd' => 1]);
         } else {
@@ -179,13 +182,13 @@ class seriesBehaviors
                 'text_add_meta'       => __('Add a serie to this entry'),
                 'text_choose'         => __('Choose from list'),
                 'text_all'            => __('all series'),
-                'text_separation'     => __('Enter series separated by comma')
+                'text_separation'     => __('Enter series separated by comma'),
             ];
 
             $msg = [
                 'series_autocomplete' => __('used in %e - frequency %p%'),
                 'entry'               => __('entry'),
-                'entries'             => __('entries')
+                'entries'             => __('entries'),
             ];
 
             $ap->beginPage(
@@ -193,8 +196,9 @@ class seriesBehaviors
                     [
                         html::escapeHTML($core->blog->name) => '',
                         __('Entries')                       => $ap->getRedirection(true),
-                        __('Add series to this selection')  => ''
-                    ]),
+                        __('Add series to this selection')  => '',
+                    ]
+                ),
                 dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
                 dcPage::jsMetaEditor() .
                 dcPage::jsJson('editor_series_options', $editor_series_options) .
@@ -236,7 +240,7 @@ class seriesBehaviors
             foreach ($ap->getIDS() as $id) {
                 $post_series = $meta->getMetadata([
                     'meta_type' => 'serie',
-                    'post_id'   => (integer) $id])->toStatic()->rows();
+                    'post_id'   => (int) $id, ])->toStatic()->rows();
                 foreach ($post_series as $v) {
                     if (isset($series[$v['meta_id']])) {
                         $series[$v['meta_id']]++;
@@ -253,8 +257,10 @@ class seriesBehaviors
                     [
                         html::escapeHTML($core->blog->name)              => '',
                         __('Entries')                                    => 'posts.php',
-                        __('Remove selected series from this selection') => ''
-                    ]));
+                        __('Remove selected series from this selection') => '',
+                    ]
+                )
+            );
             $posts_count = count($_POST['entries']);
 
             echo
@@ -267,10 +273,11 @@ class seriesBehaviors
                 if ($posts_count == $n) {
                     $label = sprintf($label, '%s', '<strong>%s</strong>');
                 }
-                echo '<p>' . sprintf($label,
+                echo '<p>' . sprintf(
+                    $label,
                     form::checkbox(['meta_id[]'], html::escapeHTML($k)),
-                    html::escapeHTML($k)) .
-                    '</p>';
+                    html::escapeHTML($k)
+                ) . '</p>';
             }
 
             echo
@@ -296,13 +303,13 @@ class seriesBehaviors
             'text_add_meta'       => __('Add a serie to this entry'),
             'text_choose'         => __('Choose from list'),
             'text_all'            => __('all series'),
-            'text_separation'     => __('Enter series separated by comma')
+            'text_separation'     => __('Enter series separated by comma'),
         ];
 
         $msg = [
             'series_autocomplete' => __('used in %e - frequency %p%'),
             'entry'               => __('entry'),
-            'entries'             => __('entries')
+            'entries'             => __('entries'),
         ];
 
         return
@@ -333,15 +340,15 @@ class seriesBehaviors
             dcPage::jsJson('legacy_editor_series', [
                 'serie' => [
                     'title' => __('Serie'),
-                    'url'   => $serie_url
-                ]
+                    'url'   => $serie_url,
+                ],
             ]) .
             dcPage::jsLoad(urldecode(dcPage::getPF('series/js/legacy-post.js')), $core->getVersion('series'));
         } elseif ($editor == 'dcCKEditor') {
             return
             dcPage::jsJson('ck_editor_series', [
                 'serie_title' => __('Serie'),
-                'serie_url'   => $serie_url
+                'serie_url'   => $serie_url,
             ]);
         }
     }
@@ -356,7 +363,7 @@ class seriesBehaviors
         $extraPlugins[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
-            'url'    => DC_ADMIN_URL . 'index.php?pf=series/js/ckeditor-series-plugin.js'
+            'url'    => DC_ADMIN_URL . 'index.php?pf=series/js/ckeditor-series-plugin.js',
         ];
     }
 

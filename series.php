@@ -26,8 +26,9 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 echo dcPage::breadcrumb(
     [
         html::escapeHTML($core->blog->name) => '',
-        __('Series')                        => ''
-    ]);
+        __('Series')                        => '',
+    ]
+);
 echo dcPage::notices();
 ?>
 

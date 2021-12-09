@@ -17,11 +17,13 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 // dead but useful code, in order to have translations
 __('Series') . __('Series of posts');
 
-$_menu['Blog']->addItem(__('Series'),
+$_menu['Blog']->addItem(
+    __('Series'),
     'plugin.php?p=series&amp;m=series',
-    urldecode(dcPage::getPF('series/icon.png')),
+    urldecode(dcPage::getPF('series/icon.svg')),
     preg_match('/plugin.php\?p=series&m=serie(s|_posts)?(&.*)?$/', $_SERVER['REQUEST_URI']),
-    $core->auth->check('usage,contentadmin', $core->blog->id));
+    $core->auth->check('usage,contentadmin', $core->blog->id)
+);
 
 require dirname(__FILE__) . '/_widgets.php';
 

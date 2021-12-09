@@ -51,7 +51,7 @@ class behaviorsSeries
             // Serie
 
             // Get current page if set
-            $page = isset($GLOBALS['_page_number']) ? (integer) $GLOBALS['_page_number'] : 0;
+            $page = isset($GLOBALS['_page_number']) ? (int) $GLOBALS['_page_number'] : 0;
             $ret  = '<a href="' . $core->blog->url . $core->url->getURLFor('series') . '">' . __('All series') . '</a>';
             if ($page == 0) {
                 $ret .= $separator . $_ctx->meta->meta_id;
@@ -119,7 +119,7 @@ class tplSeries
     public static function Series($attr, $content)
     {
         $type  = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
-        $limit = isset($attr['limit']) ? (integer) $attr['limit'] : 'null';
+        $limit = isset($attr['limit']) ? (int) $attr['limit'] : 'null';
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
         $sortby = 'meta_id_lower';
@@ -164,19 +164,12 @@ class tplSeries
 
     public static function EntrySeries($attr, $content)
     {
-        $type = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
-
-        if (version_compare(DC_VERSION, '2.14-dev', '>=')) {
-            $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
-        } else {
-            $combo = ['meta_id_lower', 'count'];
-        }
-
+        $type   = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
+        $combo  = ['meta_id_lower', 'count', 'latest', 'oldest'];
         $sortby = 'meta_id_lower';
         if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
             $sortby = strtolower($attr['sortby']);
         }
-
         $order = 'asc';
         if (isset($attr['order']) && $attr['order'] == 'desc') {
             $order = 'desc';
@@ -272,11 +265,12 @@ class tplSeries
         }
 
         if ($w->limit !== '') {
-            $params['limit'] = abs((integer) $w->limit);
+            $params['limit'] = abs((int) $w->limit);
         }
 
         $rs = $core->meta->computeMetaStats(
-            $core->meta->getMetadata($params));
+            $core->meta->getMetadata($params)
+        );
 
         if ($rs->isEmpty()) {
             return;
@@ -431,7 +425,9 @@ class urlSeries extends dcUrlHandlers
             $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
                 $GLOBALS['core']->meta->getMetadata([
                     'meta_type' => 'serie',
-                    'meta_id'   => $m[1]]));
+                    'meta_id'   => $m[1],
+                ])
+            );
 
             if ($GLOBALS['_ctx']->meta->isEmpty()) {
                 self::p404();
@@ -452,7 +448,9 @@ class urlSeries extends dcUrlHandlers
             $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
                 $GLOBALS['core']->meta->getMetadata([
                     'meta_type' => 'serie',
-                    'meta_id'   => $args]));
+                    'meta_id'   => $args,
+                ])
+            );
 
             if ($GLOBALS['_ctx']->meta->isEmpty()) {
                 self::p404();
@@ -479,7 +477,9 @@ class urlSeries extends dcUrlHandlers
             $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
                 $GLOBALS['core']->meta->getMetadata([
                     'meta_type' => 'serie',
-                    'meta_id'   => $serie]));
+                    'meta_id'   => $serie,
+                ])
+            );
 
             if ($GLOBALS['_ctx']->meta->isEmpty()) {
                 # The specified serie does not exist.

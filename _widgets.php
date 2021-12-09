@@ -26,18 +26,28 @@ class seriesWidgets
             ->create('series', __('Series'), ['tplSeries', 'seriesWidget'], null, __('List of series'))
             ->addTitle(__('Series'))
             ->setting('limit', __('Limit (empty means no limit):'), '20')
-            ->setting('sortby', __('Order by:'), 'meta_id_lower', 'combo',
+            ->setting(
+                'sortby',
+                __('Order by:'),
+                'meta_id_lower',
+                'combo',
                 [
                     __('Serie name')    => 'meta_id_lower',
                     __('Entries count') => 'count',
                     __('Newest entry')  => 'latest',
-                    __('Oldest entry')  => 'oldest'
-                ])
-            ->setting('orderby', __('Sort:'), 'asc', 'combo',
+                    __('Oldest entry')  => 'oldest',
+                ]
+            )
+            ->setting(
+                'orderby',
+                __('Sort:'),
+                'asc',
+                'combo',
                 [
                     __('Ascending')  => 'asc',
-                    __('Descending') => 'desc'
-                ])
+                    __('Descending') => 'desc',
+                ]
+            )
             ->setting('allserieslinktitle', __('Link to all series:'), __('All series'))
             ->addHomeOnly()
             ->addContentOnly()
@@ -49,27 +59,47 @@ class seriesWidgets
             ->create('seriesPosts', __('Siblings'), ['tplSeries', 'seriePostsWidget'], null, __('Other posts of the same serie(s)'))
             ->addTitle(__('Siblings'))
             ->setting('serietitle', __('Show titles of series'), 1, 'check')
-            ->setting('orderseriesby', __('Order series by:'), 'asc', 'combo',
+            ->setting(
+                'orderseriesby',
+                __('Order series by:'),
+                'asc',
+                'combo',
                 [
                     __('Ascending')  => 'asc',
-                    __('Descending') => 'desc'
-                ])
-            ->setting('current', __('Include current entry:'), 'std', 'combo',
+                    __('Descending') => 'desc',
+                ]
+            )
+            ->setting(
+                'current',
+                __('Include current entry:'),
+                'std',
+                'combo',
                 [
                     __('Standard')  => 'std',
                     __('With link') => 'link',
-                    __('None')      => 'none'
-                ])
-            ->setting('sortentriesby', __('Order entries by:'), 'date', 'combo',
+                    __('None')      => 'none',
+                ]
+            )
+            ->setting(
+                'sortentriesby',
+                __('Order entries by:'),
+                'date',
+                'combo',
                 [
                     __('Date')        => 'date',
-                    __('Entry title') => 'title'
-                ])
-            ->setting('orderentriesby', __('Sort:'), 'asc', 'combo',
+                    __('Entry title') => 'title',
+                ]
+            )
+            ->setting(
+                'orderentriesby',
+                __('Sort:'),
+                'asc',
+                'combo',
                 [
                     __('Ascending')  => 'asc',
-                    __('Descending') => 'desc'
-                ])
+                    __('Descending') => 'desc',
+                ]
+            )
             ->addContentOnly()
             ->addClass()
             ->addOffline();

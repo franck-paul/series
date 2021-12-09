@@ -3,7 +3,7 @@
 
 dotclear.mergeDeep(dotclear.msg, dotclear.getData('editor_series_msg'));
 
-$(function () {
+$(() => {
   const serie_field = $('#new_series');
 
   serie_field.after('<div id="series_list"></div>');
@@ -20,7 +20,7 @@ $(function () {
 
   mEdit.addMetaDialog();
 
-  $('input[name="save_series"]').on('click', function () {
+  $('input[name="save_series"]').on('click', () => {
     serie_field.val($('#post_meta_serie_input').val());
   });
 
@@ -33,7 +33,7 @@ $(function () {
     multiple: true,
     matchSubset: false,
     matchContains: true,
-    parse: function (xml) {
+    parse(xml) {
       let results = [];
       $(xml)
         .find('meta')
@@ -49,17 +49,17 @@ $(function () {
         });
       return results;
     },
-    formatItem: function (serie) {
+    formatItem(serie) {
       return (
         serie.id +
         ' <em>(' +
         dotclear.msg.series_autocomplete
           .replace('%p', serie.percent)
-          .replace('%e', serie.count + ' ' + (serie.count > 1 ? dotclear.msg.entries : dotclear.msg.entry)) +
+          .replace('%e', `${serie.count} ${serie.count > 1 ? dotclear.msg.entries : dotclear.msg.entry}`) +
         ')</em>'
       );
     },
-    formatResult: function (serie) {
+    formatResult(serie) {
       return serie.result;
     },
   });
