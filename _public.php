@@ -18,31 +18,28 @@ if (!defined('DC_RC_PATH')) {
 __("This serie's comments Atom feed");
 __("This serie's entries Atom feed");
 
-require dirname(__FILE__) . '/_widgets.php';
+require __DIR__ . '/_widgets.php';
 
-$core->tpl->addBlock('Series', ['tplSeries', 'Series']);
-$core->tpl->addBlock('SeriesHeader', ['tplSeries', 'SeriesHeader']);
-$core->tpl->addBlock('SeriesFooter', ['tplSeries', 'SeriesFooter']);
-$core->tpl->addBlock('EntrySeries', ['tplSeries', 'EntrySeries']);
-$core->tpl->addValue('SerieID', ['tplSeries', 'SerieID']);
-$core->tpl->addValue('SeriePercent', ['tplSeries', 'SeriePercent']);
-$core->tpl->addValue('SerieRoundPercent', ['tplSeries', 'SerieRoundPercent']);
-$core->tpl->addValue('SerieURL', ['tplSeries', 'SerieURL']);
-$core->tpl->addValue('SerieCloudURL', ['tplSeries', 'SerieCloudURL']);
-$core->tpl->addValue('SerieFeedURL', ['tplSeries', 'SerieFeedURL']);
+dcCore::app()->tpl->addBlock('Series', ['tplSeries', 'Series']);
+dcCore::app()->tpl->addBlock('SeriesHeader', ['tplSeries', 'SeriesHeader']);
+dcCore::app()->tpl->addBlock('SeriesFooter', ['tplSeries', 'SeriesFooter']);
+dcCore::app()->tpl->addBlock('EntrySeries', ['tplSeries', 'EntrySeries']);
+dcCore::app()->tpl->addValue('SerieID', ['tplSeries', 'SerieID']);
+dcCore::app()->tpl->addValue('SeriePercent', ['tplSeries', 'SeriePercent']);
+dcCore::app()->tpl->addValue('SerieRoundPercent', ['tplSeries', 'SerieRoundPercent']);
+dcCore::app()->tpl->addValue('SerieURL', ['tplSeries', 'SerieURL']);
+dcCore::app()->tpl->addValue('SerieCloudURL', ['tplSeries', 'SerieCloudURL']);
+dcCore::app()->tpl->addValue('SerieFeedURL', ['tplSeries', 'SerieFeedURL']);
 
-$core->addBehavior('templateBeforeBlock', ['behaviorsSeries', 'templateBeforeBlock']);
-$core->addBehavior('tplSysIfConditions', ['behaviorsSeries', 'tplSysIfConditions']);
-$core->addBehavior('publicBeforeDocument', ['behaviorsSeries', 'addTplPath']);
+dcCore::app()->addBehavior('templateBeforeBlock', ['behaviorsSeries', 'templateBeforeBlock']);
+dcCore::app()->addBehavior('publicBeforeDocument', ['behaviorsSeries', 'addTplPath']);
 
-$core->addBehavior('publicBreadcrumb', ['behaviorsSeries', 'publicBreadcrumb']);
+dcCore::app()->addBehavior('publicBreadcrumb', ['behaviorsSeries', 'publicBreadcrumb']);
 
 class behaviorsSeries
 {
     public static function publicBreadcrumb($context, $separator)
     {
-        global $core, $_ctx;
-
         if ($context == 'series') {
 
             // All series
@@ -52,11 +49,11 @@ class behaviorsSeries
 
             // Get current page if set
             $page = isset($GLOBALS['_page_number']) ? (int) $GLOBALS['_page_number'] : 0;
-            $ret  = '<a href="' . $core->blog->url . $core->url->getURLFor('series') . '">' . __('All series') . '</a>';
+            $ret  = '<a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('series') . '">' . __('All series') . '</a>';
             if ($page == 0) {
-                $ret .= $separator . $_ctx->meta->meta_id;
+                $ret .= $separator . dcCore::app()->ctx->meta->meta_id;
             } else {
-                $ret .= $separator . '<a href="' . $core->blog->url . $core->url->getURLFor('serie') . '/' . rawurlencode($_ctx->meta->meta_id) . '">' . $_ctx->meta->meta_id . '</a>';
+                $ret .= $separator . '<a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie') . '/' . rawurlencode(dcCore::app()->ctx->meta->meta_id) . '">' . dcCore::app()->ctx->meta->meta_id . '</a>';
                 $ret .= $separator . sprintf(__('page %d'), $page);
             }
 
@@ -64,7 +61,7 @@ class behaviorsSeries
         }
     }
 
-    public static function templateBeforeBlock($core, $b, $attr)
+    public static function templateBeforeBlock($core = null, $b, $attr)
     {
         if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie'])) {
             return
@@ -72,44 +69,32 @@ class behaviorsSeries
             "if (!isset(\$params)) { \$params = []; }\n" .
             "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
             "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-            "\$params['from'] .= ', '.\$core->prefix.'meta METAS ';\n" .
+            "\$params['from'] .= ', '.dcCore::app()->prefix.'meta METAS ';\n" .
             "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
             "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-            "\$params['sql'] .= \"AND METAS.meta_id = '" . $core->con->escape($attr['serie']) . "' \";\n" .
+            "\$params['sql'] .= \"AND METAS.meta_id = '" . dcCore::app()->con->escape($attr['serie']) . "' \";\n" .
                 "?>\n";
         } elseif (empty($attr['no_context']) && ($b == 'Entries' || $b == 'Comments')) {
             return
-                '<?php if ($_ctx->exists("meta") && $_ctx->meta->rows() && ($_ctx->meta->meta_type == "serie")) { ' .
+                '<?php if (dcCore::app()->ctx->exists("meta") && dcCore::app()->ctx->meta->rows() && (dcCore::app()->ctx->meta->meta_type == "serie")) { ' .
                 "if (!isset(\$params)) { \$params = []; }\n" .
                 "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
                 "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-                "\$params['from'] .= ', '.\$core->prefix.'meta METAS ';\n" .
+                "\$params['from'] .= ', '.dcCore::app()->prefix.'meta METAS ';\n" .
                 "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
                 "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-                "\$params['sql'] .= \"AND METAS.meta_id = '\".\$core->con->escape(\$_ctx->meta->meta_id).\"' \";\n" .
+                "\$params['sql'] .= \"AND METAS.meta_id = '\".dcCore::app()->con->escape(dcCore::app()->ctx->meta->meta_id).\"' \";\n" .
                 "} ?>\n";
         }
     }
 
-    public static function tplSysIfConditions($serie, $attr, $content, $if)
+    public static function addTplPath($core = null)
     {
-        if ($serie == 'Sys' && isset($attr['in_serie'])) {
-            $sign = '';
-            if (substr($attr['in_serie'], 0, 1) == '!') {
-                $sign             = '!';
-                $attr['in_serie'] = substr($attr['in_serie'], 1);
-            }
-            $if[] = $sign . "(\$core->tpl->serieExists('" . addslashes($attr['in_serie']) . "') )";
-        }
-    }
-
-    public static function addTplPath($core)
-    {
-        $tplset = $core->themes->moduleInfo($core->blog->settings->system->theme, 'tplset');
-        if (!empty($tplset) && is_dir(dirname(__FILE__) . '/default-templates/' . $tplset)) {
-            $core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__) . '/default-templates/' . $tplset);
+        $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
+        if (!empty($tplset) && is_dir(__DIR__ . '/default-templates/' . $tplset)) {
+            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/default-templates/' . $tplset);
         } else {
-            $core->tpl->setPath($core->tpl->getPath(), dirname(__FILE__) . '/default-templates/' . DC_DEFAULT_TPLSET);
+            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/default-templates/' . DC_DEFAULT_TPLSET);
         }
     }
 }
@@ -133,15 +118,15 @@ class tplSeries
         }
 
         $res = "<?php\n" .
-            "\$_ctx->meta = \$core->meta->computeMetaStats(\$core->meta->getMetadata(['meta_type'=>'" .
+            "dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(dcCore::app()->meta->getMetadata(['meta_type'=>'" .
             $type . "','limit'=>" . $limit .
             ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC') . "'" : '') .
             '])); ' .
-            "\$_ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
+            "dcCore::app()->ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
-        $res .= '<?php while ($_ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-            '$_ctx->meta = null; ?>';
+        $res .= '<?php while (dcCore::app()->ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
+            'dcCore::app()->ctx->meta = null; ?>';
 
         return $res;
     }
@@ -149,7 +134,7 @@ class tplSeries
     public static function SeriesHeader($attr, $content)
     {
         return
-            '<?php if ($_ctx->meta->isStart()) : ?>' .
+            '<?php if (dcCore::app()->ctx->meta->isStart()) : ?>' .
             $content .
             '<?php endif; ?>';
     }
@@ -157,7 +142,7 @@ class tplSeries
     public static function SeriesFooter($attr, $content)
     {
         return
-            '<?php if ($_ctx->meta->isEnd()) : ?>' .
+            '<?php if (dcCore::app()->ctx->meta->isEnd()) : ?>' .
             $content .
             '<?php endif; ?>';
     }
@@ -176,46 +161,46 @@ class tplSeries
         }
 
         $res = "<?php\n" .
-            "\$_ctx->meta = \$core->meta->getMetaRecordset(\$_ctx->posts->post_meta,'" . $type . "'); " .
-            "\$_ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
+            "dcCore::app()->ctx->meta = dcCore::app()->meta->getMetaRecordset(dcCore::app()->ctx->posts->post_meta,'" . $type . "'); " .
+            "dcCore::app()->ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
-        $res .= '<?php while ($_ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-            '$_ctx->meta = null; ?>';
+        $res .= '<?php while (dcCore::app()->ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
+            'dcCore::app()->ctx->meta = null; ?>';
 
         return $res;
     }
 
     public static function SerieID($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$_ctx->meta->meta_id') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'dcCore::app()->ctx->meta->meta_id') . '; ?>';
     }
 
     public static function SeriePercent($attr)
     {
-        return '<?php echo $_ctx->meta->percent; ?>';
+        return '<?php echo dcCore::app()->ctx->meta->percent; ?>';
     }
 
     public static function SerieRoundPercent($attr)
     {
-        return '<?php echo $_ctx->meta->roundpercent; ?>';
+        return '<?php echo dcCore::app()->ctx->meta->roundpercent; ?>';
     }
 
     public static function SerieURL($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$core->blog->url.$core->url->getURLFor("serie",' .
-            'rawurlencode($_ctx->meta->meta_id))') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->url->getURLFor("serie",' .
+            'rawurlencode(dcCore::app()->ctx->meta->meta_id))') . '; ?>';
     }
 
     public static function SerieCloudURL($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$core->blog->url.$core->url->getURLFor("series")') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->url->getURLFor("series")') . '; ?>';
     }
 
     public static function SerieFeedURL($attr)
@@ -226,22 +211,20 @@ class tplSeries
             $type = 'rss2';
         }
 
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '$core->blog->url.$core->url->getURLFor("serie_feed",' .
-            'rawurlencode($_ctx->meta->meta_id)."/' . $type . '")') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->url->getURLFor("serie_feed",' .
+            'rawurlencode(dcCore::app()->ctx->meta->meta_id)."/' . $type . '")') . '; ?>';
     }
 
     # Widget function
     public static function seriesWidget($w)
     {
-        global $core, $_ctx;
-
         if ($w->offline) {
             return;
         }
 
-        if (($w->homeonly == 1 && !$core->url->isHome($core->url->type)) || ($w->homeonly == 2 && $core->url->isHome($core->url->type))) {
+        if (($w->homeonly == 1 && !dcCore::app()->url->isHome(dcCore::app()->url->type)) || ($w->homeonly == 2 && dcCore::app()->url->isHome(dcCore::app()->url->type))) {
             return;
         }
 
@@ -268,8 +251,8 @@ class tplSeries
             $params['limit'] = abs((int) $w->limit);
         }
 
-        $rs = $core->meta->computeMetaStats(
-            $core->meta->getMetadata($params)
+        $rs = dcCore::app()->meta->computeMetaStats(
+            dcCore::app()->meta->getMetadata($params)
         );
 
         if ($rs->isEmpty()) {
@@ -283,29 +266,29 @@ class tplSeries
 
         $res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '') . '<ul>';
 
-        if ($core->url->type == 'post' && $_ctx->posts instanceof record) {
-            $_ctx->meta = $core->meta->getMetaRecordset($_ctx->posts->post_meta, 'serie');
+        if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof record) {
+            dcCore::app()->ctx->meta = dcCore::app()->meta->getMetaRecordset(dcCore::app()->ctx->posts->post_meta, 'serie');
         }
         while ($rs->fetch()) {
             $class = '';
-            if ($core->url->type == 'post' && $_ctx->posts instanceof record) {
-                while ($_ctx->meta->fetch()) {
-                    if ($_ctx->meta->meta_id == $rs->meta_id) {
+            if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof record) {
+                while (dcCore::app()->ctx->meta->fetch()) {
+                    if (dcCore::app()->ctx->meta->meta_id == $rs->meta_id) {
                         $class = ' class="serie-current"';
 
                         break;
                     }
                 }
             }
-            $res .= '<li' . $class . '><a href="' . $core->blog->url . $core->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
+            $res .= '<li' . $class . '><a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
             'class="serie' . $rs->roundpercent . '">' .
             $rs->meta_id . '</a></li>';
         }
 
         $res .= '</ul>';
 
-        if ($core->url->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '') {
-            $res .= '<p><strong><a href="' . $core->blog->url . $core->url->getURLFor('series') . '">' .
+        if (dcCore::app()->url->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '') {
+            $res .= '<p><strong><a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('series') . '">' .
             html::escapeHTML($w->allserieslinktitle) . '</a></strong></p>';
         }
 
@@ -314,25 +297,27 @@ class tplSeries
 
     public static function seriePostsWidget($w)
     {
-        global $core, $_ctx;
-
         if ($w->offline) {
             return;
         }
 
-        if ($core->url->type != 'post') {
+        if (dcCore::app()->url->type != 'post') {
             return;
         }
 
-        $metas = unserialize($_ctx->posts->post_meta);
+        if (!dcCore::app()->ctx->posts->post_meta) {
+            return;
+        }
+
+        $metas = unserialize(dcCore::app()->ctx->posts->post_meta);
         if (isset($metas['serie'])) {
             $sql = 'SELECT * FROM ' .
-            $core->prefix . 'meta as m,' .
-            $core->prefix . 'post as p ' .
+            dcCore::app()->prefix . 'meta as m,' .
+            dcCore::app()->prefix . 'post as p ' .
             ' WHERE m.post_id = p.post_id ' .
             ' AND post_type = \'post\' ' .
             ' AND post_status = 1 ' .
-            ' AND blog_id = \'' . $core->blog->id . '\'' .
+            ' AND blog_id = \'' . dcCore::app()->blog->id . '\'' .
                 ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {
                 $sql .= " meta_id = '" . $meta . "' ";
@@ -357,7 +342,7 @@ class tplSeries
                 $order = 'asc';
             }
             $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
-            $rs = $core->con->select($sql);
+            $rs = dcCore::app()->con->select($sql);
             if ($rs->isEmpty()) {
                 return;
             }
@@ -372,7 +357,7 @@ class tplSeries
         while ($rs->fetch()) {
             $class = '';
             $link  = true;
-            if ($rs->post_id == $_ctx->posts->post_id) {
+            if ($rs->post_id == dcCore::app()->ctx->posts->post_id) {
                 if ($w->current == 'none') {
                     continue;
                 }
@@ -387,7 +372,7 @@ class tplSeries
                     $list .= '</ul>' . "\n";
                 }
                 if ($w->serietitle) {
-                    $list .= '<h3><a href="' . $core->blog->url . $core->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
+                    $list .= '<h3><a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
                     $rs->meta_id . '</a></h3>' . "\n";
                 }
                 $list .= '<ul>' . "\n";
@@ -395,7 +380,7 @@ class tplSeries
             }
 
             $list .= '<li' . $class . '>' .
-            ($link ? '<a href="' . $core->blog->url . $core->getPostPublicURL($rs->post_type, html::sanitizeURL($rs->post_url)) . '">' : '') .
+            ($link ? '<a href="' . dcCore::app()->blog->url . dcCore::app()->getPostPublicURL($rs->post_type, html::sanitizeURL($rs->post_url)) . '">' : '') .
             html::escapeHTML($rs->post_title) .
                 ($link ? '</a>' : '') .
                 '</li>' . "\n";
@@ -418,18 +403,17 @@ class urlSeries extends dcUrlHandlers
         if ($args == '' && !$n) {
             self::p404();
         } elseif (preg_match('%(.*?)/feed/(rss2|atom)?$%u', $args, $m)) {
-            $type     = $m[2] == 'atom' ? 'atom' : 'rss2';
-            $mime     = 'application/xml';
-            $comments = !empty($m[3]);
+            $type = $m[2] == 'atom' ? 'atom' : 'rss2';
+            $mime = 'application/xml';
 
-            $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
-                $GLOBALS['core']->meta->getMetadata([
+            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
+                dcCore::app()->meta->getMetadata([
                     'meta_type' => 'serie',
                     'meta_id'   => $m[1],
                 ])
             );
 
-            if ($GLOBALS['_ctx']->meta->isEmpty()) {
+            if (dcCore::app()->ctx->meta->isEmpty()) {
                 self::p404();
             } else {
                 $tpl = $type;
@@ -445,14 +429,14 @@ class urlSeries extends dcUrlHandlers
                 $GLOBALS['_page_number'] = $n;
             }
 
-            $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
-                $GLOBALS['core']->meta->getMetadata([
+            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
+                dcCore::app()->meta->getMetadata([
                     'meta_type' => 'serie',
                     'meta_id'   => $args,
                 ])
             );
 
-            if ($GLOBALS['_ctx']->meta->isEmpty()) {
+            if (dcCore::app()->ctx->meta->isEmpty()) {
                 self::p404();
             } else {
                 self::serveDocument('serie.html');
@@ -474,18 +458,18 @@ class urlSeries extends dcUrlHandlers
             $type     = $m[2];
             $comments = !empty($m[3]);
 
-            $GLOBALS['_ctx']->meta = $GLOBALS['core']->meta->computeMetaStats(
-                $GLOBALS['core']->meta->getMetadata([
+            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
+                dcCore::app()->meta->getMetadata([
                     'meta_type' => 'serie',
                     'meta_id'   => $serie,
                 ])
             );
 
-            if ($GLOBALS['_ctx']->meta->isEmpty()) {
+            if (dcCore::app()->ctx->meta->isEmpty()) {
                 # The specified serie does not exist.
                 self::p404();
             } else {
-                $GLOBALS['_ctx']->feed_subtitle = ' - ' . __('Serie') . ' - ' . $GLOBALS['_ctx']->meta->meta_id;
+                dcCore::app()->ctx->feed_subtitle = ' - ' . __('Serie') . ' - ' . dcCore::app()->ctx->meta->meta_id;
 
                 if ($type == 'atom') {
                     $mime = 'application/atom+xml';
@@ -496,10 +480,10 @@ class urlSeries extends dcUrlHandlers
                 $tpl = $type;
                 if ($comments) {
                     $tpl .= '-comments';
-                    $GLOBALS['_ctx']->nb_comment_per_page = $GLOBALS['core']->blog->settings->system->nb_comment_per_feed;
+                    dcCore::app()->ctx->nb_comment_per_page = dcCore::app()->blog->settings->system->nb_comment_per_feed;
                 } else {
-                    $GLOBALS['_ctx']->nb_entry_per_page = $GLOBALS['core']->blog->settings->system->nb_post_per_feed;
-                    $GLOBALS['_ctx']->short_feed_items  = $GLOBALS['core']->blog->settings->system->short_feed_items;
+                    dcCore::app()->ctx->nb_entry_per_page = dcCore::app()->blog->settings->system->nb_post_per_feed;
+                    dcCore::app()->ctx->short_feed_items  = dcCore::app()->blog->settings->system->short_feed_items;
                 }
                 $tpl .= '.xml';
 

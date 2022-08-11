@@ -18,23 +18,23 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 <html>
 <head>
   <title><?php echo __('Series'); ?></title>
-  <?php echo dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series')); ?>
+  <?php echo dcPage::cssModuleLoad('series/style.css', 'screen', dcCore::app()->getVersion('series')); ?>
 </head>
 
 <body>
 <?php
 echo dcPage::breadcrumb(
     [
-        html::escapeHTML($core->blog->name) => '',
-        __('Series')                        => '',
+        html::escapeHTML(dcCore::app()->blog->name) => '',
+        __('Series')                                => '',
     ]
 );
 echo dcPage::notices();
 ?>
 
 <?php
-$series = $core->meta->getMetadata(['meta_type' => 'serie']);
-$series = $core->meta->computeMetaStats($series);
+$series = dcCore::app()->meta->getMetadata(['meta_type' => 'serie']);
+$series = dcCore::app()->meta->computeMetaStats($series);
 $series->sort('meta_id_lower', 'asc');
 
 $last_letter = null;
@@ -53,7 +53,7 @@ while ($series->fetch()) {
     $cols[$col] .= '<tr class="line">' .
     '<td class="maximal"><a href="' . $p_url .
     '&amp;m=serie_posts&amp;serie=' . rawurlencode($series->meta_id) . '">' . $series->meta_id . '</a></td>' .
-    '<td class="nowrap"><strong>' . $series->count . '</strong> ' .
+    '<td class="nowrap count"><strong>' . $series->count . '</strong> ' .
         (($series->count == 1) ? __('entry') : __('entries')) . '</td>' .
         '</tr>';
 

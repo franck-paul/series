@@ -14,10 +14,10 @@ if (!defined('DC_RC_PATH')) {
     return;
 }
 
-$core->url->register('serie', 'serie', '^serie/(.+)$', ['urlSeries', 'serie']);
-$core->url->register('series', 'series', '^series$', ['urlSeries', 'series']);
-$core->url->register('serie_feed', 'feed/serie', '^feed/serie/(.+)$', ['urlSeries', 'serieFeed']);
+dcCore::app()->url->register('serie', 'serie', '^serie/(.+)$', ['urlSeries', 'serie']);
+dcCore::app()->url->register('series', 'series', '^series$', ['urlSeries', 'series']);
+dcCore::app()->url->register('serie_feed', 'feed/serie', '^feed/serie/(.+)$', ['urlSeries', 'serieFeed']);
 
-$__autoload['seriesBehaviors'] = dirname(__FILE__) . '/inc/series.behaviors.php';
+$__autoload['seriesBehaviors'] = __DIR__ . '/inc/series.behaviors.php';
 
-$core->addBehavior('coreInitWikiPost', ['seriesBehaviors', 'coreInitWikiPost']);
+dcCore::app()->addBehavior('coreInitWikiPost', ['seriesBehaviors', 'coreInitWikiPost']);

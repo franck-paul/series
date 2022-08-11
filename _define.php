@@ -18,9 +18,9 @@ $this->registerModule(
     'Series',          // Name
     'Series of posts', // Description
     'Franck Paul',     // Author
-    '1.2',             // Version
+    '1.3',             // Version
     [
-        'requires'    => [['core', '2.20']],        // Dependencies
+        'requires'    => [['core', '2.23']],        // Dependencies
         'permissions' => 'usage,contentadmin',      // Permissions
         'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
         'type'        => 'plugin',                  // Type
@@ -28,7 +28,7 @@ $this->registerModule(
             'pref' => '#user-options.series_prefs',
         ],
 
-        'details'    => 'https://open-time.net/docs/plugins/series',       // Details URL
+        'details'    => 'https://open-time.net/?q=series',       // Details URL
         'support'    => 'https://github.com/franck-paul/series',            // Support URL
         'repository' => 'https://raw.githubusercontent.com/franck-paul/series/master/dcstore.xml',
     ]

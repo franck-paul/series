@@ -26,23 +26,23 @@ if (isset($_POST['new_serie_id'])) {
     $new_id = dcMeta::sanitizeMetaID($_POST['new_serie_id']);
 
     try {
-        if ($core->meta->updateMeta($serie, $new_id, 'serie')) {
+        if (dcCore::app()->meta->updateMeta($serie, $new_id, 'serie')) {
             dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), html::escapeHTML($serie), html::escapeHTML($new_id)));
             http::redirect($p_url . '&m=serie_posts&serie=' . $new_id);
         }
     } catch (Exception $e) {
-        $core->error->add($e->getMessage());
+        dcCore::app()->error->add($e->getMessage());
     }
 }
 
 # Delete a serie
-if (!empty($_POST['delete']) && $core->auth->check('publish,contentadmin', $core->blog->id)) {
+if (!empty($_POST['delete']) && dcCore::app()->auth->check('publish,contentadmin', dcCore::app()->blog->id)) {
     try {
-        $core->meta->delMeta($serie, 'serie');
+        dcCore::app()->meta->delMeta($serie, 'serie');
         dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), html::escapeHTML($serie)));
         http::redirect($p_url . '&m=series');
     } catch (Exception $e) {
-        $core->error->add($e->getMessage());
+        dcCore::app()->error->add($e->getMessage());
     }
 }
 
@@ -56,14 +56,14 @@ $params['post_type'] = '';
 
 # Get posts
 try {
-    $posts     = $core->meta->getPostsByMeta($params);
-    $counter   = $core->meta->getPostsByMeta($params, true);
-    $post_list = new adminPostList($core, $posts, $counter->f(0));
+    $posts     = dcCore::app()->meta->getPostsByMeta($params);
+    $counter   = dcCore::app()->meta->getPostsByMeta($params, true);
+    $post_list = new adminPostList(dcCore::app(), $posts, $counter->f(0));
 } catch (Exception $e) {
-    $core->error->add($e->getMessage());
+    dcCore::app()->error->add($e->getMessage());
 }
 
-$posts_actions_page = new dcPostsActionsPage($core, 'plugin.php', ['p' => 'series', 'm' => 'serie_posts', 'serie' => $serie]);
+$posts_actions_page = new dcPostsActionsPage(dcCore::app(), 'plugin.php', ['p' => 'series', 'm' => 'serie_posts', 'serie' => $serie]);
 
 if ($posts_actions_page->process()) {
     return;
@@ -74,12 +74,12 @@ if ($posts_actions_page->process()) {
 <head>
   <title><?php echo __('Series'); ?></title>
 <?php
-echo dcPage::cssLoad(urldecode(dcPage::getPF('series/style.css')), 'screen', $core->getVersion('series')) .
+echo dcPage::cssModuleLoad('series/style.css', 'screen', dcCore::app()->getVersion('series')) .
 dcPage::jsLoad('js/_posts_list.js') .
 dcPage::jsJson('posts_series_msg', [
     'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), html::escapeHTML($serie)),
 ]) .
-dcPage::jsLoad(urldecode(dcPage::getPF('series/js/posts.js')), $core->getVersion('serie')) .
+dcPage::jsModuleLoad('series/js/posts.js', dcCore::app()->getVersion('serie')) .
 dcPage::jsConfirmClose('serie_rename');
 ?>
 </head>
@@ -88,7 +88,7 @@ dcPage::jsConfirmClose('serie_rename');
 <?php
 echo dcPage::breadcrumb(
     [
-        html::escapeHTML($core->blog->name)                             => '',
+        html::escapeHTML(dcCore::app()->blog->name)                     => '',
         __('Series')                                                    => $p_url . '&amp;m=series',
         __('Serie') . ' &ldquo;' . html::escapeHTML($serie) . '&rdquo;' => '',
     ]
@@ -97,7 +97,7 @@ echo dcPage::notices();
 
 echo '<p><a class="back" href="' . $p_url . '&amp;m=series">' . __('Back to series list') . '</a></p>';
 
-if (!$core->error->flag()) {
+if (!dcCore::app()->error->flag()) {
     /* @phpstan-ignore-next-line */
     if (!$posts->isEmpty()) {
         echo
@@ -107,15 +107,15 @@ if (!$core->error->flag()) {
         '<p><label for="new_serie_id" class="classic">' . __('Rename:') . '</label> ' .
         form::field('new_serie_id', 40, 255, html::escapeHTML($serie)) .
         '<input type="submit" value="' . __('OK') . '" />' .
-        $core->formNonce() .
+        dcCore::app()->formNonce() .
             '</p></form>';
         # Remove serie
         /* @phpstan-ignore-next-line */
-        if (!$posts->isEmpty() && $core->auth->check('contentadmin', $core->blog->id)) {
+        if (!$posts->isEmpty() && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id)) {
             echo
             '<form id="serie_delete" action="' . $this_url . '" method="post">' .
             '<p>' . '<input type="submit" class="delete" name="delete" value="' . __('Delete this serie') . '" />' .
-            $core->formNonce() .
+            dcCore::app()->formNonce() .
                 '</p></form>';
         }
         echo '</div>';
@@ -141,7 +141,7 @@ if (!$core->error->flag()) {
         form::hidden('p', 'series') .
         form::hidden('m', 'serie_posts') .
         form::hidden('serie', $serie) .
-        $core->formNonce() .
+        dcCore::app()->formNonce() .
         '</div>' .
         '</form>'
     );

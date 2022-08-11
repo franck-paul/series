@@ -36,7 +36,7 @@ jsToolBar.prototype.elements.serie.fn.wiki = function () {
   });
 };
 jsToolBar.prototype.elements.serie.fn.markdown = function () {
-  const url = this.elements.serie.url;
+  const { url } = this.elements.serie;
   this.encloseSelection('', '', function (str) {
     if (str == '') {
       window.alert(dotclear.msg.no_selection);
@@ -50,7 +50,7 @@ jsToolBar.prototype.elements.serie.fn.markdown = function () {
   });
 };
 jsToolBar.prototype.elements.serie.fn.xhtml = function () {
-  const url = this.elements.serie.url;
+  const { url } = this.elements.serie;
   this.encloseSelection('', '', function (str) {
     if (str == '') {
       window.alert(dotclear.msg.no_selection);

@@ -14,8 +14,8 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-$new_version = $core->plugins->moduleInfo('series', 'version');
-$old_version = $core->getVersion('series');
+$new_version = dcCore::app()->plugins->moduleInfo('series', 'version');
+$old_version = dcCore::app()->getVersion('series');
 
 if (version_compare($old_version, $new_version, '>=')) {
     return;
@@ -34,11 +34,11 @@ try {
         @rmdir(__DIR__ . '/' . 'default-templates/currwurst');
     }
 
-    $core->setVersion('series', $new_version);
+    dcCore::app()->setVersion('series', $new_version);
 
     return true;
 } catch (Exception $e) {
-    $core->error->add($e->getMessage());
+    dcCore::app()->error->add($e->getMessage());
 }
 
 return false;

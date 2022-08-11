@@ -10,7 +10,7 @@ $(() => {
   serie_field.hide();
 
   const target = $('#series_list');
-  let mEdit = new metaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'));
+  const mEdit = new metaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'));
   mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
 
   mEdit.meta_dialog = $('<input type="text" />');
@@ -34,7 +34,7 @@ $(() => {
     matchSubset: false,
     matchContains: true,
     parse(xml) {
-      let results = [];
+      const results = [];
       $(xml)
         .find('meta')
         .each(function () {

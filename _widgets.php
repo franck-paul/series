@@ -14,8 +14,8 @@ if (!defined('DC_RC_PATH')) {
     return;
 }
 
-$core->addBehavior('initWidgets', ['seriesWidgets', 'initWidgets']);
-$core->addBehavior('initDefaultWidgets', ['seriesWidgets', 'initDefaultWidgets']);
+dcCore::app()->addBehavior('initWidgets', ['seriesWidgets', 'initWidgets']);
+dcCore::app()->addBehavior('initDefaultWidgets', ['seriesWidgets', 'initDefaultWidgets']);
 
 class seriesWidgets
 {

@@ -3,7 +3,7 @@
 
 Object.assign(dotclear.msg, dotclear.getData('ck_editor_series'));
 
-(() => {
+{
   CKEDITOR.plugins.add('dcseries', {
     init(editor) {
       editor.addCommand('dcSeriesCommand', {
@@ -27,4 +27,4 @@ Object.assign(dotclear.msg, dotclear.getData('ck_editor_series'));
       });
     },
   });
-})();
+}
