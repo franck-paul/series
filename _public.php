@@ -61,7 +61,7 @@ class behaviorsSeries
         }
     }
 
-    public static function templateBeforeBlock($core = null, $b, $attr)
+    public static function templateBeforeBlock($core, $b, $attr)
     {
         if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie'])) {
             return

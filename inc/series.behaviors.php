@@ -12,7 +12,7 @@
  */
 class seriesBehaviors
 {
-    public static function adminDashboardFavorites($core = null, $favs)
+    public static function adminDashboardFavorites($core, $favs)
     {
         $favs->register('series', [
             'title'       => __('Series'),
@@ -115,7 +115,7 @@ class seriesBehaviors
         }
     }
 
-    public static function adminPostsActionsPage($core = null, $ap)
+    public static function adminPostsActionsPage($core, $ap)
     {
         $ap->addAction(
             [__('Series') => [__('Add series') => 'series']],
@@ -130,7 +130,7 @@ class seriesBehaviors
         }
     }
 
-    public static function adminAddSeries($core = null, dcPostsActionsPage $ap, $post)
+    public static function adminAddSeries($core, dcPostsActionsPage $ap, $post)
     {
         if (!empty($post['new_series'])) {
             $series = dcCore::app()->meta->splitMetaValues($_POST['new_series']);
@@ -214,7 +214,7 @@ class seriesBehaviors
         }
     }
 
-    public static function adminRemoveSeries($core = null, dcPostsActionsPage $ap, $post)
+    public static function adminRemoveSeries($core, dcPostsActionsPage $ap, $post)
     {
         if (!empty($post['meta_id']) && dcCore::app()->auth->check('delete,contentadmin', dcCore::app()->blog->id)) {
             $posts = $ap->getRS();
