@@ -63,7 +63,7 @@ try {
     dcCore::app()->error->add($e->getMessage());
 }
 
-$posts_actions_page = new dcPostsActionsPage(dcCore::app(), 'plugin.php', ['p' => 'series', 'm' => 'serie_posts', 'serie' => $serie]);
+$posts_actions_page = new dcPostsActions('plugin.php', ['p' => 'series', 'm' => 'serie_posts', 'serie' => $serie]);
 
 if ($posts_actions_page->process()) {
     return;

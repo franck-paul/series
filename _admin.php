@@ -34,7 +34,7 @@ dcCore::app()->addBehavior('adminAfterPostUpdate', ['seriesBehaviors', 'setSerie
 
 dcCore::app()->addBehavior('adminPostHeaders', ['seriesBehaviors', 'postHeaders']);
 
-dcCore::app()->addBehavior('adminPostsActionsPage', ['seriesBehaviors', 'adminPostsActionsPage']);
+dcCore::app()->addBehavior('adminPostsActions', ['seriesBehaviors', 'adminPostsActionsPage']);
 
 dcCore::app()->addBehavior('adminPreferencesForm', ['seriesBehaviors', 'adminUserForm']);
 dcCore::app()->addBehavior('adminBeforeUserOptionsUpdate', ['seriesBehaviors', 'setSerieListFormat']);
