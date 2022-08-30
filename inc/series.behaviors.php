@@ -35,6 +35,7 @@ class seriesBehaviors
             }
             unset($rs);
         } catch (Exception $e) {
+            // Ignore exceptions
         }
 
         return $series_combo;
@@ -48,7 +49,7 @@ class seriesBehaviors
         }
     }
 
-    public static function adminSimpleMenuSelect($item_type, $input_name)
+    public static function adminSimpleMenuSelect($item_type)
     {
         if ($item_type == 'series') {
             $series_combo = self::adminSimpleMenuGetCombo();
@@ -313,7 +314,7 @@ class seriesBehaviors
         $wiki2xhtml->registerFunction('url:serie', ['seriesBehaviors', 'wiki2xhtmlSerie']);
     }
 
-    public static function adminPostEditor($editor = '', $context = '', array $tags = [], $syntax = '')
+    public static function adminPostEditor($editor = '', $context = '')
     {
         if (($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor') || $context != 'post') {
             return;

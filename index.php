@@ -14,12 +14,6 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-if (!empty($_REQUEST['m'])) {
-    switch ($_REQUEST['m']) {
-        case 'series':
-        case 'serie_posts':
-            require __DIR__ . '/' . $_REQUEST['m'] . '.php';
-
-            break;
-    }
+if (!empty($_REQUEST['m']) && in_array($_REQUEST['m'], ['series','serie_posts'])) {
+    require __DIR__ . '/' . $_REQUEST['m'] . '.php';
 }

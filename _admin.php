@@ -17,7 +17,7 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 // dead but useful code, in order to have translations
 __('Series') . __('Series of posts');
 
-$_menu['Blog']->addItem(
+dcCore::app()->menu['Blog']->addItem(
     __('Series'),
     'plugin.php?p=series&amp;m=series',
     urldecode(dcPage::getPF('series/icon.svg')),

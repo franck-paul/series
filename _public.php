@@ -48,7 +48,7 @@ class behaviorsSeries
             // Serie
 
             // Get current page if set
-            $page = isset($GLOBALS['_page_number']) ? (int) $GLOBALS['_page_number'] : 0;
+            $page = dcCore::app()->public->getPageNumber();
             $ret  = '<a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('series') . '">' . __('All series') . '</a>';
             if ($page == 0) {
                 $ret .= $separator . dcCore::app()->ctx->meta->meta_id;
@@ -88,7 +88,7 @@ class behaviorsSeries
         }
     }
 
-    public static function addTplPath($core = null)
+    public static function addTplPath()
     {
         $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
         if (!empty($tplset) && is_dir(__DIR__ . '/default-templates/' . $tplset)) {
@@ -178,12 +178,12 @@ class tplSeries
         return '<?php echo ' . sprintf($f, 'dcCore::app()->ctx->meta->meta_id') . '; ?>';
     }
 
-    public static function SeriePercent($attr)
+    public static function SeriePercent()
     {
         return '<?php echo dcCore::app()->ctx->meta->percent; ?>';
     }
 
-    public static function SerieRoundPercent($attr)
+    public static function SerieRoundPercent()
     {
         return '<?php echo dcCore::app()->ctx->meta->roundpercent; ?>';
     }
@@ -426,7 +426,7 @@ class urlSeries extends dcUrlHandlers
             }
         } else {
             if ($n) {
-                $GLOBALS['_page_number'] = $n;
+                dcCore::app()->public->setPageNumber($n);
             }
 
             dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
@@ -444,7 +444,7 @@ class urlSeries extends dcUrlHandlers
         }
     }
 
-    public static function series($args)
+    public static function series()
     {
         self::serveDocument('series.html');
     }
