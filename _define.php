@@ -20,7 +20,7 @@ $this->registerModule(
     'Franck Paul',     // Author
     '1.3.1',
     [
-        'requires'    => [['core', '2.23']],        // Dependencies
+        'requires'    => [['core', '2.24']],        // Dependencies
         'permissions' => 'usage,contentadmin',      // Permissions
         'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
         'type'        => 'plugin',                  // Type
