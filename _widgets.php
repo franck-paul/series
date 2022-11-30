@@ -14,9 +14,6 @@ if (!defined('DC_RC_PATH')) {
     return;
 }
 
-dcCore::app()->addBehavior('initWidgets', ['seriesWidgets', 'initWidgets']);
-dcCore::app()->addBehavior('initDefaultWidgets', ['seriesWidgets', 'initDefaultWidgets']);
-
 class seriesWidgets
 {
     public static function initWidgets($w)
@@ -107,6 +104,9 @@ class seriesWidgets
 
     public static function initDefaultWidgets($w, $d)
     {
-        $d['nav']->append($w->series);
+        $d[defaultWidgets::WIDGETS_NAV]->append($w->series);
     }
 }
+
+dcCore::app()->addBehavior('initWidgets', [seriesWidgets::class, 'initWidgets']);
+dcCore::app()->addBehavior('initDefaultWidgets', [seriesWidgets::class, 'initDefaultWidgets']);

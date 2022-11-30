@@ -12,14 +12,17 @@
  */
 class seriesBehaviors
 {
-    public static function adminDashboardFavorites($core, $favs)
+    public static function adminDashboardFavorites($favs)
     {
         $favs->register('series', [
             'title'       => __('Series'),
             'url'         => 'plugin.php?p=series&amp;m=series',
             'small-icon'  => urldecode(dcPage::getPF('series/icon.svg')),
             'large-icon'  => urldecode(dcPage::getPF('series/icon.svg')),
-            'permissions' => 'usage,contentadmin',
+            'permissions' => dcCore::app()->auth->makePermissions([
+                dcAuth::PERMISSION_USAGE,
+                dcAuth::PERMISSION_CONTENT_ADMIN,
+            ]),
         ]);
     }
 
@@ -116,14 +119,17 @@ class seriesBehaviors
         }
     }
 
-    public static function adminPostsActionsPage(dcPostsActions $ap)
+    public static function adminPostsActions(dcPostsActions $ap)
     {
         $ap->addAction(
             [__('Series') => [__('Add series') => 'series']],
             ['seriesBehaviors', 'adminAddSeries']
         );
 
-        if (dcCore::app()->auth->check('delete,contentadmin', dcCore::app()->blog->id)) {
+        if (dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_DELETE,
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]), dcCore::app()->blog->id)) {
             $ap->addAction(
                 [__('Series') => [__('Remove series') => 'series_remove']],
                 ['seriesBehaviors', 'adminRemoveSeries']
@@ -217,7 +223,10 @@ class seriesBehaviors
 
     public static function adminRemoveSeries(dcPostsActions $ap, arrayObject $post)
     {
-        if (!empty($post['meta_id']) && dcCore::app()->auth->check('delete,contentadmin', dcCore::app()->blog->id)) {
+        if (!empty($post['meta_id']) && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_DELETE,
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]), dcCore::app()->blog->id)) {
             $posts = $ap->getRS();
             while ($posts->fetch()) {
                 foreach ($_POST['meta_id'] as $v) {
@@ -352,12 +361,27 @@ class seriesBehaviors
         ];
     }
 
-    public static function adminUserForm($args)
+    public static function adminPreferencesForm()
     {
-        if ($args instanceof dcCore) {
-            $opts = $args->auth->getOptions();
-        } elseif ($args instanceof record) {
-            $opts = $args->options();
+        $opts = dcCore::app()->auth->getOptions();
+
+        $combo                 = [];
+        $combo[__('Short')]    = 'more';
+        $combo[__('Extended')] = 'all';
+
+        $value = array_key_exists('serie_list_format', $opts) ? $opts['serie_list_format'] : 'more';
+
+        echo
+        '<div class="fieldset"><h5 id="series_prefs">' . __('Series') . '</h5>' .
+        '<p><label for="user_serie_list_format" class="classic">' . __('Series list format:') . '</label> ' .
+        form::combo('user_serie_list_format', $combo, $value) .
+        '</p></div>';
+    }
+
+    public static function adminUserForm($rs)
+    {
+        if ($rs instanceof dcRecord) {
+            $opts = $rs->options();
         } else {
             $opts = [];
         }
@@ -372,7 +396,7 @@ class seriesBehaviors
         '<div class="fieldset"><h5 id="series_prefs">' . __('Series') . '</h5>' .
         '<p><label for="user_serie_list_format" class="classic">' . __('Series list format:') . '</label> ' .
         form::combo('user_serie_list_format', $combo, $value) .
-            '</p></div>';
+        '</p></div>';
     }
 
     public static function setSerieListFormat($cur, $user_id = null)

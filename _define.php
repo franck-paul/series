@@ -15,21 +15,24 @@ if (!defined('DC_RC_PATH')) {
 }
 
 $this->registerModule(
-    'Series',          // Name
-    'Series of posts', // Description
-    'Franck Paul',     // Author
-    '1.3.1',
+    'Series',
+    'Series of posts',
+    'Franck Paul',
+    '2.0',
     [
-        'requires'    => [['core', '2.24']],        // Dependencies
-        'permissions' => 'usage,contentadmin',      // Permissions
-        'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
-        'type'        => 'plugin',                  // Type
-        'settings'    => [
+        'requires'    => [['core', '2.24']],
+        'permissions' => dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_USAGE,
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]),
+        'priority' => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
+        'type'     => 'plugin',
+        'settings' => [
             'pref' => '#user-options.series_prefs',
         ],
 
-        'details'    => 'https://open-time.net/?q=series',       // Details URL
-        'support'    => 'https://github.com/franck-paul/series',            // Support URL
+        'details'    => 'https://open-time.net/?q=series',
+        'support'    => 'https://github.com/franck-paul/series',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/series/master/dcstore.xml',
     ]
 );

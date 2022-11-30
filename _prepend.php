@@ -18,6 +18,6 @@ dcCore::app()->url->register('serie', 'serie', '^serie/(.+)$', ['urlSeries', 'se
 dcCore::app()->url->register('series', 'series', '^series$', ['urlSeries', 'series']);
 dcCore::app()->url->register('serie_feed', 'feed/serie', '^feed/serie/(.+)$', ['urlSeries', 'serieFeed']);
 
-$__autoload['seriesBehaviors'] = __DIR__ . '/inc/series.behaviors.php';
+Clearbricks::lib()->autoload(['seriesBehaviors' => __DIR__ . '/inc/series.behaviors.php']);
 
-dcCore::app()->addBehavior('coreInitWikiPost', ['seriesBehaviors', 'coreInitWikiPost']);
+dcCore::app()->addBehavior('coreInitWikiPost', [seriesBehaviors::class, 'coreInitWikiPost']);

@@ -17,17 +17,17 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 $new_version = dcCore::app()->plugins->moduleInfo('series', 'version');
 $old_version = dcCore::app()->getVersion('series');
 
-if (version_compare($old_version, $new_version, '>=')) {
+if (version_compare((string) $old_version, $new_version, '>=')) {
     return;
 }
 
 try {
-    if (version_compare($old_version, '1.0', '<')) {
+    if (version_compare((string) $old_version, '1.0', '<')) {
         // Remove js/jquery.autocomplete.js
         @unlink(__DIR__ . '/' . 'js/jquery.autocomplete.js');
     }
 
-    if (version_compare($old_version, '1.2', '<')) {
+    if (version_compare((string) $old_version, '1.2', '<')) {
         // Remove default-templates/currwurst
         @unlink(__DIR__ . '/' . 'default-templates/currwurst/serie.html');
         @unlink(__DIR__ . '/' . 'default-templates/currwurst/series.html');

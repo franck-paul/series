@@ -36,7 +36,10 @@ if (isset($_POST['new_serie_id'])) {
 }
 
 # Delete a serie
-if (!empty($_POST['delete']) && dcCore::app()->auth->check('publish,contentadmin', dcCore::app()->blog->id)) {
+if (!empty($_POST['delete']) && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+    dcAuth::PERMISSION_USAGE,
+    dcAuth::PERMISSION_CONTENT_ADMIN,
+]), dcCore::app()->blog->id)) {
     try {
         dcCore::app()->meta->delMeta($serie, 'serie');
         dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), html::escapeHTML($serie)));
@@ -111,7 +114,9 @@ if (!dcCore::app()->error->flag()) {
             '</p></form>';
         # Remove serie
         /* @phpstan-ignore-next-line */
-        if (!$posts->isEmpty() && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id)) {
+        if (!$posts->isEmpty() && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]), dcCore::app()->blog->id)) {
             echo
             '<form id="serie_delete" action="' . $this_url . '" method="post">' .
             '<p>' . '<input type="submit" class="delete" name="delete" value="' . __('Delete this serie') . '" />' .

@@ -18,30 +18,13 @@ if (!defined('DC_RC_PATH')) {
 __("This serie's comments Atom feed");
 __("This serie's entries Atom feed");
 
-require __DIR__ . '/_widgets.php';
-
-dcCore::app()->tpl->addBlock('Series', ['tplSeries', 'Series']);
-dcCore::app()->tpl->addBlock('SeriesHeader', ['tplSeries', 'SeriesHeader']);
-dcCore::app()->tpl->addBlock('SeriesFooter', ['tplSeries', 'SeriesFooter']);
-dcCore::app()->tpl->addBlock('EntrySeries', ['tplSeries', 'EntrySeries']);
-dcCore::app()->tpl->addValue('SerieID', ['tplSeries', 'SerieID']);
-dcCore::app()->tpl->addValue('SeriePercent', ['tplSeries', 'SeriePercent']);
-dcCore::app()->tpl->addValue('SerieRoundPercent', ['tplSeries', 'SerieRoundPercent']);
-dcCore::app()->tpl->addValue('SerieURL', ['tplSeries', 'SerieURL']);
-dcCore::app()->tpl->addValue('SerieCloudURL', ['tplSeries', 'SerieCloudURL']);
-dcCore::app()->tpl->addValue('SerieFeedURL', ['tplSeries', 'SerieFeedURL']);
-
-dcCore::app()->addBehavior('templateBeforeBlock', ['behaviorsSeries', 'templateBeforeBlock']);
-dcCore::app()->addBehavior('publicBeforeDocument', ['behaviorsSeries', 'addTplPath']);
-
-dcCore::app()->addBehavior('publicBreadcrumb', ['behaviorsSeries', 'publicBreadcrumb']);
+require_once __DIR__ . '/_widgets.php';
 
 class behaviorsSeries
 {
     public static function publicBreadcrumb($context, $separator)
     {
         if ($context == 'series') {
-
             // All series
             return __('All series');
         } elseif ($context == 'serie') {
@@ -61,7 +44,7 @@ class behaviorsSeries
         }
     }
 
-    public static function templateBeforeBlock($core, $b, $attr)
+    public static function templateBeforeBlock($b, $attr)
     {
         if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie'])) {
             return
@@ -91,13 +74,18 @@ class behaviorsSeries
     public static function addTplPath()
     {
         $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
-        if (!empty($tplset) && is_dir(__DIR__ . '/default-templates/' . $tplset)) {
-            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/default-templates/' . $tplset);
+        if (!empty($tplset) && is_dir(__DIR__ . '/' . dcPublic::TPL_ROOT . '/' . $tplset)) {
+            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/' . dcPublic::TPL_ROOT . '/' . $tplset);
         } else {
-            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/default-templates/' . DC_DEFAULT_TPLSET);
+            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/' . dcPublic::TPL_ROOT . '/' . DC_DEFAULT_TPLSET);
         }
     }
 }
+
+dcCore::app()->addBehavior('templateBeforeBlockV2', [behaviorsSeries::class, 'templateBeforeBlock']);
+dcCore::app()->addBehavior('publicBeforeDocumentV2', [behaviorsSeries::class, 'addTplPath']);
+
+dcCore::app()->addBehavior('publicBreadcrumb', [behaviorsSeries::class, 'publicBreadcrumb']);
 
 class tplSeries
 {
@@ -266,12 +254,12 @@ class tplSeries
 
         $res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '') . '<ul>';
 
-        if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof record) {
+        if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof dcRecord) {
             dcCore::app()->ctx->meta = dcCore::app()->meta->getMetaRecordset(dcCore::app()->ctx->posts->post_meta, 'serie');
         }
         while ($rs->fetch()) {
             $class = '';
-            if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof record) {
+            if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof dcRecord) {
                 while (dcCore::app()->ctx->meta->fetch()) {
                     if (dcCore::app()->ctx->meta->meta_id == $rs->meta_id) {
                         $class = ' class="serie-current"';
@@ -312,11 +300,11 @@ class tplSeries
         $metas = unserialize(dcCore::app()->ctx->posts->post_meta);
         if (isset($metas['serie'])) {
             $sql = 'SELECT * FROM ' .
-            dcCore::app()->prefix . 'meta as m,' .
-            dcCore::app()->prefix . 'post as p ' .
+            dcCore::app()->prefix . dcMeta::META_TABLE_NAME . ' as m,' .
+            dcCore::app()->prefix . dcBlog::POST_TABLE_NAME . ' as p ' .
             ' WHERE m.post_id = p.post_id ' .
             ' AND post_type = \'post\' ' .
-            ' AND post_status = 1 ' .
+            ' AND post_status = ' . dcBlog::POST_PUBLISHED . ' ' .
             ' AND blog_id = \'' . dcCore::app()->blog->id . '\'' .
                 ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {
@@ -342,7 +330,7 @@ class tplSeries
                 $order = 'asc';
             }
             $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
-            $rs = dcCore::app()->con->select($sql);
+            $rs = new dcRecord(dcCore::app()->con->select($sql));
             if ($rs->isEmpty()) {
                 return;
             }
@@ -393,6 +381,17 @@ class tplSeries
         return $w->renderDiv($w->content_only, 'series-posts ' . $w->class, '', $res);
     }
 }
+
+dcCore::app()->tpl->addBlock('Series', [tplSeries::class, 'Series']);
+dcCore::app()->tpl->addBlock('SeriesHeader', [tplSeries::class, 'SeriesHeader']);
+dcCore::app()->tpl->addBlock('SeriesFooter', [tplSeries::class, 'SeriesFooter']);
+dcCore::app()->tpl->addBlock('EntrySeries', [tplSeries::class, 'EntrySeries']);
+dcCore::app()->tpl->addValue('SerieID', [tplSeries::class, 'SerieID']);
+dcCore::app()->tpl->addValue('SeriePercent', [tplSeries::class, 'SeriePercent']);
+dcCore::app()->tpl->addValue('SerieRoundPercent', [tplSeries::class, 'SerieRoundPercent']);
+dcCore::app()->tpl->addValue('SerieURL', [tplSeries::class, 'SerieURL']);
+dcCore::app()->tpl->addValue('SerieCloudURL', [tplSeries::class, 'SerieCloudURL']);
+dcCore::app()->tpl->addValue('SerieFeedURL', [tplSeries::class, 'SerieFeedURL']);
 
 class urlSeries extends dcUrlHandlers
 {
