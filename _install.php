@@ -14,27 +14,24 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-$new_version = dcCore::app()->plugins->moduleInfo('series', 'version');
-$old_version = dcCore::app()->getVersion('series');
-
-if (version_compare((string) $old_version, $new_version, '>=')) {
+if (!dcCore::app()->newVersion(basename(__DIR__), dcCore::app()->plugins->moduleInfo(basename(__DIR__), 'version'))) {
     return;
 }
 
 try {
+    $old_version = dcCore::app()->getVersion(basename(__DIR__));
+
     if (version_compare((string) $old_version, '1.0', '<')) {
         // Remove js/jquery.autocomplete.js
-        @unlink(__DIR__ . '/' . 'js/jquery.autocomplete.js');
+        @unlink(dcUtils::path([__DIR__, 'js/jquery.autocomplete.js']));
     }
 
     if (version_compare((string) $old_version, '1.2', '<')) {
         // Remove default-templates/currwurst
-        @unlink(__DIR__ . '/' . 'default-templates/currwurst/serie.html');
-        @unlink(__DIR__ . '/' . 'default-templates/currwurst/series.html');
-        @rmdir(__DIR__ . '/' . 'default-templates/currwurst');
+        @unlink(dcUtils::path([__DIR__, 'default-templates','currwurst','serie.html']));
+        @unlink(dcUtils::path([__DIR__, 'default-templates','currwurst','series.html']));
+        @rmdir(dcUtils::path([__DIR__, 'default-templates','currwurst']));
     }
-
-    dcCore::app()->setVersion('series', $new_version);
 
     return true;
 } catch (Exception $e) {

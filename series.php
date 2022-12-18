@@ -51,7 +51,7 @@ while ($series->fetch()) {
     }
 
     $cols[$col] .= '<tr class="line">' .
-    '<td class="maximal"><a href="' . $p_url .
+    '<td class="maximal"><a href="' . dcCore::app()->admin->getPageURL() .
     '&amp;m=serie_posts&amp;serie=' . rawurlencode($series->meta_id) . '">' . $series->meta_id . '</a></td>' .
     '<td class="nowrap count"><strong>' . $series->count . '</strong> ' .
         (($series->count == 1) ? __('entry') : __('entries')) . '</td>' .
