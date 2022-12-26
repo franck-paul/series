@@ -18,7 +18,7 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 <html>
 <head>
   <title><?php echo __('Series'); ?></title>
-  <?php echo dcPage::cssModuleLoad('series/style.css', 'screen', dcCore::app()->getVersion('series')); ?>
+  <?php echo dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series')); ?>
 </head>
 
 <body>

@@ -204,7 +204,7 @@ class seriesBehaviors
                 dcPage::jsJson('editor_series_msg', $msg) .
                 dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
                 dcPage::jsModuleLoad('series/js/posts_actions.js', dcCore::app()->getVersion('series')) .
-                dcPage::cssModuleLoad('series/style.css', 'screen', dcCore::app()->getVersion('series'))
+                dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series'))
             );
             echo
             '<form action="' . $ap->getURI() . '" method="post">' .
@@ -315,7 +315,7 @@ class seriesBehaviors
         dcPage::jsJson('editor_series_msg', $msg) .
         dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
         dcPage::jsModuleLoad('series/js/post.js', dcCore::app()->getVersion('series')) .
-        dcPage::cssModuleLoad('series/style.css', 'screen', dcCore::app()->getVersion('series'));
+        dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series'));
     }
 
     public static function coreInitWikiPost($wiki2xhtml)

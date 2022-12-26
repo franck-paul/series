@@ -77,7 +77,7 @@ if ($posts_actions_page->process()) {
 <head>
   <title><?php echo __('Series'); ?></title>
 <?php
-echo dcPage::cssModuleLoad('series/style.css', 'screen', dcCore::app()->getVersion('series')) .
+echo dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series')) .
 dcPage::jsLoad('js/_posts_list.js') .
 dcPage::jsJson('posts_series_msg', [
     'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), html::escapeHTML($serie)),
