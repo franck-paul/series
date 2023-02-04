@@ -30,28 +30,30 @@ dcCore::app()->menu[dcAdmin::MENU_BLOG]->addItem(
 
 require_once __DIR__ . '/_widgets.php';
 
-dcCore::app()->addBehavior('adminPostFormItems', [seriesBehaviors::class, 'seriesField']);
+dcCore::app()->addBehaviors([
+    'adminPostFormItems'           => [seriesBehaviors::class, 'seriesField'],
 
-dcCore::app()->addBehavior('adminAfterPostCreate', [seriesBehaviors::class, 'setSeries']);
-dcCore::app()->addBehavior('adminAfterPostUpdate', [seriesBehaviors::class, 'setSeries']);
+    'adminAfterPostCreate'         => [seriesBehaviors::class, 'setSeries'],
+    'adminAfterPostUpdate'         => [seriesBehaviors::class, 'setSeries'],
 
-dcCore::app()->addBehavior('adminPostHeaders', [seriesBehaviors::class, 'postHeaders']);
+    'adminPostHeaders'             => [seriesBehaviors::class, 'postHeaders'],
 
-dcCore::app()->addBehavior('adminPostsActions', [seriesBehaviors::class, 'adminPostsActions']);
+    'adminPostsActions'            => [seriesBehaviors::class, 'adminPostsActions'],
 
-dcCore::app()->addBehavior('adminPreferencesFormV2', [seriesBehaviors::class, 'adminPreferencesForm']);
-dcCore::app()->addBehavior('adminBeforeUserOptionsUpdate', [seriesBehaviors::class, 'setSerieListFormat']);
+    'adminPreferencesFormV2'       => [seriesBehaviors::class, 'adminPreferencesForm'],
+    'adminBeforeUserOptionsUpdate' => [seriesBehaviors::class, 'setSerieListFormat'],
 
-dcCore::app()->addBehavior('adminUserForm', [seriesBehaviors::class, 'adminUserForm']);
-dcCore::app()->addBehavior('adminBeforeUserCreate', [seriesBehaviors::class, 'setSerieListFormat']);
-dcCore::app()->addBehavior('adminBeforeUserUpdate', [seriesBehaviors::class, 'setSerieListFormat']);
+    'adminUserForm'                => [seriesBehaviors::class, 'adminUserForm'],
+    'adminBeforeUserCreate'        => [seriesBehaviors::class, 'setSerieListFormat'],
+    'adminBeforeUserUpdate'        => [seriesBehaviors::class, 'setSerieListFormat'],
 
-dcCore::app()->addBehavior('adminPostEditor', [seriesBehaviors::class, 'adminPostEditor']);
-dcCore::app()->addBehavior('ckeditorExtraPlugins', [seriesBehaviors::class, 'ckeditorExtraPlugins']);
+    'adminPostEditor'              => [seriesBehaviors::class, 'adminPostEditor'],
+    'ckeditorExtraPlugins'         => [seriesBehaviors::class, 'ckeditorExtraPlugins'],
 
-/* Register favorite */
-dcCore::app()->addBehavior('adminDashboardFavoritesV2', [seriesBehaviors::class, 'adminDashboardFavorites']);
+    // Register favorite
+    'adminDashboardFavoritesV2'    => [seriesBehaviors::class, 'adminDashboardFavorites'],
 
-dcCore::app()->addBehavior('adminSimpleMenuAddType', [seriesBehaviors::class, 'adminSimpleMenuAddType']);
-dcCore::app()->addBehavior('adminSimpleMenuSelect', [seriesBehaviors::class, 'adminSimpleMenuSelect']);
-dcCore::app()->addBehavior('adminSimpleMenuBeforeEdit', [seriesBehaviors::class, 'adminSimpleMenuBeforeEdit']);
+    'adminSimpleMenuAddType'       => [seriesBehaviors::class, 'adminSimpleMenuAddType'],
+    'adminSimpleMenuSelect'        => [seriesBehaviors::class, 'adminSimpleMenuSelect'],
+    'adminSimpleMenuBeforeEdit'    => [seriesBehaviors::class, 'adminSimpleMenuBeforeEdit'],
+]);

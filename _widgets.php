@@ -10,10 +10,6 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
-
 class seriesWidgets
 {
     public static function initWidgets($w)
@@ -108,5 +104,7 @@ class seriesWidgets
     }
 }
 
-dcCore::app()->addBehavior('initWidgets', [seriesWidgets::class, 'initWidgets']);
-dcCore::app()->addBehavior('initDefaultWidgets', [seriesWidgets::class, 'initDefaultWidgets']);
+dcCore::app()->addBehaviors([
+    'initWidgets'        => [seriesWidgets::class, 'initWidgets'],
+    'initDefaultWidgets' => [seriesWidgets::class, 'initDefaultWidgets'],
+]);

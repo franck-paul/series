@@ -10,9 +10,6 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
 
 # Localized string we find in template
 __("This serie's comments Atom feed");
@@ -82,10 +79,12 @@ class behaviorsSeries
     }
 }
 
-dcCore::app()->addBehavior('templateBeforeBlockV2', [behaviorsSeries::class, 'templateBeforeBlock']);
-dcCore::app()->addBehavior('publicBeforeDocumentV2', [behaviorsSeries::class, 'addTplPath']);
+dcCore::app()->addBehaviors([
+    'templateBeforeBlockV2'  => [behaviorsSeries::class, 'templateBeforeBlock'],
+    'publicBeforeDocumentV2' => [behaviorsSeries::class, 'addTplPath'],
 
-dcCore::app()->addBehavior('publicBreadcrumb', [behaviorsSeries::class, 'publicBreadcrumb']);
+    'publicBreadcrumb'       => [behaviorsSeries::class, 'publicBreadcrumb'],
+]);
 
 class tplSeries
 {
@@ -193,7 +192,7 @@ class tplSeries
 
     public static function SerieFeedURL($attr)
     {
-        $type = !empty($attr['type']) ? $attr['type'] : 'rss2';
+        $type = !empty($attr['type']) ? (string) $attr['type'] : 'rss2';
 
         if (!preg_match('#^(rss2|atom)$#', $type)) {
             $type = 'rss2';
@@ -309,7 +308,7 @@ class tplSeries
                 ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {
                 $sql .= " meta_id = '" . $meta . "' ";
-                if ($key < count($metas['serie']) - 1) {
+                if ($key < (is_countable($metas['serie']) ? count($metas['serie']) : 0) - 1) {
                     $sql .= ' OR ';
                 }
             }
@@ -401,7 +400,7 @@ class urlSeries extends dcUrlHandlers
 
         if ($args == '' && !$n) {
             self::p404();
-        } elseif (preg_match('%(.*?)/feed/(rss2|atom)?$%u', $args, $m)) {
+        } elseif (preg_match('%(.*?)/feed/(rss2|atom)?$%u', (string) $args, $m)) {
             $type = $m[2] == 'atom' ? 'atom' : 'rss2';
             $mime = 'application/xml';
 
@@ -450,7 +449,7 @@ class urlSeries extends dcUrlHandlers
 
     public static function serieFeed($args)
     {
-        if (!preg_match('#^(.+)/(atom|rss2)(/comments)?$#', $args, $m)) {
+        if (!preg_match('#^(.+)/(atom|rss2)(/comments)?$#', (string) $args, $m)) {
             self::p404();
         } else {
             $serie    = $m[1];

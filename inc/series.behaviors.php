@@ -47,7 +47,7 @@ class seriesBehaviors
     public static function adminSimpleMenuAddType($items)
     {
         $series_combo = self::adminSimpleMenuGetCombo();
-        if (count($series_combo) > 1) {
+        if ((is_countable($series_combo) ? count($series_combo) : 0) > 1) {
             $items['series'] = new ArrayObject([__('Series'), true]);
         }
     }
@@ -81,6 +81,7 @@ class seriesBehaviors
 
     public static function wiki2xhtmlSerie($url, $content)
     {
+        $res = [];
         $url = substr($url, 6);
         if (strpos($content, 'serie:') === 0) {
             $content = substr($content, 6);
@@ -261,7 +262,7 @@ class seriesBehaviors
                     ]
                 )
             );
-            $posts_count = count($_POST['entries']);
+            $posts_count = is_countable($_POST['entries']) ? count($_POST['entries']) : 0;
 
             echo
             '<form action="' . $ap->getURI() . '" method="post">' .

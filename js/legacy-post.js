@@ -15,6 +15,8 @@ jsToolBar.prototype.elements.serieSpace = {
 jsToolBar.prototype.elements.serie = {
   type: 'button',
   title: 'Serie',
+  shortkey: 'KeyS',
+  shortkey_name: 'S',
   fn: {},
 };
 
