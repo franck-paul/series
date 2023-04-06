@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
+
+use Dotclear\Helper\Html\Html;
+
 class seriesBehaviors
 {
     public static function adminDashboardFavorites($favs)
@@ -79,7 +82,7 @@ class seriesBehaviors
         }
     }
 
-    public static function wiki2xhtmlSerie($url, $content)
+    public static function wikiSerie($url, $content)
     {
         $res = [];
         $url = substr($url, 6);
@@ -87,7 +90,7 @@ class seriesBehaviors
             $content = substr($content, 6);
         }
 
-        $serie_url      = html::stripHostURL(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie'));
+        $serie_url      = Html::stripHostURL(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie'));
         $res['url']     = $serie_url . '/' . rawurlencode(dcMeta::sanitizeMetaID($url));
         $res['content'] = $content;
 
@@ -194,7 +197,7 @@ class seriesBehaviors
             $ap->beginPage(
                 dcPage::breadcrumb(
                     [
-                        html::escapeHTML(dcCore::app()->blog->name) => '',
+                        Html::escapeHTML(dcCore::app()->blog->name) => '',
                         __('Entries')                               => $ap->getRedirection(true),
                         __('Add series to this selection')          => '',
                     ]
@@ -256,7 +259,7 @@ class seriesBehaviors
             $ap->beginPage(
                 dcPage::breadcrumb(
                     [
-                        html::escapeHTML(dcCore::app()->blog->name)      => '',
+                        Html::escapeHTML(dcCore::app()->blog->name)      => '',
                         __('Entries')                                    => 'posts.php',
                         __('Remove selected series from this selection') => '',
                     ]
@@ -276,8 +279,8 @@ class seriesBehaviors
                 }
                 echo '<p>' . sprintf(
                     $label,
-                    form::checkbox(['meta_id[]'], html::escapeHTML($k)),
-                    html::escapeHTML($k)
+                    form::checkbox(['meta_id[]'], Html::escapeHTML($k)),
+                    Html::escapeHTML($k)
                 ) . '</p>';
             }
 
@@ -319,9 +322,9 @@ class seriesBehaviors
         dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series'));
     }
 
-    public static function coreInitWikiPost($wiki2xhtml)
+    public static function coreInitWikiPost($wiki)
     {
-        $wiki2xhtml->registerFunction('url:serie', ['seriesBehaviors', 'wiki2xhtmlSerie']);
+        $wiki->registerFunction('url:serie', ['seriesBehaviors', 'wikiSerie']);
     }
 
     public static function adminPostEditor($editor = '', $context = '')

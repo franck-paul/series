@@ -1,4 +1,7 @@
 <?php
+
+use Dotclear\Plugin\widgets\Widgets;
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -100,7 +103,7 @@ class seriesWidgets
 
     public static function initDefaultWidgets($w, $d)
     {
-        $d[defaultWidgets::WIDGETS_NAV]->append($w->series);
+        $d[Widgets::WIDGETS_NAV]->append($w->series);
     }
 }
 

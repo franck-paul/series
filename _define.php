@@ -16,19 +16,19 @@ $this->registerModule(
     'Franck Paul',
     '2.1',
     [
-        'requires'    => [['core', '2.24']],
+        'requires'    => [['core', '2.26']],
         'permissions' => dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_USAGE,
             dcAuth::PERMISSION_CONTENT_ADMIN,
         ]),
-        'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
-        'type'        => 'plugin',
-        'settings'    => [
+        'priority' => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
+        'type'     => 'plugin',
+        'settings' => [
             'pref' => '#user-options.series_prefs',
         ],
 
-        'details'     => 'https://open-time.net/?q=series',
-        'support'     => 'https://github.com/franck-paul/series',
-        'repository'  => 'https://raw.githubusercontent.com/franck-paul/series/master/dcstore.xml',
+        'details'    => 'https://open-time.net/?q=series',
+        'support'    => 'https://github.com/franck-paul/series',
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/series/master/dcstore.xml',
     ]
 );

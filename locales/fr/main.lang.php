@@ -31,8 +31,10 @@ l10n::$locales['Recent posts for %s serie'] = 'Billets récents pour la série %
 l10n::$locales['Series:'] = 'Séries :';
 l10n::$locales['Add series'] = 'Ajouter des séries';
 l10n::$locales['Remove series'] = 'Supprimer des séries';
-l10n::$locales['Serie has been successfully added to selected entries'][0] = 'La série a été ajoutée aux publications sélectionnées.';
-l10n::$locales['Serie has been successfully added to selected entries'][1] = 'Les séries ont été ajoutées aux publications sélectionnées.';
+l10n::$locales['Serie has been successfully added to selected entries'] = [
+	'La série a été ajoutée aux publications sélectionnées.',
+	'Les séries ont été ajoutées aux publications sélectionnées.',
+];
 l10n::$locales['Are you sure you want to remove this serie?'] = 'Êtes-vous sûr·e de vouloir supprimer cette série ?';
 l10n::$locales['Add a serie to this entry'] = 'Ajouter une série à cette publication';
 l10n::$locales['all series'] = 'toutes';

@@ -10,6 +10,10 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
+
+use Dotclear\Helper\Html\Html;
+use Dotclear\Helper\Network\Http;
+
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
@@ -27,8 +31,8 @@ if (isset($_POST['new_serie_id'])) {
 
     try {
         if (dcCore::app()->meta->updateMeta($serie, $new_id, 'serie')) {
-            dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), html::escapeHTML($serie), html::escapeHTML($new_id)));
-            http::redirect(dcCore::app()->admin->getPageURL() . '&m=serie_posts&serie=' . $new_id);
+            dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), Html::escapeHTML($serie), Html::escapeHTML($new_id)));
+            Http::redirect(dcCore::app()->admin->getPageURL() . '&m=serie_posts&serie=' . $new_id);
         }
     } catch (Exception $e) {
         dcCore::app()->error->add($e->getMessage());
@@ -42,8 +46,8 @@ if (!empty($_POST['delete']) && dcCore::app()->auth->check(dcCore::app()->auth->
 ]), dcCore::app()->blog->id)) {
     try {
         dcCore::app()->meta->delMeta($serie, 'serie');
-        dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), html::escapeHTML($serie)));
-        http::redirect(dcCore::app()->admin->getPageURL() . '&m=series');
+        dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML($serie)));
+        Http::redirect(dcCore::app()->admin->getPageURL() . '&m=series');
     } catch (Exception $e) {
         dcCore::app()->error->add($e->getMessage());
     }
@@ -80,7 +84,7 @@ if ($posts_actions_page->process()) {
 echo dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series')) .
 dcPage::jsLoad('js/_posts_list.js') .
 dcPage::jsJson('posts_series_msg', [
-    'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), html::escapeHTML($serie)),
+    'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), Html::escapeHTML($serie)),
 ]) .
 dcPage::jsModuleLoad('series/js/posts.js', dcCore::app()->getVersion('serie')) .
 dcPage::jsConfirmClose('serie_rename');
@@ -91,9 +95,9 @@ dcPage::jsConfirmClose('serie_rename');
 <?php
 echo dcPage::breadcrumb(
     [
-        html::escapeHTML(dcCore::app()->blog->name)                     => '',
+        Html::escapeHTML(dcCore::app()->blog->name)                     => '',
         __('Series')                                                    => dcCore::app()->admin->getPageURL() . '&amp;m=series',
-        __('Serie') . ' &ldquo;' . html::escapeHTML($serie) . '&rdquo;' => '',
+        __('Serie') . ' &ldquo;' . Html::escapeHTML($serie) . '&rdquo;' => '',
     ]
 );
 echo dcPage::notices();
@@ -105,10 +109,10 @@ if (!dcCore::app()->error->flag()) {
     if (!$posts->isEmpty()) {
         echo
         '<div class="series-actions vertical-separator">' .
-        '<h3>' . html::escapeHTML($serie) . '</h3>' .
+        '<h3>' . Html::escapeHTML($serie) . '</h3>' .
         '<form action="' . $this_url . '" method="post" id="serie_rename">' .
         '<p><label for="new_serie_id" class="classic">' . __('Rename:') . '</label> ' .
-        form::field('new_serie_id', 40, 255, html::escapeHTML($serie)) .
+        form::field('new_serie_id', 40, 255, Html::escapeHTML($serie)) .
         '<input type="submit" value="' . __('OK') . '" />' .
         dcCore::app()->formNonce() .
             '</p></form>';

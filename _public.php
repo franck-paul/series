@@ -11,6 +11,8 @@
  * @copyright GPL-2.0
  */
 
+use Dotclear\Helper\Html\Html;
+
 # Localized string we find in template
 __("This serie's comments Atom feed");
 __("This serie's entries Atom feed");
@@ -83,7 +85,7 @@ dcCore::app()->addBehaviors([
     'templateBeforeBlockV2'  => [behaviorsSeries::class, 'templateBeforeBlock'],
     'publicBeforeDocumentV2' => [behaviorsSeries::class, 'addTplPath'],
 
-    'publicBreadcrumb'       => [behaviorsSeries::class, 'publicBreadcrumb'],
+    'publicBreadcrumb' => [behaviorsSeries::class, 'publicBreadcrumb'],
 ]);
 
 class tplSeries
@@ -251,7 +253,7 @@ class tplSeries
             $rs->sort($sort, $order);
         }
 
-        $res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) : '') . '<ul>';
+        $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';
 
         if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof dcRecord) {
             dcCore::app()->ctx->meta = dcCore::app()->meta->getMetaRecordset(dcCore::app()->ctx->posts->post_meta, 'serie');
@@ -276,7 +278,7 @@ class tplSeries
 
         if (dcCore::app()->url->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '') {
             $res .= '<p><strong><a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('series') . '">' .
-            html::escapeHTML($w->allserieslinktitle) . '</a></strong></p>';
+            Html::escapeHTML($w->allserieslinktitle) . '</a></strong></p>';
         }
 
         return $w->renderDiv($w->content_only, 'series ' . $w->class, '', $res);
@@ -337,7 +339,7 @@ class tplSeries
             return;
         }
 
-        $res = ($w->title ? $w->renderTitle(html::escapeHTML($w->title)) . "\n" : '');
+        $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) . "\n" : '');
 
         $serie = '';
         $list  = '';
@@ -367,8 +369,8 @@ class tplSeries
             }
 
             $list .= '<li' . $class . '>' .
-            ($link ? '<a href="' . dcCore::app()->blog->url . dcCore::app()->getPostPublicURL($rs->post_type, html::sanitizeURL($rs->post_url)) . '">' : '') .
-            html::escapeHTML($rs->post_title) .
+            ($link ? '<a href="' . dcCore::app()->blog->url . dcCore::app()->getPostPublicURL($rs->post_type, Html::sanitizeURL($rs->post_url)) . '">' : '') .
+            Html::escapeHTML($rs->post_title) .
                 ($link ? '</a>' : '') .
                 '</li>' . "\n";
         }

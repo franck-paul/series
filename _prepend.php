@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0
  */
+
+use Dotclear\Helper\Clearbricks;
+
 dcCore::app()->url->register('serie', 'serie', '^serie/(.+)$', ['urlSeries', 'serie']);
 dcCore::app()->url->register('series', 'series', '^series$', ['urlSeries', 'series']);
 dcCore::app()->url->register('serie_feed', 'feed/serie', '^feed/serie/(.+)$', ['urlSeries', 'serieFeed']);
