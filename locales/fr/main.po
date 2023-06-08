@@ -1,17 +1,24 @@
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+# Translators:
+# Franck Paul <carnet.franck.paul@gmail.com>, 2023
+# 
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-06-08 10:26+0200\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>\n"
-"Language-Team: \n"
-"Language: fr\n"
+"PO-Revision-Date: 2023-06-08 08:29+0000\n"
+"Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>, 2023\n"
+"Language-Team: French (https://app.transifex.com/open-time/teams/109573/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 msgid "Serie"
 msgstr "Série"
@@ -51,6 +58,7 @@ msgid "Serie has been successfully added to selected entries"
 msgid_plural "Series have been successfully added to selected entries"
 msgstr[0] "La série a été ajoutée aux publications sélectionnées."
 msgstr[1] "Les séries ont été ajoutées aux publications sélectionnées."
+msgstr[2] "Les séries ont été ajoutées aux publications sélectionnées."
 
 msgid "Are you sure you want to remove this serie?"
 msgstr "Êtes-vous sûr·e de vouloir supprimer cette série ?"
@@ -64,7 +72,6 @@ msgstr "toutes"
 msgid "Enter series separated by comma"
 msgstr "Séparez les séries par des virgules"
 
-#, fuzzy
 msgid "Entries"
 msgstr "Séries"
 
@@ -75,7 +82,7 @@ msgid "Series to add:"
 msgstr "Séries à ajouter :"
 
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 msgid "No series for selected entries"
 msgstr "Aucune série pour les billets sélectionnés"
@@ -87,12 +94,11 @@ msgid "Following series have been found in selected entries:"
 msgstr "Les séries suivantes ont été trouvées pour les billets sélectionnés :"
 
 msgid "ok"
-msgstr ""
+msgstr "ok"
 
 msgid "Series list format:"
 msgstr "Format de la liste des séries :"
 
-#, fuzzy
 msgid "series"
 msgstr "séries"
 
@@ -101,11 +107,11 @@ msgstr "Aucune série sur ce blog."
 
 #, php-format
 msgid "The serie “%s” has been successfully renamed to “%s”"
-msgstr "La série « %s » a été renommée en « %s »."
+msgstr "La série « %s » a été renommée en « %s »"
 
 #, php-format
 msgid "The serie “%s” has been successfully deleted"
-msgstr "La série « %s » a été supprimée."
+msgstr "La série « %s » a été supprimée"
 
 #, php-format
 msgid "Are you sure you want to remove serie: “%s”?"
@@ -118,7 +124,7 @@ msgid "Rename:"
 msgstr "Renommer :"
 
 msgid "OK"
-msgstr ""
+msgstr "Ok"
 
 msgid "Delete this serie"
 msgstr "Supprimer cette série"
@@ -127,12 +133,11 @@ msgid "List of entries in this serie"
 msgstr "Liste des billets de cette série"
 
 msgid "Selected entries action:"
-msgstr ""
+msgstr "Action sur les billets sélectionnés :"
 
 msgid "List of series"
 msgstr "Liste des séries"
 
-#, fuzzy
 msgid "Order by:"
 msgstr "Ordre des séries :"
 
@@ -140,13 +145,13 @@ msgid "Serie name"
 msgstr "Nom de série"
 
 msgid "Sort:"
-msgstr ""
+msgstr "Tri :"
 
 msgid "Ascending"
-msgstr ""
+msgstr "Ascendant"
 
 msgid "Descending"
-msgstr ""
+msgstr "Descendant "
 
 msgid "Link to all series:"
 msgstr "Lien vers toutes les séries :"
@@ -173,22 +178,13 @@ msgid "With link"
 msgstr "Avec l'URL"
 
 msgid "None"
-msgstr ""
+msgstr "Non"
 
 msgid "Order entries by:"
 msgstr "Trier les billets par :"
 
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 msgid "Entry title"
-msgstr ""
-
-#~ msgid "Edit serie name:"
-#~ msgstr "Modifier le nom de la série :"
-
-#~ msgid "Edit serie"
-#~ msgstr "Modifier la série"
-
-#~ msgid "Current serie(s)"
-#~ msgstr "Série(s) courante(s)"
+msgstr "Titre du billet"
