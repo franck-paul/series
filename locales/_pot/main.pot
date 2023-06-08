@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-26 13:53+0100\n"
+"POT-Creation-Date: 2023-06-08 10:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,197 +17,260 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../git-plugins/series//__html_tpl_dummy.php:7
-#: ../git-plugins/series//_public.php:494
-#: ../git-plugins/series//inc/series.behaviors.php:336
-#: ../git-plugins/series//inc/series.behaviors.php:344
-#: ../git-plugins/series//serie_posts.php:91
+#: ../git-plugins/series/__html_tpl_dummy.php:7
+#: ../git-plugins/series/src/BackendBehaviors.php:330
+#: ../git-plugins/series/src/BackendBehaviors.php:338
+#: ../git-plugins/series/src/FrontendUrl.php:95
+#: ../git-plugins/series/src/ManagePosts.php:149
 msgid "Serie"
 msgstr ""
 
-#: ../git-plugins/series//__html_tpl_dummy.php:8
-#: ../git-plugins/series//_admin.php:17 ../git-plugins/series//_admin.php:19
-#: ../git-plugins/series//_widgets.php:31
-#: ../git-plugins/series//_widgets.php:32
-#: ../git-plugins/series//inc/series.behaviors.php:19
-#: ../git-plugins/series//inc/series.behaviors.php:48
-#: ../git-plugins/series//inc/series.behaviors.php:128
-#: ../git-plugins/series//inc/series.behaviors.php:134
-#: ../git-plugins/series//inc/series.behaviors.php:382
-#: ../git-plugins/series//serie_posts.php:73
-#: ../git-plugins/series//serie_posts.php:90
-#: ../git-plugins/series//series.php:19 ../git-plugins/series//series.php:28
+#: ../git-plugins/series/__html_tpl_dummy.php:8
+#: ../git-plugins/series/src/Backend.php:28
+#: ../git-plugins/series/src/Backend.php:40
+#: ../git-plugins/series/src/BackendBehaviors.php:32
+#: ../git-plugins/series/src/BackendBehaviors.php:62
+#: ../git-plugins/series/src/BackendBehaviors.php:122
+#: ../git-plugins/series/src/BackendBehaviors.php:131
+#: ../git-plugins/series/src/BackendBehaviors.php:367
+#: ../git-plugins/series/src/BackendBehaviors.php:388
+#: ../git-plugins/series/src/ManagePosts.php:148
+#: ../git-plugins/series/src/Widgets.php:26
+#: ../git-plugins/series/src/Widgets.php:27
 msgid "Series"
 msgstr ""
 
-#: ../git-plugins/series//__html_tpl_dummy.php:9
-#: ../git-plugins/series//_public.php:17
+#: ../git-plugins/series/__html_tpl_dummy.php:9
+#: ../git-plugins/series/src/Frontend.php:27
 msgid "This serie's comments Atom feed"
 msgstr ""
 
-#: ../git-plugins/series//__html_tpl_dummy.php:10
-#: ../git-plugins/series//_public.php:18
+#: ../git-plugins/series/__html_tpl_dummy.php:10
+#: ../git-plugins/series/src/Frontend.php:28
 msgid "This serie's entries Atom feed"
 msgstr ""
 
-#: ../git-plugins/series//_admin.php:17
+#: ../git-plugins/series/src/Backend.php:28
 msgid "Series of posts"
 msgstr ""
 
-#: ../git-plugins/series//_public.php:48 ../git-plugins/series//_public.php:55
-#: ../git-plugins/series//_widgets.php:38
-#: ../git-plugins/series//inc/series.behaviors.php:34
-#: ../git-plugins/series//inc/series.behaviors.php:70
+#: ../git-plugins/series/src/BackendBehaviors.php:46
+#: ../git-plugins/series/src/BackendBehaviors.php:82
+#: ../git-plugins/series/src/FrontendBehaviors.php:26
+#: ../git-plugins/series/src/FrontendBehaviors.php:32
+#: ../git-plugins/series/src/Widgets.php:51
 msgid "All series"
 msgstr ""
 
-#: ../git-plugins/series//_widgets.php:24
-msgid "Serie name"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:31
-msgid "List of series"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:38
-msgid "Link to all series:"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:51
-msgid "Other posts of the same serie(s)"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:51
-#: ../git-plugins/series//_widgets.php:52
-msgid "Siblings"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:53
-msgid "Show titles of series"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:54
-msgid "Order series by:"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:57
-msgid "Include current entry:"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:58
-msgid "Standard"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:58
-msgid "With link"
-msgstr ""
-
-#: ../git-plugins/series//_widgets.php:60
-msgid "Order entries by:"
-msgstr ""
-
-#: ../git-plugins/series//inc/series.behaviors.php:57
+#: ../git-plugins/series/src/BackendBehaviors.php:71
 msgid "Select serie (if necessary):"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:75
+#: ../git-plugins/series/src/BackendBehaviors.php:87
 #, php-format
 msgid "Recent posts for %s serie"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:106
+#: ../git-plugins/series/src/BackendBehaviors.php:101
 msgid "Series:"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:128
+#: ../git-plugins/series/src/BackendBehaviors.php:122
 msgid "Add series"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:134
+#: ../git-plugins/series/src/BackendBehaviors.php:131
 msgid "Remove series"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:165
+#: ../git-plugins/series/src/BackendBehaviors.php:163
 msgid "Serie has been successfully added to selected entries"
 msgid_plural "Series have been successfully added to selected entries"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:178
-#: ../git-plugins/series//inc/series.behaviors.php:296
+#: ../git-plugins/series/src/BackendBehaviors.php:177
+#: ../git-plugins/series/src/BackendBehaviors.php:297
 msgid "Are you sure you want to remove this serie?"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:179
-#: ../git-plugins/series//inc/series.behaviors.php:297
+#: ../git-plugins/series/src/BackendBehaviors.php:178
+#: ../git-plugins/series/src/BackendBehaviors.php:298
 msgid "Add a serie to this entry"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:181
-#: ../git-plugins/series//inc/series.behaviors.php:299
+#: ../git-plugins/series/src/BackendBehaviors.php:180
+#: ../git-plugins/series/src/BackendBehaviors.php:300
 msgid "all series"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:182
-#: ../git-plugins/series//inc/series.behaviors.php:300
+#: ../git-plugins/series/src/BackendBehaviors.php:181
+#: ../git-plugins/series/src/BackendBehaviors.php:301
 msgid "Enter series separated by comma"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:196
+#: ../git-plugins/series/src/BackendBehaviors.php:194
+#: ../git-plugins/series/src/BackendBehaviors.php:256
+msgid "Entries"
+msgstr ""
+
+#: ../git-plugins/series/src/BackendBehaviors.php:195
 msgid "Add series to this selection"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:209
+#: ../git-plugins/series/src/BackendBehaviors.php:209
 msgid "Series to add:"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:250
+#: ../git-plugins/series/src/BackendBehaviors.php:214
+msgid "Save"
+msgstr ""
+
+#: ../git-plugins/series/src/BackendBehaviors.php:250
 msgid "No series for selected entries"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:257
+#: ../git-plugins/series/src/BackendBehaviors.php:257
 msgid "Remove selected series from this selection"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:264
+#: ../git-plugins/series/src/BackendBehaviors.php:266
 msgid "Following series have been found in selected entries:"
 msgstr ""
 
-#: ../git-plugins/series//inc/series.behaviors.php:383
+#: ../git-plugins/series/src/BackendBehaviors.php:281
+#: ../git-plugins/series/src/ManagePosts.php:198
+msgid "ok"
+msgstr ""
+
+#: ../git-plugins/series/src/BackendBehaviors.php:368
+#: ../git-plugins/series/src/BackendBehaviors.php:389
 msgid "Series list format:"
 msgstr ""
 
-#: ../git-plugins/series//serie_posts.php:28
+#: ../git-plugins/series/src/Manage.php:71
+#: ../git-plugins/series/src/Manage.php:76
+#: ../git-plugins/series/src/ManagePosts.php:143
+msgid "series"
+msgstr ""
+
+#: ../git-plugins/series/src/Manage.php:114
+msgid "No series on this blog."
+msgstr ""
+
+#: ../git-plugins/series/src/ManagePosts.php:92
 #, php-format
 msgid "The serie “%s” has been successfully renamed to “%s”"
 msgstr ""
 
-#: ../git-plugins/series//serie_posts.php:40
+#: ../git-plugins/series/src/ManagePosts.php:108
 #, php-format
 msgid "The serie “%s” has been successfully deleted"
 msgstr ""
 
-#: ../git-plugins/series//serie_posts.php:78
+#: ../git-plugins/series/src/ManagePosts.php:138
 #, php-format
 msgid "Are you sure you want to remove serie: “%s”?"
 msgstr ""
 
-#: ../git-plugins/series//serie_posts.php:95
+#: ../git-plugins/series/src/ManagePosts.php:155
 msgid "Back to series list"
 msgstr ""
 
-#: ../git-plugins/series//serie_posts.php:103
+#: ../git-plugins/series/src/ManagePosts.php:164
 msgid "Rename:"
 msgstr ""
 
-#: ../git-plugins/series//serie_posts.php:112
+#: ../git-plugins/series/src/ManagePosts.php:166
+msgid "OK"
+msgstr ""
+
+#: ../git-plugins/series/src/ManagePosts.php:176
 msgid "Delete this serie"
 msgstr ""
 
-#: ../git-plugins/series//serie_posts.php:120
+#: ../git-plugins/series/src/ManagePosts.php:184
 msgid "List of entries in this serie"
 msgstr ""
 
-#: ../git-plugins/series//series.php:72
-msgid "No series on this blog."
+#: ../git-plugins/series/src/ManagePosts.php:196
+msgid "Selected entries action:"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:26
+msgid "List of series"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:31
+msgid "Order by:"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:35
+msgid "Serie name"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:43
+#: ../git-plugins/series/src/Widgets.php:95
+msgid "Sort:"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:47
+#: ../git-plugins/series/src/Widgets.php:68
+#: ../git-plugins/series/src/Widgets.php:99
+msgid "Ascending"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:48
+#: ../git-plugins/series/src/Widgets.php:69
+#: ../git-plugins/series/src/Widgets.php:100
+msgid "Descending"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:51
+msgid "Link to all series:"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:59
+msgid "Other posts of the same serie(s)"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:59
+#: ../git-plugins/series/src/Widgets.php:60
+msgid "Siblings"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:61
+msgid "Show titles of series"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:64
+msgid "Order series by:"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:74
+msgid "Include current entry:"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:78
+msgid "Standard"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:79
+msgid "With link"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:80
+msgid "None"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:85
+msgid "Order entries by:"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:89
+msgid "Date"
+msgstr ""
+
+#: ../git-plugins/series/src/Widgets.php:90
+msgid "Entry title"
 msgstr ""

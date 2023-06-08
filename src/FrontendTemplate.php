@@ -5,90 +5,22 @@
  * @package Dotclear
  * @subpackage Plugins
  *
- * @author Franck Paul
+ * @author Franck Paul and contributors
  *
  * @copyright Franck Paul carnet.franck.paul@gmail.com
- * @copyright GPL-2.0
+ * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
 
+namespace Dotclear\Plugin\series;
+
+use dcBlog;
+use dcCore;
+use dcMeta;
+use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Html;
 
-# Localized string we find in template
-__("This serie's comments Atom feed");
-__("This serie's entries Atom feed");
-
-require_once __DIR__ . '/_widgets.php';
-
-class behaviorsSeries
-{
-    public static function publicBreadcrumb($context, $separator)
-    {
-        if ($context == 'series') {
-            // All series
-            return __('All series');
-        } elseif ($context == 'serie') {
-            // Serie
-
-            // Get current page if set
-            $page = dcCore::app()->public->getPageNumber();
-            $ret  = '<a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('series') . '">' . __('All series') . '</a>';
-            if ($page == 0) {
-                $ret .= $separator . dcCore::app()->ctx->meta->meta_id;
-            } else {
-                $ret .= $separator . '<a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie') . '/' . rawurlencode(dcCore::app()->ctx->meta->meta_id) . '">' . dcCore::app()->ctx->meta->meta_id . '</a>';
-                $ret .= $separator . sprintf(__('page %d'), $page);
-            }
-
-            return $ret;
-        }
-    }
-
-    public static function templateBeforeBlock($b, $attr)
-    {
-        if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie'])) {
-            return
-            "<?php\n" .
-            "if (!isset(\$params)) { \$params = []; }\n" .
-            "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
-            "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-            "\$params['from'] .= ', '.dcCore::app()->prefix.'meta METAS ';\n" .
-            "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
-            "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-            "\$params['sql'] .= \"AND METAS.meta_id = '" . dcCore::app()->con->escape($attr['serie']) . "' \";\n" .
-                "?>\n";
-        } elseif (empty($attr['no_context']) && ($b == 'Entries' || $b == 'Comments')) {
-            return
-                '<?php if (dcCore::app()->ctx->exists("meta") && dcCore::app()->ctx->meta->rows() && (dcCore::app()->ctx->meta->meta_type == "serie")) { ' .
-                "if (!isset(\$params)) { \$params = []; }\n" .
-                "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
-                "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-                "\$params['from'] .= ', '.dcCore::app()->prefix.'meta METAS ';\n" .
-                "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
-                "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-                "\$params['sql'] .= \"AND METAS.meta_id = '\".dcCore::app()->con->escape(dcCore::app()->ctx->meta->meta_id).\"' \";\n" .
-                "} ?>\n";
-        }
-    }
-
-    public static function addTplPath()
-    {
-        $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
-        if (!empty($tplset) && is_dir(__DIR__ . '/' . dcPublic::TPL_ROOT . '/' . $tplset)) {
-            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/' . dcPublic::TPL_ROOT . '/' . $tplset);
-        } else {
-            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), __DIR__ . '/' . dcPublic::TPL_ROOT . '/' . DC_DEFAULT_TPLSET);
-        }
-    }
-}
-
-dcCore::app()->addBehaviors([
-    'templateBeforeBlockV2'  => [behaviorsSeries::class, 'templateBeforeBlock'],
-    'publicBeforeDocumentV2' => [behaviorsSeries::class, 'addTplPath'],
-
-    'publicBreadcrumb' => [behaviorsSeries::class, 'publicBreadcrumb'],
-]);
-
-class tplSeries
+class FrontendTemplate
 {
     public static function Series($attr, $content)
     {
@@ -255,12 +187,12 @@ class tplSeries
 
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';
 
-        if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof dcRecord) {
+        if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof MetaRecord) {
             dcCore::app()->ctx->meta = dcCore::app()->meta->getMetaRecordset(dcCore::app()->ctx->posts->post_meta, 'serie');
         }
         while ($rs->fetch()) {
             $class = '';
-            if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof dcRecord) {
+            if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof MetaRecord) {
                 while (dcCore::app()->ctx->meta->fetch()) {
                     if (dcCore::app()->ctx->meta->meta_id == $rs->meta_id) {
                         $class = ' class="serie-current"';
@@ -331,7 +263,7 @@ class tplSeries
                 $order = 'asc';
             }
             $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
-            $rs = new dcRecord(dcCore::app()->con->select($sql));
+            $rs = new MetaRecord(dcCore::app()->con->select($sql));
             if ($rs->isEmpty()) {
                 return;
             }
@@ -380,115 +312,5 @@ class tplSeries
         $res .= $list . '</ul>' . "\n";
 
         return $w->renderDiv($w->content_only, 'series-posts ' . $w->class, '', $res);
-    }
-}
-
-dcCore::app()->tpl->addBlock('Series', [tplSeries::class, 'Series']);
-dcCore::app()->tpl->addBlock('SeriesHeader', [tplSeries::class, 'SeriesHeader']);
-dcCore::app()->tpl->addBlock('SeriesFooter', [tplSeries::class, 'SeriesFooter']);
-dcCore::app()->tpl->addBlock('EntrySeries', [tplSeries::class, 'EntrySeries']);
-dcCore::app()->tpl->addValue('SerieID', [tplSeries::class, 'SerieID']);
-dcCore::app()->tpl->addValue('SeriePercent', [tplSeries::class, 'SeriePercent']);
-dcCore::app()->tpl->addValue('SerieRoundPercent', [tplSeries::class, 'SerieRoundPercent']);
-dcCore::app()->tpl->addValue('SerieURL', [tplSeries::class, 'SerieURL']);
-dcCore::app()->tpl->addValue('SerieCloudURL', [tplSeries::class, 'SerieCloudURL']);
-dcCore::app()->tpl->addValue('SerieFeedURL', [tplSeries::class, 'SerieFeedURL']);
-
-class urlSeries extends dcUrlHandlers
-{
-    public static function serie($args)
-    {
-        $n = self::getPageNumber($args);
-
-        if ($args == '' && !$n) {
-            self::p404();
-        } elseif (preg_match('%(.*?)/feed/(rss2|atom)?$%u', (string) $args, $m)) {
-            $type = $m[2] == 'atom' ? 'atom' : 'rss2';
-            $mime = 'application/xml';
-
-            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
-                dcCore::app()->meta->getMetadata([
-                    'meta_type' => 'serie',
-                    'meta_id'   => $m[1],
-                ])
-            );
-
-            if (dcCore::app()->ctx->meta->isEmpty()) {
-                self::p404();
-            } else {
-                $tpl = $type;
-
-                if ($type == 'atom') {
-                    $mime = 'application/atom+xml';
-                }
-
-                self::serveDocument($tpl . '.xml', $mime);
-            }
-        } else {
-            if ($n) {
-                dcCore::app()->public->setPageNumber($n);
-            }
-
-            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
-                dcCore::app()->meta->getMetadata([
-                    'meta_type' => 'serie',
-                    'meta_id'   => $args,
-                ])
-            );
-
-            if (dcCore::app()->ctx->meta->isEmpty()) {
-                self::p404();
-            } else {
-                self::serveDocument('serie.html');
-            }
-        }
-    }
-
-    public static function series()
-    {
-        self::serveDocument('series.html');
-    }
-
-    public static function serieFeed($args)
-    {
-        if (!preg_match('#^(.+)/(atom|rss2)(/comments)?$#', (string) $args, $m)) {
-            self::p404();
-        } else {
-            $serie    = $m[1];
-            $type     = $m[2];
-            $comments = !empty($m[3]);
-
-            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
-                dcCore::app()->meta->getMetadata([
-                    'meta_type' => 'serie',
-                    'meta_id'   => $serie,
-                ])
-            );
-
-            if (dcCore::app()->ctx->meta->isEmpty()) {
-                # The specified serie does not exist.
-                self::p404();
-            } else {
-                dcCore::app()->ctx->feed_subtitle = ' - ' . __('Serie') . ' - ' . dcCore::app()->ctx->meta->meta_id;
-
-                if ($type == 'atom') {
-                    $mime = 'application/atom+xml';
-                } else {
-                    $mime = 'application/xml';
-                }
-
-                $tpl = $type;
-                if ($comments) {
-                    $tpl .= '-comments';
-                    dcCore::app()->ctx->nb_comment_per_page = dcCore::app()->blog->settings->system->nb_comment_per_feed;
-                } else {
-                    dcCore::app()->ctx->nb_entry_per_page = dcCore::app()->blog->settings->system->nb_post_per_feed;
-                    dcCore::app()->ctx->short_feed_items  = dcCore::app()->blog->settings->system->short_feed_items;
-                }
-                $tpl .= '.xml';
-
-                self::serveDocument($tpl, $mime);
-            }
-        }
     }
 }

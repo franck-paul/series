@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-26 13:53+0100\n"
+"POT-Creation-Date: 2023-06-08 10:26+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>\n"
 "Language-Team: \n"
@@ -30,39 +30,6 @@ msgstr "Séries de billets"
 
 msgid "All series"
 msgstr "Toutes les séries"
-
-msgid "Serie name"
-msgstr "Nom de série"
-
-msgid "List of series"
-msgstr "Liste des séries"
-
-msgid "Link to all series:"
-msgstr "Lien vers toutes les séries :"
-
-msgid "Other posts of the same serie(s)"
-msgstr "Autres billets de la/des même(s) série(s)"
-
-msgid "Siblings"
-msgstr "Connexes"
-
-msgid "Show titles of series"
-msgstr "Afficher le titre des séries"
-
-msgid "Order series by:"
-msgstr "Ordre des séries :"
-
-msgid "Include current entry:"
-msgstr "Inclure le billet courant :"
-
-msgid "Standard"
-msgstr "Normal"
-
-msgid "With link"
-msgstr "Avec l'URL"
-
-msgid "Order entries by:"
-msgstr "Trier les billets par :"
 
 msgid "Select serie (if necessary):"
 msgstr "Sélectionnez la série (si nécessaire) :"
@@ -97,11 +64,18 @@ msgstr "toutes"
 msgid "Enter series separated by comma"
 msgstr "Séparez les séries par des virgules"
 
+#, fuzzy
+msgid "Entries"
+msgstr "Séries"
+
 msgid "Add series to this selection"
 msgstr "Ajouter des séries à cette sélection"
 
 msgid "Series to add:"
 msgstr "Séries à ajouter :"
+
+msgid "Save"
+msgstr ""
 
 msgid "No series for selected entries"
 msgstr "Aucune série pour les billets sélectionnés"
@@ -112,8 +86,18 @@ msgstr "Supprimer les séries sélectionnées de cette sélection"
 msgid "Following series have been found in selected entries:"
 msgstr "Les séries suivantes ont été trouvées pour les billets sélectionnés :"
 
+msgid "ok"
+msgstr ""
+
 msgid "Series list format:"
 msgstr "Format de la liste des séries :"
+
+#, fuzzy
+msgid "series"
+msgstr "série"
+
+msgid "No series on this blog."
+msgstr "Aucune série sur ce blog."
 
 #, php-format
 msgid "The serie “%s” has been successfully renamed to “%s”"
@@ -133,17 +117,72 @@ msgstr "Retour à la liste des séries"
 msgid "Rename:"
 msgstr "Renommer :"
 
+msgid "OK"
+msgstr ""
+
 msgid "Delete this serie"
 msgstr "Supprimer cette série"
 
 msgid "List of entries in this serie"
 msgstr "Liste des billets de cette série"
 
-msgid "No series on this blog."
-msgstr "Aucune série sur ce blog."
+msgid "Selected entries action:"
+msgstr ""
 
-#~ msgid "serie"
-#~ msgstr "série"
+msgid "List of series"
+msgstr "Liste des séries"
+
+#, fuzzy
+msgid "Order by:"
+msgstr "Ordre des séries :"
+
+msgid "Serie name"
+msgstr "Nom de série"
+
+msgid "Sort:"
+msgstr ""
+
+msgid "Ascending"
+msgstr ""
+
+msgid "Descending"
+msgstr ""
+
+msgid "Link to all series:"
+msgstr "Lien vers toutes les séries :"
+
+msgid "Other posts of the same serie(s)"
+msgstr "Autres billets de la/des même(s) série(s)"
+
+msgid "Siblings"
+msgstr "Connexes"
+
+msgid "Show titles of series"
+msgstr "Afficher le titre des séries"
+
+msgid "Order series by:"
+msgstr "Ordre des séries :"
+
+msgid "Include current entry:"
+msgstr "Inclure le billet courant :"
+
+msgid "Standard"
+msgstr "Normal"
+
+msgid "With link"
+msgstr "Avec l'URL"
+
+msgid "None"
+msgstr ""
+
+msgid "Order entries by:"
+msgstr "Trier les billets par :"
+
+msgid "Date"
+msgstr ""
+
+msgid "Entry title"
+msgstr ""
 
 #~ msgid "Edit serie name:"
 #~ msgstr "Modifier le nom de la série :"

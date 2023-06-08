@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Dotclear 2 series module\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-08 10:26+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+msgid "Serie"
+msgstr ""
+
+msgid "Series"
+msgstr ""
+
+msgid "This serie's comments Atom feed"
+msgstr ""
+
+msgid "This serie's entries Atom feed"
+msgstr ""
+
+msgid "Series of posts"
+msgstr ""
+
+msgid "All series"
+msgstr ""
+
+msgid "Select serie (if necessary):"
+msgstr ""
+
+#, php-format
+msgid "Recent posts for %s serie"
+msgstr ""
+
+msgid "Series:"
+msgstr ""
+
+msgid "Add series"
+msgstr ""
+
+msgid "Remove series"
+msgstr ""
+
+msgid "Serie has been successfully added to selected entries"
+msgid_plural "Series have been successfully added to selected entries"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Are you sure you want to remove this serie?"
+msgstr ""
+
+msgid "Add a serie to this entry"
+msgstr ""
+
+msgid "all series"
+msgstr ""
+
+msgid "Enter series separated by comma"
+msgstr ""
+
+msgid "Entries"
+msgstr ""
+
+msgid "Add series to this selection"
+msgstr ""
+
+msgid "Series to add:"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "No series for selected entries"
+msgstr ""
+
+msgid "Remove selected series from this selection"
+msgstr ""
+
+msgid "Following series have been found in selected entries:"
+msgstr ""
+
+msgid "ok"
+msgstr ""
+
+msgid "Series list format:"
+msgstr ""
+
+msgid "series"
+msgstr ""
+
+msgid "No series on this blog."
+msgstr ""
+
+#, php-format
+msgid "The serie “%s” has been successfully renamed to “%s”"
+msgstr ""
+
+#, php-format
+msgid "The serie “%s” has been successfully deleted"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to remove serie: “%s”?"
+msgstr ""
+
+msgid "Back to series list"
+msgstr ""
+
+msgid "Rename:"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Delete this serie"
+msgstr ""
+
+msgid "List of entries in this serie"
+msgstr ""
+
+msgid "Selected entries action:"
+msgstr ""
+
+msgid "List of series"
+msgstr ""
+
+msgid "Order by:"
+msgstr ""
+
+msgid "Serie name"
+msgstr ""
+
+msgid "Sort:"
+msgstr ""
+
+msgid "Ascending"
+msgstr ""
+
+msgid "Descending"
+msgstr ""
+
+msgid "Link to all series:"
+msgstr ""
+
+msgid "Other posts of the same serie(s)"
+msgstr ""
+
+msgid "Siblings"
+msgstr ""
+
+msgid "Show titles of series"
+msgstr ""
+
+msgid "Order series by:"
+msgstr ""
+
+msgid "Include current entry:"
+msgstr ""
+
+msgid "Standard"
+msgstr ""
+
+msgid "With link"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Order entries by:"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Entry title"
+msgstr ""

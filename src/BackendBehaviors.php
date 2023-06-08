@@ -5,27 +5,35 @@
  * @package Dotclear
  * @subpackage Plugins
  *
- * @author Franck Paul
+ * @author Franck Paul and contributors
  *
  * @copyright Franck Paul carnet.franck.paul@gmail.com
- * @copyright GPL-2.0
+ * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
 
+namespace Dotclear\Plugin\series;
+
+use ArrayObject;
+use dcAuth;
+use dcCore;
+use dcPage;
+use dcPostsActions;
+use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Html;
+use Exception;
+use form;
 
-class seriesBehaviors
+class BackendBehaviors
 {
     public static function adminDashboardFavorites($favs)
     {
         $favs->register('series', [
-            'title'       => __('Series'),
-            'url'         => 'plugin.php?p=series&amp;m=series',
-            'small-icon'  => urldecode(dcPage::getPF('series/icon.svg')),
-            'large-icon'  => urldecode(dcPage::getPF('series/icon.svg')),
-            'permissions' => dcCore::app()->auth->makePermissions([
-                dcAuth::PERMISSION_USAGE,
-                dcAuth::PERMISSION_CONTENT_ADMIN,
-            ]),
+            'title'      => __('Series'),
+            'url'        => My::makeUrl(),
+            'small-icon' => My::icons(),
+            'large-icon' => My::icons(),
+            My::checkContext(My::MENU),
         ]);
     }
 
@@ -82,21 +90,6 @@ class seriesBehaviors
         }
     }
 
-    public static function wikiSerie($url, $content)
-    {
-        $res = [];
-        $url = substr($url, 6);
-        if (strpos($content, 'serie:') === 0) {
-            $content = substr($content, 6);
-        }
-
-        $serie_url      = Html::stripHostURL(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie'));
-        $res['url']     = $serie_url . '/' . rawurlencode(dcMeta::sanitizeMetaID($url));
-        $res['content'] = $content;
-
-        return $res;
-    }
-
     public static function seriesField($main, $sidebar, $post)
     {
         if (!empty($_POST['post_series'])) {
@@ -127,7 +120,7 @@ class seriesBehaviors
     {
         $ap->addAction(
             [__('Series') => [__('Add series') => 'series']],
-            ['seriesBehaviors', 'adminAddSeries']
+            [static::class, 'adminAddSeries']
         );
 
         if (dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
@@ -136,12 +129,12 @@ class seriesBehaviors
         ]), dcCore::app()->blog->id)) {
             $ap->addAction(
                 [__('Series') => [__('Remove series') => 'series_remove']],
-                ['seriesBehaviors', 'adminRemoveSeries']
+                [static::class, 'adminRemoveSeries']
             );
         }
     }
 
-    public static function adminAddSeries(dcPostsActions $ap, arrayObject $post)
+    public static function adminAddSeries(dcPostsActions $ap, ArrayObject $post)
     {
         if (!empty($post['new_series'])) {
             $series = dcCore::app()->meta->splitMetaValues($_POST['new_series']);
@@ -225,7 +218,7 @@ class seriesBehaviors
         }
     }
 
-    public static function adminRemoveSeries(dcPostsActions $ap, arrayObject $post)
+    public static function adminRemoveSeries(dcPostsActions $ap, ArrayObject $post)
     {
         if (!empty($post['meta_id']) && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_DELETE,
@@ -322,11 +315,6 @@ class seriesBehaviors
         dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series'));
     }
 
-    public static function coreInitWikiPost($wiki)
-    {
-        $wiki->registerFunction('url:serie', ['seriesBehaviors', 'wikiSerie']);
-    }
-
     public static function adminPostEditor($editor = '', $context = '')
     {
         if (($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor') || $context != 'post') {
@@ -384,7 +372,7 @@ class seriesBehaviors
 
     public static function adminUserForm($rs)
     {
-        if ($rs instanceof dcRecord) {
+        if ($rs instanceof MetaRecord) {
             $opts = $rs->options();
         } else {
             $opts = [];

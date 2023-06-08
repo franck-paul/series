@@ -1,21 +1,25 @@
 <?php
-
-use Dotclear\Plugin\widgets\Widgets;
-
 /**
  * @brief series, a plugin for Dotclear 2
  *
  * @package Dotclear
  * @subpackage Plugins
  *
- * @author Franck Paul
+ * @author Franck Paul and contributors
  *
  * @copyright Franck Paul carnet.franck.paul@gmail.com
- * @copyright GPL-2.0
+ * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-class seriesWidgets
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\series;
+
+use Dotclear\Plugin\widgets\Widgets as dcWidgets;
+use Dotclear\Plugin\widgets\WidgetsStack;
+
+class Widgets
 {
-    public static function initWidgets($w)
+    public static function initWidgets(WidgetsStack $w)
     {
         // Widget for all series
         $w
@@ -103,11 +107,6 @@ class seriesWidgets
 
     public static function initDefaultWidgets($w, $d)
     {
-        $d[Widgets::WIDGETS_NAV]->append($w->series);
+        $d[dcWidgets::WIDGETS_NAV]->append($w->series);
     }
 }
-
-dcCore::app()->addBehaviors([
-    'initWidgets'        => [seriesWidgets::class, 'initWidgets'],
-    'initDefaultWidgets' => [seriesWidgets::class, 'initDefaultWidgets'],
-]);
