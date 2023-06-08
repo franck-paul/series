@@ -311,8 +311,8 @@ class BackendBehaviors
         dcPage::jsJson('editor_series_options', $editor_series_options) .
         dcPage::jsJson('editor_series_msg', $msg) .
         dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
-        dcPage::jsModuleLoad('series/js/post.js', dcCore::app()->getVersion('series')) .
-        dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series'));
+        dcPage::jsModuleLoad(My::id() . '/js/post.js', dcCore::app()->getVersion(My::id())) .
+        dcPage::cssModuleLoad(My::id() . '/css/style.css', 'screen', dcCore::app()->getVersion(My::id()));
     }
 
     public static function adminPostEditor($editor = '', $context = '')
@@ -331,7 +331,7 @@ class BackendBehaviors
                     'url'   => $serie_url,
                 ],
             ]) .
-            dcPage::jsModuleLoad('series/js/legacy-post.js', dcCore::app()->getVersion('series'));
+            dcPage::jsModuleLoad(My::id() . '/js/legacy-post.js', dcCore::app()->getVersion(My::id()));
         } elseif ($editor == 'dcCKEditor') {
             return
             dcPage::jsJson('ck_editor_series', [
@@ -349,7 +349,7 @@ class BackendBehaviors
         $extraPlugins[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
-            'url'    => DC_ADMIN_URL . 'index.php?pf=series/js/ckeditor-series-plugin.js',
+            'url'    => urldecode(DC_ADMIN_URL . dcPage::getPF(My::id() . '/js/ckeditor-series-plugin.js')),
         ];
     }
 
