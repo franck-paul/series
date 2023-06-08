@@ -23,7 +23,7 @@ class Widgets
     {
         // Widget for all series
         $w
-            ->create('series', __('Series'), ['tplSeries', 'seriesWidget'], null, __('List of series'))
+            ->create('series', __('Series'), [FrontendWidgets::class, 'seriesWidget'], null, __('List of series'))
             ->addTitle(__('Series'))
             ->setting('limit', __('Limit (empty means no limit):'), '20')
             ->setting(
@@ -56,7 +56,7 @@ class Widgets
 
         // Widget for currently displayed post
         $w
-            ->create('seriesPosts', __('Siblings'), ['tplSeries', 'seriePostsWidget'], null, __('Other posts of the same serie(s)'))
+            ->create('seriesPosts', __('Siblings'), [FrontendWidgets::class, 'seriePostsWidget'], null, __('Other posts of the same serie(s)'))
             ->addTitle(__('Siblings'))
             ->setting('serietitle', __('Show titles of series'), 1, 'check')
             ->setting(

@@ -94,7 +94,7 @@ msgstr "Format de la liste des séries :"
 
 #, fuzzy
 msgid "series"
-msgstr "série"
+msgstr "séries"
 
 msgid "No series on this blog."
 msgstr "Aucune série sur ce blog."
