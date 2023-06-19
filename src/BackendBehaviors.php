@@ -172,7 +172,10 @@ class BackendBehaviors
             $type = $opts['serie_list_format'] ?? 'more';
 
             $editor_series_options = [
-                'meta_url'            => 'plugin.php?p=series&m=serie_posts&amp;serie=',
+                'meta_url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+                    'm'     => 'serie_posts',
+                    'serie' => '',
+                ]),
                 'list_type'           => $type,
                 'text_confirm_remove' => __('Are you sure you want to remove this serie?'),
                 'text_add_meta'       => __('Add a serie to this entry'),
@@ -253,7 +256,7 @@ class BackendBehaviors
                 dcPage::breadcrumb(
                     [
                         Html::escapeHTML(dcCore::app()->blog->name)      => '',
-                        __('Entries')                                    => 'posts.php',
+                        __('Entries')                                    => dcCore::app()->adminurl->get('admin.posts'),
                         __('Remove selected series from this selection') => '',
                     ]
                 )
@@ -292,7 +295,10 @@ class BackendBehaviors
         $type = $opts['serie_list_format'] ?? 'more';
 
         $editor_series_options = [
-            'meta_url'            => 'plugin.php?p=series&m=serie_posts&amp;serie=',
+            'meta_url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+                'm'     => 'serie_posts',
+                'serie' => '',
+            ]),
             'list_type'           => $type,
             'text_confirm_remove' => __('Are you sure you want to remove this serie?'),
             'text_add_meta'       => __('Add a serie to this entry'),
@@ -329,6 +335,7 @@ class BackendBehaviors
                 'serie' => [
                     'title' => __('Serie'),
                     'url'   => $serie_url,
+                    'icon'  => urldecode(dcPage::getPF(My::id() . '/icon.svg')),
                 ],
             ]) .
             dcPage::jsModuleLoad(My::id() . '/js/legacy-post.js', dcCore::app()->getVersion(My::id()));

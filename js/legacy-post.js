@@ -23,7 +23,6 @@ jsToolBar.prototype.elements.serie = {
 dotclear.mergeDeep(jsToolBar.prototype.elements, dotclear.getData('legacy_editor_series'));
 
 jsToolBar.prototype.elements.serie.context = 'post';
-jsToolBar.prototype.elements.serie.icon = 'index.php?pf=series/icon.svg';
 jsToolBar.prototype.elements.serie.fn.wiki = function () {
   this.encloseSelection('', '', (str) => {
     if (str == '') {

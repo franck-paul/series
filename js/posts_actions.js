@@ -9,9 +9,10 @@ $(() => {
   serie_field.after('<div id="series_list"></div>');
   serie_field.hide();
 
+  const data = dotclear.getData('editor_series_options');
+
   const target = $('#series_list');
-  const mEdit = new metaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'));
-  mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
+  const mEdit = new metaEditor(target, serie_field, 'serie', data);
 
   mEdit.meta_dialog = $('<input type="text" />');
   mEdit.meta_dialog.attr('title', mEdit.text_add_meta.replace(/%s/, mEdit.meta_type));

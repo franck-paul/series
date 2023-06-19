@@ -16,8 +16,10 @@ $(() => {
         meta_field = $('<input type="hidden" name="post_series" />');
         meta_field.val($('#post_series').val());
       }
-      mEdit = new metaEditor(series_edit, meta_field, 'serie', dotclear.getData('editor_series_options'));
-      mEdit.meta_url = 'plugin.php?p=series&m=serie_posts&amp;serie=';
+
+      const data = dotclear.getData('editor_series_options');
+
+      mEdit = new metaEditor(series_edit, meta_field, 'serie', data);
       mEdit.displayMeta('serie', post_id, 'post_meta_serie_input');
 
       // mEdit object reference for toolBar

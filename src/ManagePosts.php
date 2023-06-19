@@ -71,7 +71,7 @@ class ManagePosts extends dcNsProcess
         }
 
         dcCore::app()->admin->posts_actions_page = new BackendActions(
-            'plugin.php',
+            dcCore::app()->adminurl->get('admin.plugin'),
             ['p' => My::id(), 'm' => 'serie_posts', 'series' => dcCore::app()->admin->serie]
         );
 
@@ -186,7 +186,7 @@ class ManagePosts extends dcNsProcess
             dcCore::app()->admin->post_list->display(
                 dcCore::app()->admin->page,
                 dcCore::app()->admin->nb_per_page,
-                '<form action="plugin.php" method="post" id="form-entries">' .
+                '<form action="' . dcCore::app()->admin->getPageURL() . '" method="post" id="form-entries">' .
 
                 '%s' .
 
@@ -197,7 +197,6 @@ class ManagePosts extends dcNsProcess
                 form::combo('action', dcCore::app()->admin->posts_actions_page->getCombo()) .
                 '<input type="submit" value="' . __('ok') . '" /></p>' .
                 form::hidden('post_type', '') .
-                form::hidden('p', 'series') .
                 form::hidden('m', 'serie_posts') .
                 form::hidden('serie', dcCore::app()->admin->serie) .
                 dcCore::app()->formNonce() .
