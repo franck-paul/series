@@ -20,7 +20,6 @@ use dcMeta;
 use dcNsProcess;
 use dcPage;
 use Dotclear\Helper\Html\Html;
-use Dotclear\Helper\Network\Http;
 use Exception;
 use form;
 
@@ -90,7 +89,10 @@ class ManagePosts extends dcNsProcess
             try {
                 if (dcCore::app()->meta->updateMeta(dcCore::app()->admin->serie, $new_id, 'serie')) {
                     dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), Html::escapeHTML(dcCore::app()->admin->serie), Html::escapeHTML($new_id)));
-                    Http::redirect(dcCore::app()->admin->getPageURL() . '&m=serie_posts&serie=' . $new_id);
+                    dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
+                        'm'     => 'serie_posts',
+                        'serie' => $new_id,
+                    ]);
                 }
             } catch (Exception $e) {
                 dcCore::app()->error->add($e->getMessage());
@@ -106,7 +108,9 @@ class ManagePosts extends dcNsProcess
             try {
                 dcCore::app()->meta->delMeta(dcCore::app()->admin->serie, 'serie');
                 dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML(dcCore::app()->admin->serie)));
-                Http::redirect(dcCore::app()->admin->getPageURL() . '&m=series');
+                dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
+                    'm' => 'series',
+                ]);
             } catch (Exception $e) {
                 dcCore::app()->error->add($e->getMessage());
             }
