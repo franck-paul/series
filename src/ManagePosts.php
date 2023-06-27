@@ -25,6 +25,7 @@ use form;
 
 class ManagePosts extends dcNsProcess
 {
+    protected static $init = false; /** @deprecated since 2.27 */
     /**
      * Initializes the page.
      */
