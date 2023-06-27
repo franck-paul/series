@@ -14,7 +14,7 @@ $this->registerModule(
     'Series',
     'Series of posts',
     'Franck Paul',
-    '3.4',
+    '3.4.1',
     [
         'requires'    => [['core', '2.26']],
         'permissions' => dcCore::app()->auth->makePermissions([
