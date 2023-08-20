@@ -14,26 +14,24 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use adminPostList;
 use dcCore;
 use dcMeta;
-use dcNsProcess;
-use dcPage;
+use Dotclear\Core\Backend\Listing\ListingPosts;
+use Dotclear\Core\Backend\Notices;
+use Dotclear\Core\Backend\Page;
+use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Html;
 use Exception;
 use form;
 
-class ManagePosts extends dcNsProcess
+class ManagePosts extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     /**
      * Initializes the page.
      */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::MANAGE) && (($_REQUEST['m'] ?? 'series') === 'serie_posts');
-
-        return static::$init;
+        return self::status(My::checkContext(My::MANAGE) && (($_REQUEST['m'] ?? 'series') === 'serie_posts'));
     }
 
     /**
@@ -41,7 +39,7 @@ class ManagePosts extends dcNsProcess
      */
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
@@ -65,13 +63,13 @@ class ManagePosts extends dcNsProcess
         try {
             dcCore::app()->admin->posts     = dcCore::app()->meta->getPostsByMeta($params);
             $counter                        = dcCore::app()->meta->getPostsByMeta($params, true);
-            dcCore::app()->admin->post_list = new adminPostList(dcCore::app()->admin->posts, $counter->f(0));
+            dcCore::app()->admin->post_list = new ListingPosts(dcCore::app()->admin->posts, $counter->f(0));
         } catch (Exception $e) {
             dcCore::app()->error->add($e->getMessage());
         }
 
         dcCore::app()->admin->posts_actions_page = new BackendActions(
-            dcCore::app()->adminurl->get('admin.plugin'),
+            dcCore::app()->admin->url->get('admin.plugin'),
             ['p' => My::id(), 'm' => 'serie_posts', 'series' => dcCore::app()->admin->serie]
         );
 
@@ -89,8 +87,8 @@ class ManagePosts extends dcNsProcess
 
             try {
                 if (dcCore::app()->meta->updateMeta(dcCore::app()->admin->serie, $new_id, 'serie')) {
-                    dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), Html::escapeHTML(dcCore::app()->admin->serie), Html::escapeHTML($new_id)));
-                    dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
+                    Notices::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), Html::escapeHTML(dcCore::app()->admin->serie), Html::escapeHTML($new_id)));
+                    dcCore::app()->admin->url->redirect('admin.plugin.' . My::id(), [
                         'm'     => 'serie_posts',
                         'serie' => $new_id,
                     ]);
@@ -108,8 +106,8 @@ class ManagePosts extends dcNsProcess
 
             try {
                 dcCore::app()->meta->delMeta(dcCore::app()->admin->serie, 'serie');
-                dcPage::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML(dcCore::app()->admin->serie)));
-                dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
+                Notices::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML(dcCore::app()->admin->serie)));
+                dcCore::app()->admin->url->redirect('admin.plugin.' . My::id(), [
                     'm' => 'series',
                 ]);
             } catch (Exception $e) {
@@ -125,7 +123,7 @@ class ManagePosts extends dcNsProcess
      */
     public static function render(): void
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return;
         }
 
@@ -137,24 +135,24 @@ class ManagePosts extends dcNsProcess
 
         $this_url = dcCore::app()->admin->getPageURL() . '&amp;m=serie_posts&amp;serie=' . rawurlencode(dcCore::app()->admin->serie);
 
-        $head = dcPage::cssModuleLoad(My::id() . '/css/style.css', 'screen', dcCore::app()->getVersion(My::id())) .
-        dcPage::jsLoad('js/_posts_list.js') .
-        dcPage::jsJson('posts_series_msg', [
+        $head = My::cssLoad('style.css') .
+        Page::jsLoad('js/_posts_list.js') .
+        Page::jsJson('posts_series_msg', [
             'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), Html::escapeHTML(dcCore::app()->admin->serie)),
         ]) .
-        dcPage::jsModuleLoad(My::id() . '/js/posts.js', dcCore::app()->getVersion(My::id())) .
-        dcPage::jsConfirmClose('serie_rename');
+        My::jsLoad('posts.js') .
+        Page::jsConfirmClose('serie_rename');
 
-        dcPage::openModule(__('series'), $head);
+        Page::openModule(__('series'), $head);
 
-        echo dcPage::breadcrumb(
+        echo Page::breadcrumb(
             [
                 Html::escapeHTML(dcCore::app()->blog->name)                                          => '',
                 __('Series')                                                                         => dcCore::app()->admin->getPageURL() . '&amp;m=series',
                 __('Serie') . ' &ldquo;' . Html::escapeHTML(dcCore::app()->admin->serie) . '&rdquo;' => '',
             ]
         );
-        echo dcPage::notices();
+        echo Notices::getNotices();
 
         // Form
         echo '<p><a class="back" href="' . dcCore::app()->admin->getPageURL() . '&amp;m=series">' . __('Back to series list') . '</a></p>';
@@ -210,6 +208,6 @@ class ManagePosts extends dcNsProcess
             );
         }
 
-        dcPage::closeModule();
+        Page::closeModule();
     }
 }

@@ -15,48 +15,45 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Frontend extends dcNsProcess
+class Frontend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::FRONTEND);
-
         // Localized string we find in template
         __("This serie's comments Atom feed");
         __("This serie's entries Atom feed");
 
-        return static::$init;
+        return self::status(My::checkContext(My::FRONTEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
         dcCore::app()->addBehaviors([
-            'templateBeforeBlockV2'  => [FrontendBehaviors::class, 'templateBeforeBlock'],
-            'publicBeforeDocumentV2' => [FrontendBehaviors::class, 'addTplPath'],
+            'templateBeforeBlockV2'  => FrontendBehaviors::templateBeforeBlock(...),
+            'publicBeforeDocumentV2' => FrontendBehaviors::addTplPath(...),
 
-            'publicBreadcrumb' => [FrontendBehaviors::class, 'publicBreadcrumb'],
+            'publicBreadcrumb' => FrontendBehaviors::publicBreadcrumb(...),
 
-            'initWidgets'        => [Widgets::class, 'initWidgets'],
-            'initDefaultWidgets' => [Widgets::class, 'initDefaultWidgets'],
+            'initWidgets'        => Widgets::initWidgets(...),
+            'initDefaultWidgets' => Widgets::initDefaultWidgets(...),
         ]);
 
-        dcCore::app()->tpl->addBlock('Series', [FrontendTemplate::class, 'Series']);
-        dcCore::app()->tpl->addBlock('SeriesHeader', [FrontendTemplate::class, 'SeriesHeader']);
-        dcCore::app()->tpl->addBlock('SeriesFooter', [FrontendTemplate::class, 'SeriesFooter']);
-        dcCore::app()->tpl->addBlock('EntrySeries', [FrontendTemplate::class, 'EntrySeries']);
-        dcCore::app()->tpl->addValue('SerieID', [FrontendTemplate::class, 'SerieID']);
-        dcCore::app()->tpl->addValue('SeriePercent', [FrontendTemplate::class, 'SeriePercent']);
-        dcCore::app()->tpl->addValue('SerieRoundPercent', [FrontendTemplate::class, 'SerieRoundPercent']);
-        dcCore::app()->tpl->addValue('SerieURL', [FrontendTemplate::class, 'SerieURL']);
-        dcCore::app()->tpl->addValue('SerieCloudURL', [FrontendTemplate::class, 'SerieCloudURL']);
-        dcCore::app()->tpl->addValue('SerieFeedURL', [FrontendTemplate::class, 'SerieFeedURL']);
+        dcCore::app()->tpl->addBlock('Series', FrontendTemplate::Series(...));
+        dcCore::app()->tpl->addBlock('SeriesHeader', FrontendTemplate::SeriesHeader(...));
+        dcCore::app()->tpl->addBlock('SeriesFooter', FrontendTemplate::SeriesFooter(...));
+        dcCore::app()->tpl->addBlock('EntrySeries', FrontendTemplate::EntrySeries(...));
+        dcCore::app()->tpl->addValue('SerieID', FrontendTemplate::SerieID(...));
+        dcCore::app()->tpl->addValue('SeriePercent', FrontendTemplate::SeriePercent(...));
+        dcCore::app()->tpl->addValue('SerieRoundPercent', FrontendTemplate::SerieRoundPercent(...));
+        dcCore::app()->tpl->addValue('SerieURL', FrontendTemplate::SerieURL(...));
+        dcCore::app()->tpl->addValue('SerieCloudURL', FrontendTemplate::SerieCloudURL(...));
+        dcCore::app()->tpl->addValue('SerieFeedURL', FrontendTemplate::SerieFeedURL(...));
 
         return true;
     }

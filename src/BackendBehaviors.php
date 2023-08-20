@@ -17,8 +17,9 @@ namespace Dotclear\Plugin\series;
 use ArrayObject;
 use dcAuth;
 use dcCore;
-use dcPage;
-use dcPostsActions;
+use Dotclear\Core\Backend\Action\ActionsPosts;
+use Dotclear\Core\Backend\Notices;
+use Dotclear\Core\Backend\Page;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Html;
 use Exception;
@@ -30,7 +31,7 @@ class BackendBehaviors
     {
         $favs->register('series', [
             'title'      => __('Series'),
-            'url'        => My::makeUrl(),
+            'url'        => My::manageUrl(),
             'small-icon' => My::icons(),
             'large-icon' => My::icons(),
             My::checkContext(My::MENU),
@@ -116,11 +117,11 @@ class BackendBehaviors
         }
     }
 
-    public static function adminPostsActions(dcPostsActions $ap)
+    public static function adminPostsActions(ActionsPosts $ap)
     {
         $ap->addAction(
             [__('Series') => [__('Add series') => 'series']],
-            [static::class, 'adminAddSeries']
+            static::adminAddSeries(...)
         );
 
         if (dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
@@ -129,12 +130,12 @@ class BackendBehaviors
         ]), dcCore::app()->blog->id)) {
             $ap->addAction(
                 [__('Series') => [__('Remove series') => 'series_remove']],
-                [static::class, 'adminRemoveSeries']
+                static::adminRemoveSeries(...)
             );
         }
     }
 
-    public static function adminAddSeries(dcPostsActions $ap, ArrayObject $post)
+    public static function adminAddSeries(ActionsPosts $ap, ArrayObject $post)
     {
         if (!empty($post['new_series'])) {
             $series = dcCore::app()->meta->splitMetaValues($_POST['new_series']);
@@ -157,7 +158,7 @@ class BackendBehaviors
                     }
                 }
             }
-            dcPage::addSuccessNotice(
+            Notices::addSuccessNotice(
                 sprintf(
                     __(
                         'Serie has been successfully added to selected entries',
@@ -172,7 +173,7 @@ class BackendBehaviors
             $type = $opts['serie_list_format'] ?? 'more';
 
             $editor_series_options = [
-                'meta_url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+                'meta_url' => dcCore::app()->admin->url->get('admin.plugin.' . My::id(), [
                     'm'     => 'serie_posts',
                     'serie' => '',
                 ]),
@@ -191,20 +192,20 @@ class BackendBehaviors
             ];
 
             $ap->beginPage(
-                dcPage::breadcrumb(
+                Page::breadcrumb(
                     [
                         Html::escapeHTML(dcCore::app()->blog->name) => '',
                         __('Entries')                               => $ap->getRedirection(true),
                         __('Add series to this selection')          => '',
                     ]
                 ),
-                dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
-                dcPage::jsMetaEditor() .
-                dcPage::jsJson('editor_series_options', $editor_series_options) .
-                dcPage::jsJson('editor_series_msg', $msg) .
-                dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
-                dcPage::jsModuleLoad('series/js/posts_actions.js', dcCore::app()->getVersion('series')) .
-                dcPage::cssModuleLoad('series/css/style.css', 'screen', dcCore::app()->getVersion('series'))
+                Page::jsLoad('js/jquery/jquery.autocomplete.js') .
+                Page::jsMetaEditor() .
+                Page::jsJson('editor_series_options', $editor_series_options) .
+                Page::jsJson('editor_series_msg', $msg) .
+                Page::jsLoad('js/jquery/jquery.autocomplete.js') .
+                My::jsLoad('posts_actions.js') .
+                My::cssLoad('style.css')
             );
             echo
             '<form action="' . $ap->getURI() . '" method="post">' .
@@ -221,7 +222,7 @@ class BackendBehaviors
         }
     }
 
-    public static function adminRemoveSeries(dcPostsActions $ap, ArrayObject $post)
+    public static function adminRemoveSeries(ActionsPosts $ap, ArrayObject $post)
     {
         if (!empty($post['meta_id']) && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_DELETE,
@@ -253,10 +254,10 @@ class BackendBehaviors
                 throw new Exception(__('No series for selected entries'));
             }
             $ap->beginPage(
-                dcPage::breadcrumb(
+                Page::breadcrumb(
                     [
                         Html::escapeHTML(dcCore::app()->blog->name)      => '',
-                        __('Entries')                                    => dcCore::app()->adminurl->get('admin.posts'),
+                        __('Entries')                                    => dcCore::app()->admin->url->get('admin.posts'),
                         __('Remove selected series from this selection') => '',
                     ]
                 )
@@ -295,7 +296,7 @@ class BackendBehaviors
         $type = $opts['serie_list_format'] ?? 'more';
 
         $editor_series_options = [
-            'meta_url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+            'meta_url' => dcCore::app()->admin->url->get('admin.plugin.' . My::id(), [
                 'm'     => 'serie_posts',
                 'serie' => '',
             ]),
@@ -314,11 +315,11 @@ class BackendBehaviors
         ];
 
         return
-        dcPage::jsJson('editor_series_options', $editor_series_options) .
-        dcPage::jsJson('editor_series_msg', $msg) .
-        dcPage::jsLoad('js/jquery/jquery.autocomplete.js') .
-        dcPage::jsModuleLoad(My::id() . '/js/post.js', dcCore::app()->getVersion(My::id())) .
-        dcPage::cssModuleLoad(My::id() . '/css/style.css', 'screen', dcCore::app()->getVersion(My::id()));
+        Page::jsJson('editor_series_options', $editor_series_options) .
+        Page::jsJson('editor_series_msg', $msg) .
+        Page::jsLoad('js/jquery/jquery.autocomplete.js') .
+        My::jsLoad('post.js') .
+        My::cssLoad('style.css');
     }
 
     public static function adminPostEditor($editor = '', $context = '')
@@ -331,17 +332,17 @@ class BackendBehaviors
 
         if ($editor == 'dcLegacyEditor') {
             return
-            dcPage::jsJson('legacy_editor_series', [
+            Page::jsJson('legacy_editor_series', [
                 'serie' => [
                     'title' => __('Serie'),
                     'url'   => $serie_url,
-                    'icon'  => urldecode(dcPage::getPF(My::id() . '/icon.svg')),
+                    'icon'  => urldecode(Page::getPF(My::id() . '/icon.svg')),
                 ],
             ]) .
-            dcPage::jsModuleLoad(My::id() . '/js/legacy-post.js', dcCore::app()->getVersion(My::id()));
+            My::jsLoad('legacy-post.js');
         } elseif ($editor == 'dcCKEditor') {
             return
-            dcPage::jsJson('ck_editor_series', [
+            Page::jsJson('ck_editor_series', [
                 'serie_title' => __('Serie'),
                 'serie_url'   => $serie_url,
             ]);
@@ -356,7 +357,7 @@ class BackendBehaviors
         $extraPlugins[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
-            'url'    => urldecode(DC_ADMIN_URL . dcPage::getPF(My::id() . '/js/ckeditor-series-plugin.js')),
+            'url'    => urldecode(DC_ADMIN_URL . Page::getPF(My::id() . '/js/ckeditor-series-plugin.js')),
         ];
     }
 

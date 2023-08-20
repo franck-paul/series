@@ -15,21 +15,19 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use dcCore;
-use dcNsProcess;
-use dcPage;
+use Dotclear\Core\Backend\Notices;
+use Dotclear\Core\Backend\Page;
+use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Html;
 
-class Manage extends dcNsProcess
+class Manage extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     /**
      * Initializes the page.
      */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::MANAGE) && ($_REQUEST['m'] ?? 'series') === 'serie_posts' ? ManagePosts::init() : true;
-
-        return static::$init;
+        return self::status(My::checkContext(My::MANAGE) && ($_REQUEST['m'] ?? 'series') === 'serie_posts' ? ManagePosts::init() : true);
     }
 
     /**
@@ -37,7 +35,7 @@ class Manage extends dcNsProcess
      */
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
@@ -57,7 +55,7 @@ class Manage extends dcNsProcess
      */
     public static function render(): void
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return;
         }
 
@@ -67,17 +65,17 @@ class Manage extends dcNsProcess
             return;
         }
 
-        $head = dcPage::cssModuleLoad(My::id() . '/css/style.css', 'screen', dcCore::app()->getVersion(My::id()));
+        $head = My::cssLoad('style.css');
 
-        dcPage::openModule(__('series'), $head);
+        Page::openModule(__('series'), $head);
 
-        echo dcPage::breadcrumb(
+        echo Page::breadcrumb(
             [
                 Html::escapeHTML(dcCore::app()->blog->name) => '',
                 __('series')                                => '',
             ]
         );
-        echo dcPage::notices();
+        echo Notices::getNotices();
 
         $last_letter = null;
         $cols        = ['', ''];
@@ -115,6 +113,6 @@ class Manage extends dcNsProcess
             echo '<p>' . __('No series on this blog.') . '</p>';
         }
 
-        dcPage::closeModule();
+        Page::closeModule();
     }
 }

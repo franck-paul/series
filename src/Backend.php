@@ -14,69 +14,66 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use dcAdmin;
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Backend\Menus;
+use Dotclear\Core\Process;
 
-class Backend extends dcNsProcess
+class Backend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::BACKEND);
-
         // dead but useful code, in order to have translations
         __('Series') . __('Series of posts');
 
-        return static::$init;
+        return self::status(My::checkContext(My::BACKEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
-        dcCore::app()->menu[dcAdmin::MENU_BLOG]->addItem(
+        dcCore::app()->admin->menus[Menus::MENU_BLOG]->addItem(
             __('Series'),
-            My::makeUrl(),
+            My::manageUrl(),
             My::icons(),
             preg_match(My::urlScheme(), $_SERVER['REQUEST_URI']),
             My::checkContext(My::MENU)
         );
 
         dcCore::app()->addBehaviors([
-            'adminPostFormItems' => [BackendBehaviors::class, 'seriesField'],
+            'adminPostFormItems' => BackendBehaviors::seriesField(...),
 
-            'adminAfterPostCreate' => [BackendBehaviors::class, 'setSeries'],
-            'adminAfterPostUpdate' => [BackendBehaviors::class, 'setSeries'],
+            'adminAfterPostCreate' => BackendBehaviors::setSeries(...),
+            'adminAfterPostUpdate' => BackendBehaviors::setSeries(...),
 
-            'adminPostHeaders' => [BackendBehaviors::class, 'postHeaders'],
+            'adminPostHeaders' => BackendBehaviors::postHeaders(...),
 
-            'adminPostsActions' => [BackendBehaviors::class, 'adminPostsActions'],
+            'adminPostsActions' => BackendBehaviors::adminPostsActions(...),
 
-            'adminPreferencesFormV2'       => [BackendBehaviors::class, 'adminPreferencesForm'],
-            'adminBeforeUserOptionsUpdate' => [BackendBehaviors::class, 'setSerieListFormat'],
+            'adminPreferencesFormV2'       => BackendBehaviors::adminPreferencesForm(...),
+            'adminBeforeUserOptionsUpdate' => BackendBehaviors::setSerieListFormat(...),
 
-            'adminUserForm'         => [BackendBehaviors::class, 'adminUserForm'],
-            'adminBeforeUserCreate' => [BackendBehaviors::class, 'setSerieListFormat'],
-            'adminBeforeUserUpdate' => [BackendBehaviors::class, 'setSerieListFormat'],
+            'adminUserForm'         => BackendBehaviors::adminUserForm(...),
+            'adminBeforeUserCreate' => BackendBehaviors::setSerieListFormat(...),
+            'adminBeforeUserUpdate' => BackendBehaviors::setSerieListFormat(...),
 
-            'adminPostEditor'      => [BackendBehaviors::class, 'adminPostEditor'],
-            'ckeditorExtraPlugins' => [BackendBehaviors::class, 'ckeditorExtraPlugins'],
+            'adminPostEditor'      => BackendBehaviors::adminPostEditor(...),
+            'ckeditorExtraPlugins' => BackendBehaviors::ckeditorExtraPlugins(...),
 
             // Register favorite
-            'adminDashboardFavoritesV2' => [BackendBehaviors::class, 'adminDashboardFavorites'],
+            'adminDashboardFavoritesV2' => BackendBehaviors::adminDashboardFavorites(...),
 
-            'adminSimpleMenuAddType'    => [BackendBehaviors::class, 'adminSimpleMenuAddType'],
-            'adminSimpleMenuSelect'     => [BackendBehaviors::class, 'adminSimpleMenuSelect'],
-            'adminSimpleMenuBeforeEdit' => [BackendBehaviors::class, 'adminSimpleMenuBeforeEdit'],
+            'adminSimpleMenuAddType'    => BackendBehaviors::adminSimpleMenuAddType(...),
+            'adminSimpleMenuSelect'     => BackendBehaviors::adminSimpleMenuSelect(...),
+            'adminSimpleMenuBeforeEdit' => BackendBehaviors::adminSimpleMenuBeforeEdit(...),
         ]);
 
         if (My::checkContext(My::WIDGETS)) {
             dcCore::app()->addBehaviors([
-                'initWidgets'        => [Widgets::class, 'initWidgets'],
-                'initDefaultWidgets' => [Widgets::class, 'initDefaultWidgets'],
+                'initWidgets'        => Widgets::initWidgets(...),
+                'initDefaultWidgets' => Widgets::initDefaultWidgets(...),
             ]);
         }
 

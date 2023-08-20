@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use Dotclear\Plugin\widgets\Widgets as dcWidgets;
+use Dotclear\Plugin\widgets\Widgets as dotclearWidgets;
 use Dotclear\Plugin\widgets\WidgetsStack;
 
 class Widgets
@@ -23,7 +23,7 @@ class Widgets
     {
         // Widget for all series
         $w
-            ->create('series', __('Series'), [FrontendWidgets::class, 'seriesWidget'], null, __('List of series'))
+            ->create('series', __('Series'), FrontendWidgets::seriesWidget(...), null, __('List of series'))
             ->addTitle(__('Series'))
             ->setting('limit', __('Limit (empty means no limit):'), '20')
             ->setting(
@@ -56,7 +56,7 @@ class Widgets
 
         // Widget for currently displayed post
         $w
-            ->create('seriesPosts', __('Siblings'), [FrontendWidgets::class, 'seriePostsWidget'], null, __('Other posts of the same serie(s)'))
+            ->create('seriesPosts', __('Siblings'), FrontendWidgets::seriePostsWidget(...), null, __('Other posts of the same serie(s)'))
             ->addTitle(__('Siblings'))
             ->setting('serietitle', __('Show titles of series'), 1, 'check')
             ->setting(
@@ -105,8 +105,8 @@ class Widgets
             ->addOffline();
     }
 
-    public static function initDefaultWidgets($w, $d)
+    public static function initDefaultWidgets(WidgetsStack $w, array $d)
     {
-        $d[dcWidgets::WIDGETS_NAV]->append($w->series);
+        $d[dotclearWidgets::WIDGETS_NAV]->append($w->series);
     }
 }

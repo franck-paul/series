@@ -47,7 +47,8 @@ jsToolBar.prototype.elements.serie.fn.markdown = function () {
       return str;
     }
     window.dc_serie_editor.addMeta(str);
-    return `[${str}](${this.stripBaseURL(`${url}/${str}`)})`;
+    const uri = this.stripBaseURL(`${url}/${str}`);
+    return `[${str}](${uri})`;
   });
 };
 jsToolBar.prototype.elements.serie.fn.xhtml = function () {
@@ -61,7 +62,8 @@ jsToolBar.prototype.elements.serie.fn.xhtml = function () {
       return str;
     }
     window.dc_serie_editor.addMeta(str);
-    return `<a href="${this.stripBaseURL(`${url}/${str}`)}">${str}</a>`;
+    const uri = this.stripBaseURL(`${url}/${str}`);
+    return `<a href="${uri}">${str}</a>`;
   });
 };
 jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {

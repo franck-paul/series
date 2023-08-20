@@ -15,29 +15,26 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Prepend extends dcNsProcess
+class Prepend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::PREPEND);
-
-        return static::$init;
+        return self::status(My::checkContext(My::PREPEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
-        dcCore::app()->url->register('serie', 'serie', '^serie/(.+)$', [FrontendUrl::class, 'serie']);
-        dcCore::app()->url->register('series', 'series', '^series$', [FrontendUrl::class, 'series']);
-        dcCore::app()->url->register('serie_feed', 'feed/serie', '^feed/serie/(.+)$', [FrontendUrl::class, 'serieFeed']);
+        dcCore::app()->url->register('serie', 'serie', '^serie/(.+)$', FrontendUrl::serie(...));
+        dcCore::app()->url->register('series', 'series', '^series$', FrontendUrl::series(...));
+        dcCore::app()->url->register('serie_feed', 'feed/serie', '^feed/serie/(.+)$', FrontendUrl::serieFeed(...));
 
-        dcCore::app()->addBehavior('coreInitWikiPost', [CoreBehaviors::class, 'coreInitWikiPost']);
+        dcCore::app()->addBehavior('coreInitWikiPost', CoreBehaviors::coreInitWikiPost(...));
 
         return true;
     }

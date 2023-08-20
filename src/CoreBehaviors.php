@@ -22,7 +22,7 @@ class CoreBehaviors
 {
     public static function coreInitWikiPost($wiki)
     {
-        $wiki->registerFunction('url:serie', [static::class, 'wikiSerie']);
+        $wiki->registerFunction('url:serie', static::wikiSerie(...));
     }
 
     public static function wikiSerie($url, $content)
