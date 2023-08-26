@@ -49,8 +49,7 @@ class BackendBehaviors
                 $series_combo[$rs->meta_id] = $rs->meta_id;
             }
             unset($rs);
-        } catch (Exception $e) {
-            // Ignore exceptions
+        } catch (Exception) {
         }
 
         return $series_combo;
@@ -213,8 +212,10 @@ class BackendBehaviors
             '<div><label for="new_series" class="area">' . __('Series to add:') . '</label> ' .
             form::textarea('new_series', 60, 3) .
             '</div>' .
-            dcCore::app()->formNonce() . $ap->getHiddenFields() .
-            form::hidden(['action'], 'series') .
+            $ap->getHiddenFields() .
+            My::parsedHiddenFields([
+                'action' => 'series',
+            ]) .
             '<p><input type="submit" value="' . __('Save') . '" ' .
                 'name="save_series" /></p>' .
                 '</form>';
@@ -283,9 +284,11 @@ class BackendBehaviors
 
             echo
             '<p><input type="submit" value="' . __('ok') . '" />' .
-            dcCore::app()->formNonce() . $ap->getHiddenFields() .
-            form::hidden(['action'], 'series_remove') .
-                '</p></div></form>';
+            $ap->getHiddenFields() .
+            My::parsedHiddenFields([
+                'action' => 'series_remove',
+            ]) .
+            '</p></div></form>';
             $ap->endPage();
         }
     }

@@ -143,7 +143,7 @@ class ManagePosts extends Process
         My::jsLoad('posts.js') .
         Page::jsConfirmClose('serie_rename');
 
-        Page::openModule(__('series'), $head);
+        Page::openModule(My::name(), $head);
 
         echo Page::breadcrumb(
             [
@@ -167,8 +167,8 @@ class ManagePosts extends Process
                 '<p><label for="new_serie_id" class="classic">' . __('Rename:') . '</label> ' .
                 form::field('new_serie_id', 40, 255, Html::escapeHTML(dcCore::app()->admin->serie)) .
                 '<input type="submit" value="' . __('OK') . '" />' .
-                dcCore::app()->formNonce() .
-                    '</p></form>';
+                My::parsedHiddenFields() .
+                '</p></form>';
                 # Remove serie
                 /* @phpstan-ignore-next-line */
                 if (!dcCore::app()->admin->posts->isEmpty() && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
@@ -177,8 +177,8 @@ class ManagePosts extends Process
                     echo
                     '<form id="serie_delete" action="' . $this_url . '" method="post">' .
                     '<p>' . '<input type="submit" class="delete" name="delete" value="' . __('Delete this serie') . '" />' .
-                    dcCore::app()->formNonce() .
-                        '</p></form>';
+                    My::parsedHiddenFields() .
+                    '</p></form>';
                 }
                 echo '</div>';
             }
@@ -199,10 +199,11 @@ class ManagePosts extends Process
                 '<p class="col right"><label for="action" class="classic">' . __('Selected entries action:') . '</label> ' .
                 form::combo('action', dcCore::app()->admin->posts_actions_page->getCombo()) .
                 '<input type="submit" value="' . __('ok') . '" /></p>' .
-                form::hidden('post_type', '') .
-                form::hidden('m', 'serie_posts') .
-                form::hidden('serie', dcCore::app()->admin->serie) .
-                dcCore::app()->formNonce() .
+                My::parsedHiddenFields([
+                    'post_type' => '',
+                    'm'         => 'serie_posts',
+                    'serie'     => dcCore::app()->admin->serie,
+                ]) .
                 '</div>' .
                 '</form>'
             );

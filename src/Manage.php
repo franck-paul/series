@@ -67,7 +67,7 @@ class Manage extends Process
 
         $head = My::cssLoad('style.css');
 
-        Page::openModule(__('series'), $head);
+        Page::openModule(My::name(), $head);
 
         echo Page::breadcrumb(
             [
