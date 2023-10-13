@@ -23,14 +23,14 @@ use Dotclear\Plugin\widgets\WidgetsElement;
 
 class FrontendWidgets
 {
-    public static function seriesWidget(WidgetsElement $w)
+    public static function seriesWidget(WidgetsElement $w): string
     {
         if ($w->offline) {
-            return;
+            return '';
         }
 
         if (($w->homeonly == 1 && !dcCore::app()->url->isHome(dcCore::app()->url->type)) || ($w->homeonly == 2 && dcCore::app()->url->isHome(dcCore::app()->url->type))) {
-            return;
+            return '';
         }
 
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
@@ -61,7 +61,7 @@ class FrontendWidgets
         );
 
         if ($rs->isEmpty()) {
-            return;
+            return '';
         }
 
         if ($sort == 'meta_id_lower') {
@@ -100,18 +100,18 @@ class FrontendWidgets
         return $w->renderDiv((bool) $w->content_only, 'series ' . $w->class, '', $res);
     }
 
-    public static function seriePostsWidget(WidgetsElement $w)
+    public static function seriePostsWidget(WidgetsElement $w): string
     {
         if ($w->offline) {
-            return;
+            return '';
         }
 
         if (dcCore::app()->url->type != 'post') {
-            return;
+            return '';
         }
 
         if (!dcCore::app()->ctx->posts->post_meta) {
-            return;
+            return '';
         }
 
         $metas = unserialize(dcCore::app()->ctx->posts->post_meta);
@@ -149,10 +149,10 @@ class FrontendWidgets
             $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
             $rs = new MetaRecord(dcCore::app()->con->select($sql));
             if ($rs->isEmpty()) {
-                return;
+                return '';
             }
         } else {
-            return;
+            return '';
         }
 
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) . "\n" : '');
@@ -191,7 +191,7 @@ class FrontendWidgets
                 '</li>' . "\n";
         }
         if ($list == '') {
-            return;
+            return '';
         }
         $res .= $list . '</ul>' . "\n";
 

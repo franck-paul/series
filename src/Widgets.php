@@ -19,7 +19,7 @@ use Dotclear\Plugin\widgets\WidgetsStack;
 
 class Widgets
 {
-    public static function initWidgets(WidgetsStack $w)
+    public static function initWidgets(WidgetsStack $w): void
     {
         // Widget for all series
         $w
@@ -105,7 +105,13 @@ class Widgets
             ->addOffline();
     }
 
-    public static function initDefaultWidgets(WidgetsStack $w, array $d)
+    /**
+     * Initializes the default widgets.
+     *
+     * @param      \Dotclear\Plugin\widgets\WidgetsStack    $w  Widgets stack
+     * @param      array<string, WidgetsStack>              $d  Widgets definitions
+     */
+    public static function initDefaultWidgets(WidgetsStack $w, array $d): void
     {
         $d[dotclearWidgets::WIDGETS_NAV]->append($w->series);
     }

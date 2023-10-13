@@ -17,19 +17,28 @@ namespace Dotclear\Plugin\series;
 use dcCore;
 use dcMeta;
 use Dotclear\Helper\Html\Html;
+use Dotclear\Helper\Html\WikiToHtml;
 
 class CoreBehaviors
 {
-    public static function coreInitWikiPost($wiki)
+    public static function coreInitWikiPost(WikiToHtml $wiki): string
     {
         $wiki->registerFunction('url:serie', static::wikiSerie(...));
+
+        return '';
     }
 
-    public static function wikiSerie($url, $content)
+    /**
+     * @param      string  $url      The url
+     * @param      string  $content  The content
+     *
+     * @return     array<string, string>
+     */
+    public static function wikiSerie(string $url, string $content): array
     {
         $res = [];
         $url = substr($url, 6);
-        if (strpos($content, 'serie:') === 0) {
+        if (str_starts_with($content, 'serie:')) {
             $content = substr($content, 6);
         }
 

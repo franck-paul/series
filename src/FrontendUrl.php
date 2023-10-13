@@ -19,7 +19,10 @@ use dcUrlHandlers;
 
 class FrontendUrl extends dcUrlHandlers
 {
-    public static function serie($args)
+    /**
+     * @param      null|string  $args   The arguments
+     */
+    public static function serie(?string $args): void
     {
         $n = self::getPageNumber($args);
 
@@ -67,12 +70,15 @@ class FrontendUrl extends dcUrlHandlers
         }
     }
 
-    public static function series()
+    public static function series(): void
     {
         self::serveDocument('series.html');
     }
 
-    public static function serieFeed($args)
+    /**
+     * @param      null|string  $args   The arguments
+     */
+    public static function serieFeed(?string $args): void
     {
         if (!preg_match('#^(.+)/(atom|rss2)(/comments)?$#', (string) $args, $m)) {
             self::p404();

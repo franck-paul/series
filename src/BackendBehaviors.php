@@ -17,9 +17,11 @@ namespace Dotclear\Plugin\series;
 use ArrayObject;
 use dcAuth;
 use dcCore;
+use dcFavorites;
 use Dotclear\Core\Backend\Action\ActionsPosts;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
+use Dotclear\Database\Cursor;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Html;
 use Exception;
@@ -27,7 +29,7 @@ use form;
 
 class BackendBehaviors
 {
-    public static function adminDashboardFavorites($favs)
+    public static function adminDashboardFavorites(dcFavorites $favs): string
     {
         $favs->register('series', [
             'title'      => __('Series'),
@@ -36,9 +38,14 @@ class BackendBehaviors
             'large-icon' => My::icons(),
             My::checkContext(My::MENU),
         ]);
+
+        return '';
     }
 
-    public static function adminSimpleMenuGetCombo()
+    /**
+     * @return     array<string, string>
+     */
+    public static function adminSimpleMenuGetCombo(): array
     {
         $series_combo = [];
 
@@ -55,25 +62,43 @@ class BackendBehaviors
         return $series_combo;
     }
 
-    public static function adminSimpleMenuAddType($items)
+    /**
+     * @param      ArrayObject<string, ArrayObject<string, bool>>  $items  The items
+     *
+     * @return     string
+     */
+    public static function adminSimpleMenuAddType(ArrayObject $items): string
     {
         $series_combo = self::adminSimpleMenuGetCombo();
-        if ((is_countable($series_combo) ? count($series_combo) : 0) > 1) {
-            $items['series'] = new ArrayObject([__('Series'), true]);
+        if (count($series_combo) > 1) {
+            /**
+             * @var        ArrayObject<string, bool>
+             */
+            $menu            = new ArrayObject([__('Series'), true]);
+            $items['series'] = $menu;
         }
+
+        return '';
     }
 
-    public static function adminSimpleMenuSelect($item_type)
+    public static function adminSimpleMenuSelect(string $item_type, string $id): string
     {
         if ($item_type == 'series') {
             $series_combo = self::adminSimpleMenuGetCombo();
 
             return '<p class="field"><label for="item_select" class="classic">' . __('Select serie (if necessary):') . '</label>' .
-            form::combo('item_select', $series_combo);
+            form::combo($id, $series_combo);
         }
+
+        return '';
     }
 
-    public static function adminSimpleMenuBeforeEdit($item_type, $item_select, $menu_item)
+    /**
+     * @param      string               $item_type    The item type
+     * @param      string               $item_select  The item select
+     * @param      array<int, string>   $menu_item    The menu item
+     */
+    public static function adminSimpleMenuBeforeEdit(string $item_type, string $item_select, array $menu_item): string
     {
         if ($item_type == 'series') {
             $series_combo = self::adminSimpleMenuGetCombo();
@@ -88,9 +113,16 @@ class BackendBehaviors
                 $menu_item[2] .= dcCore::app()->url->getURLFor('serie', $item_select);
             }
         }
+
+        return '';
     }
 
-    public static function seriesField($main, $sidebar, $post)
+    /**
+     * @param      ArrayObject<string, mixed>           $main     The main
+     * @param      ArrayObject<string, mixed>           $sidebar  The sidebar
+     * @param      \Dotclear\Database\MetaRecord|null   $post     The post
+     */
+    public static function seriesField(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
         if (!empty($_POST['post_series'])) {
             $value = $_POST['post_series'];
@@ -100,12 +132,12 @@ class BackendBehaviors
 
         $sidebar['metas-box']['items']['post_series'] = '<h5><label class="s-series" for="post_series">' . __('Series:') . '</label></h5>' .
         '<div class="p s-series" id="series-edit">' . form::textarea('post_series', 20, 3, $value, 'maximal') . '</div>';
+
+        return '';
     }
 
-    public static function setSeries($cur, $post_id)
+    public static function setSeries(Cursor $cur, int $post_id): string
     {
-        $post_id = (int) $post_id;
-
         if (isset($_POST['post_series'])) {
             $series = $_POST['post_series'];
             dcCore::app()->meta->delPostMeta($post_id, 'serie');
@@ -114,9 +146,11 @@ class BackendBehaviors
                 dcCore::app()->meta->setPostMeta($post_id, 'serie', $serie);
             }
         }
+
+        return '';
     }
 
-    public static function adminPostsActions(ActionsPosts $ap)
+    public static function adminPostsActions(ActionsPosts $ap): string
     {
         $ap->addAction(
             [__('Series') => [__('Add series') => 'series']],
@@ -132,9 +166,15 @@ class BackendBehaviors
                 static::adminRemoveSeries(...)
             );
         }
+
+        return '';
     }
 
-    public static function adminAddSeries(ActionsPosts $ap, ArrayObject $post)
+    /**
+     * @param      ActionsPosts                 $ap     Actions
+     * @param      ArrayObject<string, mixed>   $post   The post
+     */
+    public static function adminAddSeries(ActionsPosts $ap, ArrayObject $post): void
     {
         if (!empty($post['new_series'])) {
             $series = dcCore::app()->meta->splitMetaValues($_POST['new_series']);
@@ -223,7 +263,11 @@ class BackendBehaviors
         }
     }
 
-    public static function adminRemoveSeries(ActionsPosts $ap, ArrayObject $post)
+    /**
+     * @param      ActionsPosts                 $ap     Actions
+     * @param      ArrayObject<string, mixed>   $post   The post
+     */
+    public static function adminRemoveSeries(ActionsPosts $ap, ArrayObject $post): void
     {
         if (!empty($post['meta_id']) && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_DELETE,
@@ -293,7 +337,7 @@ class BackendBehaviors
         }
     }
 
-    public static function postHeaders()
+    public static function postHeaders(): string
     {
         $opts = dcCore::app()->auth->getOptions();
         $type = $opts['serie_list_format'] ?? 'more';
@@ -325,10 +369,10 @@ class BackendBehaviors
         My::cssLoad('style.css');
     }
 
-    public static function adminPostEditor($editor = '', $context = '')
+    public static function adminPostEditor(string $editor = '', string $context = ''): string
     {
         if (($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor') || $context != 'post') {
-            return;
+            return '';
         }
 
         $serie_url = dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie');
@@ -352,19 +396,27 @@ class BackendBehaviors
         }
     }
 
-    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, $context)
+    /**
+     * @param      ArrayObject<int, mixed>  $extraPlugins  The extra plugins
+     * @param      string                   $context       The context
+     *
+     * @return     string
+     */
+    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, string $context): string
     {
-        if ($context != 'post') {
-            return;
+        if ($context !== 'post') {
+            return '';
         }
         $extraPlugins[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
             'url'    => urldecode(DC_ADMIN_URL . Page::getPF(My::id() . '/js/ckeditor-series-plugin.js')),
         ];
+
+        return '';
     }
 
-    public static function adminPreferencesForm()
+    public static function adminPreferencesForm(): string
     {
         $opts = dcCore::app()->auth->getOptions();
 
@@ -379,9 +431,11 @@ class BackendBehaviors
         '<p><label for="user_serie_list_format" class="classic">' . __('Series list format:') . '</label> ' .
         form::combo('user_serie_list_format', $combo, $value) .
         '</p></div>';
+
+        return '';
     }
 
-    public static function adminUserForm($rs)
+    public static function adminUserForm(?MetaRecord $rs): string
     {
         if ($rs instanceof MetaRecord) {
             $opts = $rs->options();
@@ -400,12 +454,16 @@ class BackendBehaviors
         '<p><label for="user_serie_list_format" class="classic">' . __('Series list format:') . '</label> ' .
         form::combo('user_serie_list_format', $combo, $value) .
         '</p></div>';
+
+        return '';
     }
 
-    public static function setSerieListFormat($cur, $user_id = null)
+    public static function setSerieListFormat(Cursor $cur, ?string $user_id = null): string
     {
         if (!is_null($user_id)) {
             $cur->user_options['serie_list_format'] = $_POST['user_serie_list_format'];
         }
+
+        return '';
     }
 }

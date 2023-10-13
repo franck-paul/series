@@ -14,12 +14,13 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
+use ArrayObject;
 use dcCore;
 use Dotclear\Core\Frontend\Utility;
 
 class FrontendBehaviors
 {
-    public static function publicBreadcrumb($context, $separator)
+    public static function publicBreadcrumb(string $context, string $separator): string
     {
         if ($context == 'series') {
             // All series
@@ -39,9 +40,17 @@ class FrontendBehaviors
 
             return $ret;
         }
+
+        return '';
     }
 
-    public static function templateBeforeBlock($b, $attr)
+    /**
+     * @param      string                                               $b      The block
+     * @param      array<string, string>|ArrayObject<string, string>    $attr   The attribute
+     *
+     * @return     string
+     */
+    public static function templateBeforeBlock(string $b, array|ArrayObject $attr): string
     {
         if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie'])) {
             return
@@ -66,9 +75,11 @@ class FrontendBehaviors
                 "\$params['sql'] .= \"AND METAS.meta_id = '\".dcCore::app()->con->escape(dcCore::app()->ctx->meta->meta_id).\"' \";\n" .
                 "} ?>\n";
         }
+
+        return '';
     }
 
-    public static function addTplPath()
+    public static function addTplPath(): string
     {
         $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
         if (!empty($tplset) && is_dir(__DIR__ . '/' . Utility::TPL_ROOT . '/' . $tplset)) {
@@ -76,5 +87,7 @@ class FrontendBehaviors
         } else {
             dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . DC_DEFAULT_TPLSET);
         }
+
+        return '';
     }
 }

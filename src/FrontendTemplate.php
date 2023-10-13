@@ -14,11 +14,18 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
+use ArrayObject;
 use dcCore;
 
 class FrontendTemplate
 {
-    public static function Series($attr, $content)
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     * @param      string                                            $content   The content
+     *
+     * @return     string
+     */
+    public static function Series(array|ArrayObject $attr, string $content): string
     {
         $type  = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
         $limit = isset($attr['limit']) ? (int) $attr['limit'] : 'null';
@@ -48,7 +55,13 @@ class FrontendTemplate
         return $res;
     }
 
-    public static function SeriesHeader($attr, $content)
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     * @param      string                                            $content   The content
+     *
+     * @return     string
+     */
+    public static function SeriesHeader(array|ArrayObject $attr, string $content): string
     {
         return
             '<?php if (dcCore::app()->ctx->meta->isStart()) : ?>' .
@@ -56,7 +69,13 @@ class FrontendTemplate
             '<?php endif; ?>';
     }
 
-    public static function SeriesFooter($attr, $content)
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     * @param      string                                            $content   The content
+     *
+     * @return     string
+     */
+    public static function SeriesFooter(array|ArrayObject $attr, string $content): string
     {
         return
             '<?php if (dcCore::app()->ctx->meta->isEnd()) : ?>' .
@@ -64,7 +83,13 @@ class FrontendTemplate
             '<?php endif; ?>';
     }
 
-    public static function EntrySeries($attr, $content)
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     * @param      string                                            $content   The content
+     *
+     * @return     string
+     */
+    public static function EntrySeries(array|ArrayObject $attr, string $content): string
     {
         $type   = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
         $combo  = ['meta_id_lower', 'count', 'latest', 'oldest'];
@@ -88,24 +113,34 @@ class FrontendTemplate
         return $res;
     }
 
-    public static function SerieID($attr)
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function SerieID(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, 'dcCore::app()->ctx->meta->meta_id') . '; ?>';
     }
 
-    public static function SeriePercent()
+    public static function SeriePercent(): string
     {
         return '<?php echo dcCore::app()->ctx->meta->percent; ?>';
     }
 
-    public static function SerieRoundPercent()
+    public static function SerieRoundPercent(): string
     {
         return '<?php echo dcCore::app()->ctx->meta->roundpercent; ?>';
     }
 
-    public static function SerieURL($attr)
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function SerieURL(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
@@ -113,14 +148,24 @@ class FrontendTemplate
             'rawurlencode(dcCore::app()->ctx->meta->meta_id))') . '; ?>';
     }
 
-    public static function SerieCloudURL($attr)
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function SerieCloudURL(array|ArrayObject $attr): string
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->url->getURLFor("series")') . '; ?>';
     }
 
-    public static function SerieFeedURL($attr)
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     *
+     * @return     string
+     */
+    public static function SerieFeedURL(array|ArrayObject $attr): string
     {
         $type = !empty($attr['type']) ? (string) $attr['type'] : 'rss2';
 
