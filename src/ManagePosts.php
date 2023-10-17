@@ -69,7 +69,7 @@ class ManagePosts extends Process
         }
 
         dcCore::app()->admin->posts_actions_page = new BackendActions(
-            dcCore::app()->admin->url->get('admin.plugin'),
+            dcCore::app()->adminurl->get('admin.plugin'),
             ['p' => My::id(), 'm' => 'serie_posts', 'series' => dcCore::app()->admin->serie]
         );
 
@@ -88,7 +88,7 @@ class ManagePosts extends Process
             try {
                 if (dcCore::app()->meta->updateMeta(dcCore::app()->admin->serie, $new_id, 'serie')) {
                     Notices::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), Html::escapeHTML(dcCore::app()->admin->serie), Html::escapeHTML($new_id)));
-                    dcCore::app()->admin->url->redirect('admin.plugin.' . My::id(), [
+                    dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
                         'm'     => 'serie_posts',
                         'serie' => $new_id,
                     ]);
@@ -107,7 +107,7 @@ class ManagePosts extends Process
             try {
                 dcCore::app()->meta->delMeta(dcCore::app()->admin->serie, 'serie');
                 Notices::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML(dcCore::app()->admin->serie)));
-                dcCore::app()->admin->url->redirect('admin.plugin.' . My::id(), [
+                dcCore::app()->adminurl->redirect('admin.plugin.' . My::id(), [
                     'm' => 'series',
                 ]);
             } catch (Exception $e) {
