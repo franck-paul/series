@@ -32,11 +32,11 @@ class BackendBehaviors
     public static function adminDashboardFavorites(dcFavorites $favs): string
     {
         $favs->register('series', [
-            'title'      => __('Series'),
-            'url'        => My::manageUrl(),
-            'small-icon' => My::icons(),
-            'large-icon' => My::icons(),
-            My::checkContext(My::MENU),
+            'title'       => __('Series'),
+            'url'         => My::manageUrl(),
+            'small-icon'  => My::icons(),
+            'large-icon'  => My::icons(),
+            'permissions' => My::checkContext(My::MENU),
         ]);
 
         return '';
@@ -47,13 +47,16 @@ class BackendBehaviors
      */
     public static function adminSimpleMenuGetCombo(): array
     {
+        /**
+         * @var        array<string, string>
+         */
         $series_combo = [];
 
         try {
             $rs                             = dcCore::app()->meta->getMetadata(['meta_type' => 'serie']);
             $series_combo[__('All series')] = '-';
             while ($rs->fetch()) {
-                $series_combo[$rs->meta_id] = $rs->meta_id;
+                $series_combo[(string) $rs->meta_id] = (string) $rs->meta_id;
             }
             unset($rs);
         } catch (Exception) {
@@ -212,7 +215,7 @@ class BackendBehaviors
             $type = $opts['serie_list_format'] ?? 'more';
 
             $editor_series_options = [
-                'meta_url' => dcCore::app()->admin->url->get('admin.plugin.' . My::id(), [
+                'meta_url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
                     'm'     => 'serie_posts',
                     'serie' => '',
                 ]),
@@ -302,7 +305,7 @@ class BackendBehaviors
                 Page::breadcrumb(
                     [
                         Html::escapeHTML(dcCore::app()->blog->name)      => '',
-                        __('Entries')                                    => dcCore::app()->admin->url->get('admin.posts'),
+                        __('Entries')                                    => dcCore::app()->adminurl->get('admin.posts'),
                         __('Remove selected series from this selection') => '',
                     ]
                 )
@@ -321,8 +324,8 @@ class BackendBehaviors
                 }
                 echo '<p>' . sprintf(
                     $label,
-                    form::checkbox(['meta_id[]'], Html::escapeHTML($k)),
-                    Html::escapeHTML($k)
+                    form::checkbox(['meta_id[]'], Html::escapeHTML((string) $k)),
+                    Html::escapeHTML((string) $k)
                 ) . '</p>';
             }
 
@@ -343,7 +346,7 @@ class BackendBehaviors
         $type = $opts['serie_list_format'] ?? 'more';
 
         $editor_series_options = [
-            'meta_url' => dcCore::app()->admin->url->get('admin.plugin.' . My::id(), [
+            'meta_url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
                 'm'     => 'serie_posts',
                 'serie' => '',
             ]),

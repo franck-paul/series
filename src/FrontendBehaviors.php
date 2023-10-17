@@ -61,7 +61,7 @@ class FrontendBehaviors
             "\$params['from'] .= ', '.dcCore::app()->prefix.'meta METAS ';\n" .
             "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
             "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-            "\$params['sql'] .= \"AND METAS.meta_id = '" . dcCore::app()->con->escape($attr['serie']) . "' \";\n" .
+            "\$params['sql'] .= \"AND METAS.meta_id = '" . dcCore::app()->con->escapeStr($attr['serie']) . "' \";\n" .
                 "?>\n";
         } elseif (empty($attr['no_context']) && ($b == 'Entries' || $b == 'Comments')) {
             return
