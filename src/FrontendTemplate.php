@@ -144,7 +144,7 @@ class FrontendTemplate
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->url->getURLFor("serie",' .
+        return '<?php echo ' . sprintf($f, 'App::blog()->url().dcCore::app()->url->getURLFor("serie",' .
             'rawurlencode(dcCore::app()->ctx->meta->meta_id))') . '; ?>';
     }
 
@@ -157,7 +157,7 @@ class FrontendTemplate
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->url->getURLFor("series")') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'App::blog()->url().dcCore::app()->url->getURLFor("series")') . '; ?>';
     }
 
     /**
@@ -175,7 +175,7 @@ class FrontendTemplate
 
         $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->url.dcCore::app()->url->getURLFor("serie_feed",' .
+        return '<?php echo ' . sprintf($f, 'App::blog()->url().dcCore::app()->url->getURLFor("serie_feed",' .
             'rawurlencode(dcCore::app()->ctx->meta->meta_id)."/' . $type . '")') . '; ?>';
     }
 }

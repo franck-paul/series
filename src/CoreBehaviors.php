@@ -16,6 +16,7 @@ namespace Dotclear\Plugin\series;
 
 use dcCore;
 use dcMeta;
+use Dotclear\App;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Helper\Html\WikiToHtml;
 
@@ -42,7 +43,7 @@ class CoreBehaviors
             $content = substr($content, 6);
         }
 
-        $serie_url      = Html::stripHostURL(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie'));
+        $serie_url      = Html::stripHostURL(App::blog()->url() . dcCore::app()->url->getURLFor('serie'));
         $res['url']     = $serie_url . '/' . rawurlencode(dcMeta::sanitizeMetaID($url));
         $res['content'] = $content;
 

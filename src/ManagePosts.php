@@ -16,6 +16,7 @@ namespace Dotclear\Plugin\series;
 
 use dcCore;
 use dcMeta;
+use Dotclear\App;
 use Dotclear\Core\Backend\Listing\ListingPosts;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
@@ -101,7 +102,7 @@ class ManagePosts extends Process
         if (!empty($_POST['delete']) && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcCore::app()->auth::PERMISSION_PUBLISH,
             dcCore::app()->auth::PERMISSION_CONTENT_ADMIN,
-        ]), dcCore::app()->blog->id)) {
+        ]), App::blog()->id())) {
             // Delete a serie
 
             try {
@@ -147,7 +148,7 @@ class ManagePosts extends Process
 
         echo Page::breadcrumb(
             [
-                Html::escapeHTML(dcCore::app()->blog->name)                                          => '',
+                Html::escapeHTML(App::blog()->name())                                                => '',
                 __('Series')                                                                         => dcCore::app()->admin->getPageURL() . '&amp;m=series',
                 __('Serie') . ' &ldquo;' . Html::escapeHTML(dcCore::app()->admin->serie) . '&rdquo;' => '',
             ]
@@ -173,7 +174,7 @@ class ManagePosts extends Process
                 /* @phpstan-ignore-next-line */
                 if (!dcCore::app()->admin->posts->isEmpty() && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
                     dcCore::app()->auth::PERMISSION_CONTENT_ADMIN,
-                ]), dcCore::app()->blog->id)) {
+                ]), App::blog()->id())) {
                     echo
                     '<form id="serie_delete" action="' . $this_url . '" method="post">' .
                     '<p>' . '<input type="submit" class="delete" name="delete" value="' . __('Delete this serie') . '" />' .

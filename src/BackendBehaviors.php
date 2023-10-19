@@ -18,6 +18,7 @@ use ArrayObject;
 use dcAuth;
 use dcCore;
 use dcFavorites;
+use Dotclear\App;
 use Dotclear\Core\Backend\Action\ActionsPosts;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
@@ -163,7 +164,7 @@ class BackendBehaviors
         if (dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_DELETE,
             dcAuth::PERMISSION_CONTENT_ADMIN,
-        ]), dcCore::app()->blog->id)) {
+        ]), App::blog()->id())) {
             $ap->addAction(
                 [__('Series') => [__('Remove series') => 'series_remove']],
                 static::adminRemoveSeries(...)
@@ -236,9 +237,9 @@ class BackendBehaviors
             $ap->beginPage(
                 Page::breadcrumb(
                     [
-                        Html::escapeHTML(dcCore::app()->blog->name) => '',
-                        __('Entries')                               => $ap->getRedirection(true),
-                        __('Add series to this selection')          => '',
+                        Html::escapeHTML(App::blog()->name()) => '',
+                        __('Entries')                         => $ap->getRedirection(true),
+                        __('Add series to this selection')    => '',
                     ]
                 ),
                 Page::jsLoad('js/jquery/jquery.autocomplete.js') .
@@ -275,7 +276,7 @@ class BackendBehaviors
         if (!empty($post['meta_id']) && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_DELETE,
             dcAuth::PERMISSION_CONTENT_ADMIN,
-        ]), dcCore::app()->blog->id)) {
+        ]), App::blog()->id())) {
             $posts = $ap->getRS();
             while ($posts->fetch()) {
                 foreach ($_POST['meta_id'] as $v) {
@@ -304,7 +305,7 @@ class BackendBehaviors
             $ap->beginPage(
                 Page::breadcrumb(
                     [
-                        Html::escapeHTML(dcCore::app()->blog->name)      => '',
+                        Html::escapeHTML(App::blog()->name())            => '',
                         __('Entries')                                    => dcCore::app()->adminurl->get('admin.posts'),
                         __('Remove selected series from this selection') => '',
                     ]
@@ -378,7 +379,7 @@ class BackendBehaviors
             return '';
         }
 
-        $serie_url = dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie');
+        $serie_url = App::blog()->url() . dcCore::app()->url->getURLFor('serie');
 
         if ($editor == 'dcLegacyEditor') {
             return

@@ -16,6 +16,7 @@ namespace Dotclear\Plugin\series;
 
 use ArrayObject;
 use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Frontend\Utility;
 
 class FrontendBehaviors
@@ -30,11 +31,11 @@ class FrontendBehaviors
 
             // Get current page if set
             $page = dcCore::app()->public->getPageNumber();
-            $ret  = '<a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('series') . '">' . __('All series') . '</a>';
+            $ret  = '<a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('series') . '">' . __('All series') . '</a>';
             if ($page == 0) {
                 $ret .= $separator . dcCore::app()->ctx->meta->meta_id;
             } else {
-                $ret .= $separator . '<a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie') . '/' . rawurlencode(dcCore::app()->ctx->meta->meta_id) . '">' . dcCore::app()->ctx->meta->meta_id . '</a>';
+                $ret .= $separator . '<a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('serie') . '/' . rawurlencode(dcCore::app()->ctx->meta->meta_id) . '">' . dcCore::app()->ctx->meta->meta_id . '</a>';
                 $ret .= $separator . sprintf(__('page %d'), $page);
             }
 
@@ -81,7 +82,7 @@ class FrontendBehaviors
 
     public static function addTplPath(): string
     {
-        $tplset = dcCore::app()->themes->moduleInfo(dcCore::app()->blog->settings->system->theme, 'tplset');
+        $tplset = dcCore::app()->themes->moduleInfo(App::blog()->settings()->system->theme, 'tplset');
         if (!empty($tplset) && is_dir(__DIR__ . '/' . Utility::TPL_ROOT . '/' . $tplset)) {
             dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . $tplset);
         } else {

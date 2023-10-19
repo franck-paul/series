@@ -17,6 +17,7 @@ namespace Dotclear\Plugin\series;
 use dcBlog;
 use dcCore;
 use dcMeta;
+use Dotclear\App;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Plugin\widgets\WidgetsElement;
@@ -85,7 +86,7 @@ class FrontendWidgets
                     }
                 }
             }
-            $res .= '<li' . $class . '><a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
+            $res .= '<li' . $class . '><a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
             'class="serie' . $rs->roundpercent . '">' .
             $rs->meta_id . '</a></li>';
         }
@@ -93,7 +94,7 @@ class FrontendWidgets
         $res .= '</ul>';
 
         if (dcCore::app()->url->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '') {
-            $res .= '<p><strong><a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('series') . '">' .
+            $res .= '<p><strong><a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('series') . '">' .
             Html::escapeHTML($w->allserieslinktitle) . '</a></strong></p>';
         }
 
@@ -122,7 +123,7 @@ class FrontendWidgets
             ' WHERE m.post_id = p.post_id ' .
             ' AND post_type = \'post\' ' .
             ' AND post_status = ' . dcBlog::POST_PUBLISHED . ' ' .
-            ' AND blog_id = \'' . dcCore::app()->blog->id . '\'' .
+            ' AND blog_id = \'' . App::blog()->id() . '\'' .
                 ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {
                 $sql .= " meta_id = '" . $meta . "' ";
@@ -177,7 +178,7 @@ class FrontendWidgets
                     $list .= '</ul>' . "\n";
                 }
                 if ($w->serietitle) {
-                    $list .= '<h3><a href="' . dcCore::app()->blog->url . dcCore::app()->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
+                    $list .= '<h3><a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
                     $rs->meta_id . '</a></h3>' . "\n";
                 }
                 $list .= '<ul>' . "\n";
@@ -185,7 +186,7 @@ class FrontendWidgets
             }
 
             $list .= '<li' . $class . '>' .
-            ($link ? '<a href="' . dcCore::app()->blog->url . dcCore::app()->getPostPublicURL($rs->post_type, Html::sanitizeURL($rs->post_url)) . '">' : '') .
+            ($link ? '<a href="' . App::blog()->url() . dcCore::app()->getPostPublicURL($rs->post_type, Html::sanitizeURL($rs->post_url)) . '">' : '') .
             Html::escapeHTML($rs->post_title) .
                 ($link ? '</a>' : '') .
                 '</li>' . "\n";
