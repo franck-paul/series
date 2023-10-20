@@ -412,7 +412,7 @@ class BackendBehaviors
         $extraPlugins[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
-            'url'    => urldecode(DC_ADMIN_URL . Page::getPF(My::id() . '/js/ckeditor-series-plugin.js')),
+            'url'    => urldecode(App::config()->adminUrl() . Page::getPF(My::id() . '/js/ckeditor-series-plugin.js')),
         ];
 
         return '';

@@ -85,7 +85,7 @@ class FrontendBehaviors
         if (!empty($tplset) && is_dir(__DIR__ . '/' . Utility::TPL_ROOT . '/' . $tplset)) {
             App::frontend()->template()->setPath(App::frontend()->template()->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . $tplset);
         } else {
-            App::frontend()->template()->setPath(App::frontend()->template()->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . DC_DEFAULT_TPLSET);
+            App::frontend()->template()->setPath(App::frontend()->template()->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . App::config()->defaultTplset());
         }
 
         return '';
