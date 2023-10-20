@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use ArrayObject;
-use dcCore;
 use Dotclear\App;
 use Dotclear\Core\Frontend\Utility;
 
@@ -30,12 +29,12 @@ class FrontendBehaviors
             // Serie
 
             // Get current page if set
-            $page = dcCore::app()->public->getPageNumber();
-            $ret  = '<a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('series') . '">' . __('All series') . '</a>';
+            $page = App::frontend()->getPageNumber();
+            $ret  = '<a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' . __('All series') . '</a>';
             if ($page == 0) {
-                $ret .= $separator . dcCore::app()->ctx->meta->meta_id;
+                $ret .= $separator . App::frontend()->context()->meta->meta_id;
             } else {
-                $ret .= $separator . '<a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('serie') . '/' . rawurlencode(dcCore::app()->ctx->meta->meta_id) . '">' . dcCore::app()->ctx->meta->meta_id . '</a>';
+                $ret .= $separator . '<a href="' . App::blog()->url() . App::url()->getURLFor('serie') . '/' . rawurlencode(App::frontend()->context()->meta->meta_id) . '">' . App::frontend()->context()->meta->meta_id . '</a>';
                 $ret .= $separator . sprintf(__('page %d'), $page);
             }
 
@@ -59,21 +58,21 @@ class FrontendBehaviors
             "if (!isset(\$params)) { \$params = []; }\n" .
             "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
             "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-            "\$params['from'] .= ', '.dcCore::app()->prefix.'meta METAS ';\n" .
+            "\$params['from'] .= ', '.App::con()->prefix().'meta METAS ';\n" .
             "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
             "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-            "\$params['sql'] .= \"AND METAS.meta_id = '" . dcCore::app()->con->escapeStr($attr['serie']) . "' \";\n" .
+            "\$params['sql'] .= \"AND METAS.meta_id = '" . App::con()->escapeStr($attr['serie']) . "' \";\n" .
                 "?>\n";
         } elseif (empty($attr['no_context']) && ($b == 'Entries' || $b == 'Comments')) {
             return
-                '<?php if (dcCore::app()->ctx->exists("meta") && dcCore::app()->ctx->meta->rows() && (dcCore::app()->ctx->meta->meta_type == "serie")) { ' .
+                '<?php if (App::frontend()->context()->exists("meta") && App::frontend()->context()->meta->rows() && (App::frontend()->context()->meta->meta_type == "serie")) { ' .
                 "if (!isset(\$params)) { \$params = []; }\n" .
                 "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
                 "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-                "\$params['from'] .= ', '.dcCore::app()->prefix.'meta METAS ';\n" .
+                "\$params['from'] .= ', '.App::con()->prefix().'meta METAS ';\n" .
                 "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
                 "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-                "\$params['sql'] .= \"AND METAS.meta_id = '\".dcCore::app()->con->escape(dcCore::app()->ctx->meta->meta_id).\"' \";\n" .
+                "\$params['sql'] .= \"AND METAS.meta_id = '\".App::con()->escapeStr(App::frontend()->context()->meta->meta_id).\"' \";\n" .
                 "} ?>\n";
         }
 
@@ -82,11 +81,11 @@ class FrontendBehaviors
 
     public static function addTplPath(): string
     {
-        $tplset = dcCore::app()->themes->moduleInfo(App::blog()->settings()->system->theme, 'tplset');
+        $tplset = App::themes()->moduleInfo(App::blog()->settings()->system->theme, 'tplset');
         if (!empty($tplset) && is_dir(__DIR__ . '/' . Utility::TPL_ROOT . '/' . $tplset)) {
-            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . $tplset);
+            App::frontend()->template()->setPath(App::frontend()->template()->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . $tplset);
         } else {
-            dcCore::app()->tpl->setPath(dcCore::app()->tpl->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . DC_DEFAULT_TPLSET);
+            App::frontend()->template()->setPath(App::frontend()->template()->getPath(), My::path() . '/' . Utility::TPL_ROOT . '/' . DC_DEFAULT_TPLSET);
         }
 
         return '';

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use Dotclear\Plugin\widgets\Widgets as dotclearWidgets;
+use Dotclear\Plugin\widgets\Widgets as AppWidgets;
 use Dotclear\Plugin\widgets\WidgetsStack;
 
 class Widgets
@@ -113,6 +113,6 @@ class Widgets
      */
     public static function initDefaultWidgets(WidgetsStack $w, array $d): void
     {
-        $d[dotclearWidgets::WIDGETS_NAV]->append($w->series);
+        $d[AppWidgets::WIDGETS_NAV]->append($w->series);
     }
 }

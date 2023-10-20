@@ -14,12 +14,11 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use dcBlog;
-use dcCore;
-use dcMeta;
 use Dotclear\App;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Html;
+use Dotclear\Interface\Core\BlogInterface;
+use Dotclear\Interface\Core\MetaInterface;
 use Dotclear\Plugin\widgets\WidgetsElement;
 
 class FrontendWidgets
@@ -30,7 +29,7 @@ class FrontendWidgets
             return '';
         }
 
-        if (($w->homeonly == 1 && !dcCore::app()->url->isHome(dcCore::app()->url->type)) || ($w->homeonly == 2 && dcCore::app()->url->isHome(dcCore::app()->url->type))) {
+        if (($w->homeonly == 1 && !App::url()->isHome(App::url()->type)) || ($w->homeonly == 2 && App::url()->isHome(App::url()->type))) {
             return '';
         }
 
@@ -57,8 +56,8 @@ class FrontendWidgets
             $params['limit'] = abs((int) $w->limit);
         }
 
-        $rs = dcCore::app()->meta->computeMetaStats(
-            dcCore::app()->meta->getMetadata($params)
+        $rs = App::meta()->computeMetaStats(
+            App::meta()->getMetadata($params)
         );
 
         if ($rs->isEmpty()) {
@@ -72,29 +71,29 @@ class FrontendWidgets
 
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';
 
-        if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof MetaRecord) {
-            dcCore::app()->ctx->meta = dcCore::app()->meta->getMetaRecordset(dcCore::app()->ctx->posts->post_meta, 'serie');
+        if (App::url()->type == 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
+            App::frontend()->context()->meta = App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta, 'serie');
         }
         while ($rs->fetch()) {
             $class = '';
-            if (dcCore::app()->url->type == 'post' && dcCore::app()->ctx->posts instanceof MetaRecord) {
-                while (dcCore::app()->ctx->meta->fetch()) {
-                    if (dcCore::app()->ctx->meta->meta_id == $rs->meta_id) {
+            if (App::url()->type == 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
+                while (App::frontend()->context()->meta->fetch()) {
+                    if (App::frontend()->context()->meta->meta_id == $rs->meta_id) {
                         $class = ' class="serie-current"';
 
                         break;
                     }
                 }
             }
-            $res .= '<li' . $class . '><a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
+            $res .= '<li' . $class . '><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
             'class="serie' . $rs->roundpercent . '">' .
             $rs->meta_id . '</a></li>';
         }
 
         $res .= '</ul>';
 
-        if (dcCore::app()->url->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '') {
-            $res .= '<p><strong><a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('series') . '">' .
+        if (App::url()->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '') {
+            $res .= '<p><strong><a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' .
             Html::escapeHTML($w->allserieslinktitle) . '</a></strong></p>';
         }
 
@@ -107,22 +106,22 @@ class FrontendWidgets
             return '';
         }
 
-        if (dcCore::app()->url->type != 'post') {
+        if (App::url()->type != 'post') {
             return '';
         }
 
-        if (!dcCore::app()->ctx->posts->post_meta) {
+        if (!App::frontend()->context()->posts->post_meta) {
             return '';
         }
 
-        $metas = unserialize(dcCore::app()->ctx->posts->post_meta);
+        $metas = unserialize(App::frontend()->context()->posts->post_meta);
         if (isset($metas['serie'])) {
             $sql = 'SELECT * FROM ' .
-            dcCore::app()->prefix . dcMeta::META_TABLE_NAME . ' as m,' .
-            dcCore::app()->prefix . dcBlog::POST_TABLE_NAME . ' as p ' .
+            App::con()->prefix() . MetaInterface::META_TABLE_NAME . ' as m,' .
+            App::con()->prefix() . BlogInterface::POST_TABLE_NAME . ' as p ' .
             ' WHERE m.post_id = p.post_id ' .
             ' AND post_type = \'post\' ' .
-            ' AND post_status = ' . dcBlog::POST_PUBLISHED . ' ' .
+            ' AND post_status = ' . BlogInterface::POST_PUBLISHED . ' ' .
             ' AND blog_id = \'' . App::blog()->id() . '\'' .
                 ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {
@@ -148,7 +147,7 @@ class FrontendWidgets
                 $order = 'asc';
             }
             $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
-            $rs = new MetaRecord(dcCore::app()->con->select($sql));
+            $rs = new MetaRecord(App::con()->select($sql));
             if ($rs->isEmpty()) {
                 return '';
             }
@@ -163,7 +162,7 @@ class FrontendWidgets
         while ($rs->fetch()) {
             $class = '';
             $link  = true;
-            if ($rs->post_id == dcCore::app()->ctx->posts->post_id) {
+            if ($rs->post_id == App::frontend()->context()->posts->post_id) {
                 if ($w->current == 'none') {
                     continue;
                 }
@@ -178,15 +177,17 @@ class FrontendWidgets
                     $list .= '</ul>' . "\n";
                 }
                 if ($w->serietitle) {
-                    $list .= '<h3><a href="' . App::blog()->url() . dcCore::app()->url->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
+                    $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
                     $rs->meta_id . '</a></h3>' . "\n";
                 }
                 $list .= '<ul>' . "\n";
                 $serie = $rs->meta_id;
             }
 
+            $href = App::blog()->url() . App::postTypes()->get($rs->post_type)->publicUrl(Html::sanitizeURL($rs->post_url));
+
             $list .= '<li' . $class . '>' .
-            ($link ? '<a href="' . App::blog()->url() . dcCore::app()->getPostPublicURL($rs->post_type, Html::sanitizeURL($rs->post_url)) . '">' : '') .
+            ($link ? '<a href="' . $href . '">' : '') .
             Html::escapeHTML($rs->post_title) .
                 ($link ? '</a>' : '') .
                 '</li>' . "\n";

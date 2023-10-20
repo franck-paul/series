@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Frontend extends Process
@@ -34,7 +34,7 @@ class Frontend extends Process
             return false;
         }
 
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             'templateBeforeBlockV2'  => FrontendBehaviors::templateBeforeBlock(...),
             'publicBeforeDocumentV2' => FrontendBehaviors::addTplPath(...),
 
@@ -44,16 +44,16 @@ class Frontend extends Process
             'initDefaultWidgets' => Widgets::initDefaultWidgets(...),
         ]);
 
-        dcCore::app()->tpl->addBlock('Series', FrontendTemplate::Series(...));
-        dcCore::app()->tpl->addBlock('SeriesHeader', FrontendTemplate::SeriesHeader(...));
-        dcCore::app()->tpl->addBlock('SeriesFooter', FrontendTemplate::SeriesFooter(...));
-        dcCore::app()->tpl->addBlock('EntrySeries', FrontendTemplate::EntrySeries(...));
-        dcCore::app()->tpl->addValue('SerieID', FrontendTemplate::SerieID(...));
-        dcCore::app()->tpl->addValue('SeriePercent', FrontendTemplate::SeriePercent(...));
-        dcCore::app()->tpl->addValue('SerieRoundPercent', FrontendTemplate::SerieRoundPercent(...));
-        dcCore::app()->tpl->addValue('SerieURL', FrontendTemplate::SerieURL(...));
-        dcCore::app()->tpl->addValue('SerieCloudURL', FrontendTemplate::SerieCloudURL(...));
-        dcCore::app()->tpl->addValue('SerieFeedURL', FrontendTemplate::SerieFeedURL(...));
+        App::frontend()->template()->addBlock('Series', FrontendTemplate::Series(...));
+        App::frontend()->template()->addBlock('SeriesHeader', FrontendTemplate::SeriesHeader(...));
+        App::frontend()->template()->addBlock('SeriesFooter', FrontendTemplate::SeriesFooter(...));
+        App::frontend()->template()->addBlock('EntrySeries', FrontendTemplate::EntrySeries(...));
+        App::frontend()->template()->addValue('SerieID', FrontendTemplate::SerieID(...));
+        App::frontend()->template()->addValue('SeriePercent', FrontendTemplate::SeriePercent(...));
+        App::frontend()->template()->addValue('SerieRoundPercent', FrontendTemplate::SerieRoundPercent(...));
+        App::frontend()->template()->addValue('SerieURL', FrontendTemplate::SerieURL(...));
+        App::frontend()->template()->addValue('SerieCloudURL', FrontendTemplate::SerieCloudURL(...));
+        App::frontend()->template()->addValue('SerieFeedURL', FrontendTemplate::SerieFeedURL(...));
 
         return true;
     }

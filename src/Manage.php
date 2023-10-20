@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use dcCore;
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
@@ -44,9 +43,9 @@ class Manage extends Process
             return ManagePosts::process();
         }
 
-        dcCore::app()->admin->series = dcCore::app()->meta->getMetadata(['meta_type' => 'serie']);
-        dcCore::app()->admin->series = dcCore::app()->meta->computeMetaStats(dcCore::app()->admin->series);
-        dcCore::app()->admin->series->sort('meta_id_lower', 'asc');
+        App::backend()->series = App::meta()->getMetadata(['meta_type' => 'serie']);
+        App::backend()->series = App::meta()->computeMetaStats(App::backend()->series);
+        App::backend()->series->sort('meta_id_lower', 'asc');
 
         return true;
     }
@@ -81,21 +80,21 @@ class Manage extends Process
         $last_letter = null;
         $cols        = ['', ''];
         $col         = 0;
-        while (dcCore::app()->admin->series->fetch()) {
-            $letter = mb_strtoupper(mb_substr(dcCore::app()->admin->series->meta_id_lower, 0, 1));
+        while (App::backend()->series->fetch()) {
+            $letter = mb_strtoupper(mb_substr(App::backend()->series->meta_id_lower, 0, 1));
 
             if ($last_letter != $letter) {
-                if (dcCore::app()->admin->series->index() >= round(dcCore::app()->admin->series->count() / 2)) {
+                if (App::backend()->series->index() >= round(App::backend()->series->count() / 2)) {
                     $col = 1;
                 }
                 $cols[$col] .= '<tr class="serieLetter"><td colspan="2"><span>' . $letter . '</span></td></tr>';
             }
 
             $cols[$col] .= '<tr class="line">' .
-            '<td class="maximal"><a href="' . dcCore::app()->admin->getPageURL() .
-            '&amp;m=serie_posts&amp;serie=' . rawurlencode(dcCore::app()->admin->series->meta_id) . '">' . dcCore::app()->admin->series->meta_id . '</a></td>' .
-            '<td class="nowrap count"><strong>' . dcCore::app()->admin->series->count . '</strong> ' .
-                ((dcCore::app()->admin->series->count == 1) ? __('entry') : __('entries')) . '</td>' .
+            '<td class="maximal"><a href="' . App::backend()->getPageURL() .
+            '&amp;m=serie_posts&amp;serie=' . rawurlencode(App::backend()->series->meta_id) . '">' . App::backend()->series->meta_id . '</a></td>' .
+            '<td class="nowrap count"><strong>' . App::backend()->series->count . '</strong> ' .
+                ((App::backend()->series->count == 1) ? __('entry') : __('entries')) . '</td>' .
                 '</tr>';
 
             $last_letter = $letter;

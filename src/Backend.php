@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\Menus;
 use Dotclear\Core\Process;
 
@@ -36,7 +36,7 @@ class Backend extends Process
 
         My::addBackendMenuItem(Menus::MENU_BLOG, ['m' => 'series'], '&m=serie(s|_posts)?(&.*)?$');
 
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             'adminPostFormItems' => BackendBehaviors::seriesField(...),
 
             'adminAfterPostCreate' => BackendBehaviors::setSeries(...),
@@ -65,7 +65,7 @@ class Backend extends Process
         ]);
 
         if (My::checkContext(My::WIDGETS)) {
-            dcCore::app()->addBehaviors([
+            App::behavior()->addBehaviors([
                 'initWidgets'        => Widgets::initWidgets(...),
                 'initDefaultWidgets' => Widgets::initDefaultWidgets(...),
             ]);

@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use ArrayObject;
-use dcCore;
+use Dotclear\App;
 
 class FrontendTemplate
 {
@@ -42,15 +42,15 @@ class FrontendTemplate
         }
 
         $res = "<?php\n" .
-            "dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(dcCore::app()->meta->getMetadata(['meta_type'=>'" .
+            "App::frontend()->context()->meta = App::meta()->computeMetaStats(App::meta()->getMetadata(['meta_type'=>'" .
             $type . "','limit'=>" . $limit .
             ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC') . "'" : '') .
             '])); ' .
-            "dcCore::app()->ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
+            "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
-        $res .= '<?php while (dcCore::app()->ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-            'dcCore::app()->ctx->meta = null; ?>';
+        $res .= '<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
+            'App::frontend()->context()->meta = null; ?>';
 
         return $res;
     }
@@ -64,7 +64,7 @@ class FrontendTemplate
     public static function SeriesHeader(array|ArrayObject $attr, string $content): string
     {
         return
-            '<?php if (dcCore::app()->ctx->meta->isStart()) : ?>' .
+            '<?php if (App::frontend()->context()->meta->isStart()) : ?>' .
             $content .
             '<?php endif; ?>';
     }
@@ -78,7 +78,7 @@ class FrontendTemplate
     public static function SeriesFooter(array|ArrayObject $attr, string $content): string
     {
         return
-            '<?php if (dcCore::app()->ctx->meta->isEnd()) : ?>' .
+            '<?php if (App::frontend()->context()->meta->isEnd()) : ?>' .
             $content .
             '<?php endif; ?>';
     }
@@ -103,12 +103,12 @@ class FrontendTemplate
         }
 
         $res = "<?php\n" .
-            "dcCore::app()->ctx->meta = dcCore::app()->meta->getMetaRecordset(dcCore::app()->ctx->posts->post_meta,'" . $type . "'); " .
-            "dcCore::app()->ctx->meta->sort('" . $sortby . "','" . $order . "'); " .
+            "App::frontend()->context()->meta = App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta,'" . $type . "'); " .
+            "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
-        $res .= '<?php while (dcCore::app()->ctx->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-            'dcCore::app()->ctx->meta = null; ?>';
+        $res .= '<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
+            'App::frontend()->context()->meta = null; ?>';
 
         return $res;
     }
@@ -120,19 +120,19 @@ class FrontendTemplate
      */
     public static function SerieID(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'dcCore::app()->ctx->meta->meta_id') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'App::frontend()->context()->meta->meta_id') . '; ?>';
     }
 
     public static function SeriePercent(): string
     {
-        return '<?php echo dcCore::app()->ctx->meta->percent; ?>';
+        return '<?php echo App::frontend()->context()->meta->percent; ?>';
     }
 
     public static function SerieRoundPercent(): string
     {
-        return '<?php echo dcCore::app()->ctx->meta->roundpercent; ?>';
+        return '<?php echo App::frontend()->context()->meta->roundpercent; ?>';
     }
 
     /**
@@ -142,10 +142,10 @@ class FrontendTemplate
      */
     public static function SerieURL(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'App::blog()->url().dcCore::app()->url->getURLFor("serie",' .
-            'rawurlencode(dcCore::app()->ctx->meta->meta_id))') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("serie",' .
+            'rawurlencode(App::frontend()->context()->meta->meta_id))') . '; ?>';
     }
 
     /**
@@ -155,9 +155,9 @@ class FrontendTemplate
      */
     public static function SerieCloudURL(array|ArrayObject $attr): string
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'App::blog()->url().dcCore::app()->url->getURLFor("series")') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("series")') . '; ?>';
     }
 
     /**
@@ -173,9 +173,9 @@ class FrontendTemplate
             $type = 'rss2';
         }
 
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'App::blog()->url().dcCore::app()->url->getURLFor("serie_feed",' .
-            'rawurlencode(dcCore::app()->ctx->meta->meta_id)."/' . $type . '")') . '; ?>';
+        return '<?php echo ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("serie_feed",' .
+            'rawurlencode(App::frontend()->context()->meta->meta_id)."/' . $type . '")') . '; ?>';
     }
 }

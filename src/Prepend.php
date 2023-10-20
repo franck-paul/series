@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Prepend extends Process
@@ -30,11 +30,11 @@ class Prepend extends Process
             return false;
         }
 
-        dcCore::app()->url->register('serie', 'serie', '^serie/(.+)$', FrontendUrl::serie(...));
-        dcCore::app()->url->register('series', 'series', '^series$', FrontendUrl::series(...));
-        dcCore::app()->url->register('serie_feed', 'feed/serie', '^feed/serie/(.+)$', FrontendUrl::serieFeed(...));
+        App::url()->register('serie', 'serie', '^serie/(.+)$', FrontendUrl::serie(...));
+        App::url()->register('series', 'series', '^series$', FrontendUrl::series(...));
+        App::url()->register('serie_feed', 'feed/serie', '^feed/serie/(.+)$', FrontendUrl::serieFeed(...));
 
-        dcCore::app()->addBehavior('coreInitWikiPost', CoreBehaviors::coreInitWikiPost(...));
+        App::behavior()->addBehavior('coreInitWikiPost', CoreBehaviors::coreInitWikiPost(...));
 
         return true;
     }

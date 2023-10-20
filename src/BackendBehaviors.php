@@ -15,11 +15,9 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use ArrayObject;
-use dcAuth;
-use dcCore;
-use dcFavorites;
 use Dotclear\App;
 use Dotclear\Core\Backend\Action\ActionsPosts;
+use Dotclear\Core\Backend\Favorites;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Database\Cursor;
@@ -30,7 +28,7 @@ use form;
 
 class BackendBehaviors
 {
-    public static function adminDashboardFavorites(dcFavorites $favs): string
+    public static function adminDashboardFavorites(Favorites $favs): string
     {
         $favs->register('series', [
             'title'       => __('Series'),
@@ -54,7 +52,7 @@ class BackendBehaviors
         $series_combo = [];
 
         try {
-            $rs                             = dcCore::app()->meta->getMetadata(['meta_type' => 'serie']);
+            $rs                             = App::meta()->getMetadata(['meta_type' => 'serie']);
             $series_combo[__('All series')] = '-';
             while ($rs->fetch()) {
                 $series_combo[(string) $rs->meta_id] = (string) $rs->meta_id;
@@ -110,11 +108,11 @@ class BackendBehaviors
             if ($item_select == '-') {
                 $menu_item[0] = __('All series');
                 $menu_item[1] = '';
-                $menu_item[2] .= dcCore::app()->url->getURLFor('series');
+                $menu_item[2] .= App::url()->getURLFor('series');
             } else {
                 $menu_item[0] = $menu_item[3];
                 $menu_item[1] = sprintf(__('Recent posts for %s serie'), $menu_item[3]);
-                $menu_item[2] .= dcCore::app()->url->getURLFor('serie', $item_select);
+                $menu_item[2] .= App::url()->getURLFor('serie', $item_select);
             }
         }
 
@@ -131,7 +129,7 @@ class BackendBehaviors
         if (!empty($_POST['post_series'])) {
             $value = $_POST['post_series'];
         } else {
-            $value = ($post) ? dcCore::app()->meta->getMetaStr($post->post_meta, 'serie') : '';
+            $value = ($post) ? App::meta()->getMetaStr($post->post_meta, 'serie') : '';
         }
 
         $sidebar['metas-box']['items']['post_series'] = '<h5><label class="s-series" for="post_series">' . __('Series:') . '</label></h5>' .
@@ -144,10 +142,10 @@ class BackendBehaviors
     {
         if (isset($_POST['post_series'])) {
             $series = $_POST['post_series'];
-            dcCore::app()->meta->delPostMeta($post_id, 'serie');
+            App::meta()->delPostMeta($post_id, 'serie');
 
-            foreach (dcCore::app()->meta->splitMetaValues($series) as $serie) {
-                dcCore::app()->meta->setPostMeta($post_id, 'serie', $serie);
+            foreach (App::meta()->splitMetaValues($series) as $serie) {
+                App::meta()->setPostMeta($post_id, 'serie', $serie);
             }
         }
 
@@ -161,9 +159,9 @@ class BackendBehaviors
             static::adminAddSeries(...)
         );
 
-        if (dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
-            dcAuth::PERMISSION_DELETE,
-            dcAuth::PERMISSION_CONTENT_ADMIN,
+        if (App::auth()->check(App::auth()->makePermissions([
+            App::auth()::PERMISSION_DELETE,
+            App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id())) {
             $ap->addAction(
                 [__('Series') => [__('Remove series') => 'series_remove']],
@@ -181,12 +179,12 @@ class BackendBehaviors
     public static function adminAddSeries(ActionsPosts $ap, ArrayObject $post): void
     {
         if (!empty($post['new_series'])) {
-            $series = dcCore::app()->meta->splitMetaValues($_POST['new_series']);
+            $series = App::meta()->splitMetaValues($_POST['new_series']);
             $posts  = $ap->getRS();
 
             while ($posts->fetch()) {
                 # Get series for post
-                $post_meta = dcCore::app()->meta->getMetadata([
+                $post_meta = App::meta()->getMetadata([
                     'meta_type' => 'serie',
                     'post_id'   => $posts->post_id,
                 ]);
@@ -197,7 +195,7 @@ class BackendBehaviors
 
                 foreach ($series as $s) {
                     if (!in_array($s, $pm)) {
-                        dcCore::app()->meta->setPostMeta($posts->post_id, 'serie', $s);
+                        App::meta()->setPostMeta($posts->post_id, 'serie', $s);
                     }
                 }
             }
@@ -212,11 +210,11 @@ class BackendBehaviors
             );
             $ap->redirect(true, ['upd' => 1]);
         } else {
-            $opts = dcCore::app()->auth->getOptions();
+            $opts = App::auth()->getOptions();
             $type = $opts['serie_list_format'] ?? 'more';
 
             $editor_series_options = [
-                'meta_url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+                'meta_url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
                     'm'     => 'serie_posts',
                     'serie' => '',
                 ]),
@@ -273,14 +271,14 @@ class BackendBehaviors
      */
     public static function adminRemoveSeries(ActionsPosts $ap, ArrayObject $post): void
     {
-        if (!empty($post['meta_id']) && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
-            dcAuth::PERMISSION_DELETE,
-            dcAuth::PERMISSION_CONTENT_ADMIN,
+        if (!empty($post['meta_id']) && App::auth()->check(App::auth()->makePermissions([
+            App::auth()::PERMISSION_DELETE,
+            App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id())) {
             $posts = $ap->getRS();
             while ($posts->fetch()) {
                 foreach ($_POST['meta_id'] as $v) {
-                    dcCore::app()->meta->delPostMeta($posts->post_id, 'serie', $v);
+                    App::meta()->delPostMeta($posts->post_id, 'serie', $v);
                 }
             }
             $ap->redirect(true, ['upd' => 1]);
@@ -288,7 +286,7 @@ class BackendBehaviors
             $series = [];
 
             foreach ($ap->getIDS() as $id) {
-                $post_series = dcCore::app()->meta->getMetadata([
+                $post_series = App::meta()->getMetadata([
                     'meta_type' => 'serie',
                     'post_id'   => (int) $id, ])->toStatic()->rows();
                 foreach ($post_series as $v) {
@@ -306,7 +304,7 @@ class BackendBehaviors
                 Page::breadcrumb(
                     [
                         Html::escapeHTML(App::blog()->name())            => '',
-                        __('Entries')                                    => dcCore::app()->adminurl->get('admin.posts'),
+                        __('Entries')                                    => App::backend()->url()->get('admin.posts'),
                         __('Remove selected series from this selection') => '',
                     ]
                 )
@@ -343,11 +341,11 @@ class BackendBehaviors
 
     public static function postHeaders(): string
     {
-        $opts = dcCore::app()->auth->getOptions();
+        $opts = App::auth()->getOptions();
         $type = $opts['serie_list_format'] ?? 'more';
 
         $editor_series_options = [
-            'meta_url' => dcCore::app()->adminurl->get('admin.plugin.' . My::id(), [
+            'meta_url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
                 'm'     => 'serie_posts',
                 'serie' => '',
             ]),
@@ -379,7 +377,7 @@ class BackendBehaviors
             return '';
         }
 
-        $serie_url = App::blog()->url() . dcCore::app()->url->getURLFor('serie');
+        $serie_url = App::blog()->url() . App::url()->getURLFor('serie');
 
         if ($editor == 'dcLegacyEditor') {
             return
@@ -422,7 +420,7 @@ class BackendBehaviors
 
     public static function adminPreferencesForm(): string
     {
-        $opts = dcCore::app()->auth->getOptions();
+        $opts = App::auth()->getOptions();
 
         $combo                 = [];
         $combo[__('Short')]    = 'more';

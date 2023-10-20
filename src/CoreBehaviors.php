@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use dcCore;
-use dcMeta;
 use Dotclear\App;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Helper\Html\WikiToHtml;
@@ -43,8 +41,8 @@ class CoreBehaviors
             $content = substr($content, 6);
         }
 
-        $serie_url      = Html::stripHostURL(App::blog()->url() . dcCore::app()->url->getURLFor('serie'));
-        $res['url']     = $serie_url . '/' . rawurlencode(dcMeta::sanitizeMetaID($url));
+        $serie_url      = Html::stripHostURL(App::blog()->url() . App::url()->getURLFor('serie'));
+        $res['url']     = $serie_url . '/' . rawurlencode(App::meta()->sanitizeMetaID($url));
         $res['content'] = $content;
 
         return $res;

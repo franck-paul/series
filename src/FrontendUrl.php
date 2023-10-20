@@ -14,11 +14,10 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
-use dcCore;
-use dcUrlHandlers;
 use Dotclear\App;
+use Dotclear\Core\Frontend\Url;
 
-class FrontendUrl extends dcUrlHandlers
+class FrontendUrl extends Url
 {
     /**
      * @param      null|string  $args   The arguments
@@ -33,14 +32,14 @@ class FrontendUrl extends dcUrlHandlers
             $type = $m[2] == 'atom' ? 'atom' : 'rss2';
             $mime = 'application/xml';
 
-            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
-                dcCore::app()->meta->getMetadata([
+            App::frontend()->context()->meta = App::meta()->computeMetaStats(
+                App::meta()->getMetadata([
                     'meta_type' => 'serie',
                     'meta_id'   => $m[1],
                 ])
             );
 
-            if (dcCore::app()->ctx->meta->isEmpty()) {
+            if (App::frontend()->context()->meta->isEmpty()) {
                 self::p404();
             } else {
                 $tpl = $type;
@@ -53,17 +52,17 @@ class FrontendUrl extends dcUrlHandlers
             }
         } else {
             if ($n) {
-                dcCore::app()->public->setPageNumber($n);
+                App::frontend()->setPageNumber($n);
             }
 
-            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
-                dcCore::app()->meta->getMetadata([
+            App::frontend()->context()->meta = App::meta()->computeMetaStats(
+                App::meta()->getMetadata([
                     'meta_type' => 'serie',
                     'meta_id'   => $args,
                 ])
             );
 
-            if (dcCore::app()->ctx->meta->isEmpty()) {
+            if (App::frontend()->context()->meta->isEmpty()) {
                 self::p404();
             } else {
                 self::serveDocument('serie.html');
@@ -88,18 +87,18 @@ class FrontendUrl extends dcUrlHandlers
             $type     = $m[2];
             $comments = !empty($m[3]);
 
-            dcCore::app()->ctx->meta = dcCore::app()->meta->computeMetaStats(
-                dcCore::app()->meta->getMetadata([
+            App::frontend()->context()->meta = App::meta()->computeMetaStats(
+                App::meta()->getMetadata([
                     'meta_type' => 'serie',
                     'meta_id'   => $serie,
                 ])
             );
 
-            if (dcCore::app()->ctx->meta->isEmpty()) {
+            if (App::frontend()->context()->meta->isEmpty()) {
                 # The specified serie does not exist.
                 self::p404();
             } else {
-                dcCore::app()->ctx->feed_subtitle = ' - ' . __('Serie') . ' - ' . dcCore::app()->ctx->meta->meta_id;
+                App::frontend()->context()->feed_subtitle = ' - ' . __('Serie') . ' - ' . App::frontend()->context()->meta->meta_id;
 
                 if ($type == 'atom') {
                     $mime = 'application/atom+xml';
@@ -110,10 +109,10 @@ class FrontendUrl extends dcUrlHandlers
                 $tpl = $type;
                 if ($comments) {
                     $tpl .= '-comments';
-                    dcCore::app()->ctx->nb_comment_per_page = App::blog()->settings()->system->nb_comment_per_feed;
+                    App::frontend()->context()->nb_comment_per_page = App::blog()->settings()->system->nb_comment_per_feed;
                 } else {
-                    dcCore::app()->ctx->nb_entry_per_page = App::blog()->settings()->system->nb_post_per_feed;
-                    dcCore::app()->ctx->short_feed_items  = App::blog()->settings()->system->short_feed_items;
+                    App::frontend()->context()->nb_entry_per_page = App::blog()->settings()->system->nb_post_per_feed;
+                    App::frontend()->context()->short_feed_items  = App::blog()->settings()->system->short_feed_items;
                 }
                 $tpl .= '.xml';
 
