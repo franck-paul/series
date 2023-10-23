@@ -19,11 +19,14 @@ use Dotclear\Plugin\widgets\WidgetsStack;
 
 class Widgets
 {
+    private const WIDGET_ID_SERIES       = 'series';
+    private const WIDGET_ID_SERIES_POSTS = 'seriesPosts';
+
     public static function initWidgets(WidgetsStack $w): void
     {
         // Widget for all series
         $w
-            ->create('series', __('Series'), FrontendWidgets::seriesWidget(...), null, __('List of series'))
+            ->create(self::WIDGET_ID_SERIES, __('Series'), FrontendWidgets::seriesWidget(...), null, __('List of series'))
             ->addTitle(__('Series'))
             ->setting('limit', __('Limit (empty means no limit):'), '20')
             ->setting(
@@ -56,7 +59,7 @@ class Widgets
 
         // Widget for currently displayed post
         $w
-            ->create('seriesPosts', __('Siblings'), FrontendWidgets::seriePostsWidget(...), null, __('Other posts of the same serie(s)'))
+            ->create(self::WIDGET_ID_SERIES_POSTS, __('Siblings'), FrontendWidgets::seriePostsWidget(...), null, __('Other posts of the same serie(s)'))
             ->addTitle(__('Siblings'))
             ->setting('serietitle', __('Show titles of series'), 1, 'check')
             ->setting(
@@ -113,6 +116,6 @@ class Widgets
      */
     public static function initDefaultWidgets(WidgetsStack $w, array $d): void
     {
-        $d[AppWidgets::WIDGETS_NAV]->append($w->series);
+        $d[AppWidgets::WIDGETS_NAV]->append($w->get(self::WIDGET_ID_SERIES));
     }
 }

@@ -35,12 +35,12 @@ class FrontendWidgets
 
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
-        $sort = $w->sortby;
+        $sort = $w->get('sortby');
         if (!in_array($sort, $combo)) {
             $sort = 'meta_id_lower';
         }
 
-        $order = $w->orderby;
+        $order = $w->get('orderby');
         if ($order != 'asc') {
             $order = 'desc';
         }
@@ -52,8 +52,8 @@ class FrontendWidgets
             $params['order'] = $sort . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
         }
 
-        if ($w->limit !== '') {
-            $params['limit'] = abs((int) $w->limit);
+        if ($w->get('limit') !== '') {
+            $params['limit'] = abs((int) $w->get('limit'));
         }
 
         $rs = App::meta()->computeMetaStats(
@@ -92,9 +92,9 @@ class FrontendWidgets
 
         $res .= '</ul>';
 
-        if (App::url()->getURLFor('series') && !is_null($w->allserieslinktitle) && $w->allserieslinktitle !== '') {
+        if (App::url()->getURLFor('series') && !is_null($w->get('allserieslinktitle')) && $w->get('allserieslinktitle') !== '') {
             $res .= '<p><strong><a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' .
-            Html::escapeHTML($w->allserieslinktitle) . '</a></strong></p>';
+            Html::escapeHTML($w->get('allserieslinktitle')) . '</a></strong></p>';
         }
 
         return $w->renderDiv((bool) $w->content_only, 'series ' . $w->class, '', $res);
@@ -132,17 +132,17 @@ class FrontendWidgets
             }
             $sql .= ')';
 
-            $order = $w->orderseriesby;
+            $order = $w->get('orderseriesby');
             if ($order != 'desc') {
                 $order = 'asc';
             }
             $sql .= ' ORDER BY meta_id ' . ($order == 'asc' ? 'ASC' : 'DESC') . ', ';
 
-            $sort = $w->sortentriesby;
+            $sort = $w->get('sortentriesby');
             if (!in_array($sort, ['date', 'title'])) {
                 $sort = 'date';
             }
-            $order = $w->orderentriesby;
+            $order = $w->get('orderentriesby');
             if ($order != 'desc') {
                 $order = 'asc';
             }
@@ -163,11 +163,11 @@ class FrontendWidgets
             $class = '';
             $link  = true;
             if ($rs->post_id == App::frontend()->context()->posts->post_id) {
-                if ($w->current == 'none') {
+                if ($w->get('current') == 'none') {
                     continue;
                 }
                 $class = ' class="current"';
-                if ($w->current == 'std') {
+                if ($w->get('current') == 'std') {
                     $link = false;
                 }
             }
@@ -176,7 +176,7 @@ class FrontendWidgets
                 if ($serie != '') {
                     $list .= '</ul>' . "\n";
                 }
-                if ($w->serietitle) {
+                if ($w->get('serietitle')) {
                     $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
                     $rs->meta_id . '</a></h3>' . "\n";
                 }
