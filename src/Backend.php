@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use Dotclear\App;
-use Dotclear\Core\Backend\Menus;
 use Dotclear\Core\Process;
 
 class Backend extends Process
@@ -34,7 +33,7 @@ class Backend extends Process
             return false;
         }
 
-        My::addBackendMenuItem(Menus::MENU_BLOG, ['m' => 'series'], '&m=serie(s|_posts)?(&.*)?$');
+        My::addBackendMenuItem(App::backend()->menus()::MENU_BLOG, ['m' => 'series'], '&m=serie(s|_posts)?(&.*)?$');
 
         App::behavior()->addBehaviors([
             'adminPostFormItems' => BackendBehaviors::seriesField(...),

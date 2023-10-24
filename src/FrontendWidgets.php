@@ -17,8 +17,6 @@ namespace Dotclear\Plugin\series;
 use Dotclear\App;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Html;
-use Dotclear\Interface\Core\BlogInterface;
-use Dotclear\Interface\Core\MetaInterface;
 use Dotclear\Plugin\widgets\WidgetsElement;
 
 class FrontendWidgets
@@ -117,11 +115,11 @@ class FrontendWidgets
         $metas = unserialize(App::frontend()->context()->posts->post_meta);
         if (isset($metas['serie'])) {
             $sql = 'SELECT * FROM ' .
-            App::con()->prefix() . MetaInterface::META_TABLE_NAME . ' as m,' .
-            App::con()->prefix() . BlogInterface::POST_TABLE_NAME . ' as p ' .
+            App::con()->prefix() . App::meta()::META_TABLE_NAME . ' as m,' .
+            App::con()->prefix() . App::blog()::POST_TABLE_NAME . ' as p ' .
             ' WHERE m.post_id = p.post_id ' .
             ' AND post_type = \'post\' ' .
-            ' AND post_status = ' . BlogInterface::POST_PUBLISHED . ' ' .
+            ' AND post_status = ' . App::blog()::POST_PUBLISHED . ' ' .
             ' AND blog_id = \'' . App::blog()->id() . '\'' .
                 ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {
