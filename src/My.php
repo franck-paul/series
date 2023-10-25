@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
+use Dotclear\App;
+use Dotclear\Core\Frontend\Utility;
 use Dotclear\Module\MyPlugin;
 
 /**
@@ -21,4 +23,26 @@ use Dotclear\Module\MyPlugin;
  */
 class My extends MyPlugin
 {
+    /**
+     * Return template path to use
+     *
+     * @return     string
+     */
+    public static function tplPath(): string
+    {
+        $tplset = App::themes()->moduleInfo(App::blog()->settings()->system->theme, 'tplset');
+        if (!empty($tplset) && is_dir(implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]))) {
+            // a sub-dir exists for my plugin with this tplset
+            return implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]);
+        }
+
+        $tplset = App::config()->defaultTplset();
+        if (!empty($tplset) && is_dir(implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]))) {
+            // a sub-dir exists for my plugin with the default tplset
+            return implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]);
+        }
+
+        // return base tpl dir
+        return implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT]);
+    }
 }

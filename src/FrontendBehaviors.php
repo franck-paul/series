@@ -16,7 +16,6 @@ namespace Dotclear\Plugin\series;
 
 use ArrayObject;
 use Dotclear\App;
-use Dotclear\Core\Frontend\Utility;
 
 class FrontendBehaviors
 {
@@ -81,12 +80,7 @@ class FrontendBehaviors
 
     public static function addTplPath(): string
     {
-        $tplset = App::themes()->moduleInfo(App::blog()->settings()->system->theme, 'tplset');
-        if (!empty($tplset) && is_dir(implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]))) {
-            App::frontend()->template()->appendPath(implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]));
-        } else {
-            App::frontend()->template()->appendPath(implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, App::config()->defaultTplset()]));
-        }
+        App::frontend()->template()->appendPath(My::tplPath());
 
         return '';
     }
