@@ -157,8 +157,7 @@ class ManagePosts extends Process
         echo '<p><a class="back" href="' . App::backend()->getPageURL() . '&amp;m=series">' . __('Back to series list') . '</a></p>';
 
         if (!App::error()->flag()) {
-            /* @phpstan-ignore-next-line */
-            if (!App::backend()->posts->isEmpty()) {
+            if (!App::backend()->posts?->isEmpty()) {
                 echo
                 '<div class="series-actions vertical-separator">' .
                 '<h3>' . Html::escapeHTML(App::backend()->serie) . '</h3>' .
@@ -169,7 +168,6 @@ class ManagePosts extends Process
                 My::parsedHiddenFields() .
                 '</p></form>';
                 # Remove serie
-                /* @phpstan-ignore-next-line */
                 if (!App::backend()->posts->isEmpty() && App::auth()->check(App::auth()->makePermissions([
                     App::auth()::PERMISSION_CONTENT_ADMIN,
                 ]), App::blog()->id())) {
@@ -184,28 +182,29 @@ class ManagePosts extends Process
 
             # Show posts
             echo '<h4 class="vertical-separator pretty-title">' . __('List of entries in this serie') . '</h4>';
-            /* @phpstan-ignore-next-line */
-            App::backend()->post_list->display(
-                App::backend()->page,
-                App::backend()->nb_per_page,
-                '<form action="' . App::backend()->getPageURL() . '" method="post" id="form-entries">' .
+            if (App::backend()->post_list) {
+                App::backend()->post_list->display(
+                    App::backend()->page,
+                    App::backend()->nb_per_page,
+                    '<form action="' . App::backend()->getPageURL() . '" method="post" id="form-entries">' .
 
-                '%s' .
+                    '%s' .
 
-                '<div class="two-cols">' .
-                '<p class="col checkboxes-helpers"></p>' .
+                    '<div class="two-cols">' .
+                    '<p class="col checkboxes-helpers"></p>' .
 
-                '<p class="col right"><label for="action" class="classic">' . __('Selected entries action:') . '</label> ' .
-                form::combo('action', App::backend()->posts_actions_page->getCombo()) .
-                '<input type="submit" value="' . __('ok') . '" /></p>' .
-                My::parsedHiddenFields([
-                    'post_type' => '',
-                    'm'         => 'serie_posts',
-                    'serie'     => App::backend()->serie,
-                ]) .
-                '</div>' .
-                '</form>'
-            );
+                    '<p class="col right"><label for="action" class="classic">' . __('Selected entries action:') . '</label> ' .
+                    form::combo('action', App::backend()->posts_actions_page->getCombo()) .
+                    '<input type="submit" value="' . __('ok') . '" /></p>' .
+                    My::parsedHiddenFields([
+                        'post_type' => '',
+                        'm'         => 'serie_posts',
+                        'serie'     => App::backend()->serie,
+                    ]) .
+                    '</div>' .
+                    '</form>'
+                );
+            }
         }
 
         Page::closeModule();
