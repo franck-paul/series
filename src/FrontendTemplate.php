@@ -49,10 +49,8 @@ class FrontendTemplate
             "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
-        $res .= '<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-            'App::frontend()->context()->meta = null; ?>';
-
-        return $res;
+        return $res . ('<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
+            'App::frontend()->context()->meta = null; ?>');
     }
 
     /**
@@ -97,6 +95,7 @@ class FrontendTemplate
         if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
             $sortby = strtolower($attr['sortby']);
         }
+
         $order = 'asc';
         if (isset($attr['order']) && $attr['order'] == 'desc') {
             $order = 'desc';
@@ -107,10 +106,8 @@ class FrontendTemplate
             "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
             '?>';
 
-        $res .= '<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-            'App::frontend()->context()->meta = null; ?>';
-
-        return $res;
+        return $res . ('<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
+            'App::frontend()->context()->meta = null; ?>');
     }
 
     /**
@@ -167,7 +164,7 @@ class FrontendTemplate
      */
     public static function SerieFeedURL(array|ArrayObject $attr): string
     {
-        $type = !empty($attr['type']) ? (string) $attr['type'] : 'rss2';
+        $type = empty($attr['type']) ? 'rss2' : (string) $attr['type'];
 
         if (!preg_match('#^(rss2|atom)$#', $type)) {
             $type = 'rss2';

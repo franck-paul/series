@@ -57,6 +57,7 @@ class BackendBehaviors
             while ($rs->fetch()) {
                 $series_combo[(string) $rs->meta_id] = (string) $rs->meta_id;
             }
+
             unset($rs);
         } catch (Exception) {
         }
@@ -104,7 +105,7 @@ class BackendBehaviors
     {
         if ($item_type == 'series') {
             $series_combo = self::adminSimpleMenuGetCombo();
-            $menu_item[3] = array_search($item_select, $series_combo);
+            $menu_item[3] = array_search($item_select, $series_combo, true);
             if ($item_select == '-') {
                 $menu_item[0] = __('All series');
                 $menu_item[1] = '';
@@ -129,7 +130,7 @@ class BackendBehaviors
         if (!empty($_POST['post_series'])) {
             $value = $_POST['post_series'];
         } else {
-            $value = ($post) ? App::meta()->getMetaStr($post->post_meta, 'serie') : '';
+            $value = ($post instanceof \Dotclear\Database\MetaRecord) ? App::meta()->getMetaStr($post->post_meta, 'serie') : '';
         }
 
         $sidebar['metas-box']['items']['post_series'] = '<h5><label class="s-series" for="post_series">' . __('Series:') . '</label></h5>' .
@@ -199,13 +200,12 @@ class BackendBehaviors
                     }
                 }
             }
+
             Notices::addSuccessNotice(
-                sprintf(
-                    __(
-                        'Serie has been successfully added to selected entries',
-                        'Series have been successfully added to selected entries',
-                        count($series)
-                    )
+                __(
+                    'Serie has been successfully added to selected entries',
+                    'Series have been successfully added to selected entries',
+                    count($series)
                 )
             );
             $ap->redirect(true, ['upd' => 1]);
@@ -281,6 +281,7 @@ class BackendBehaviors
                     App::meta()->delPostMeta($posts->post_id, 'serie', $v);
                 }
             }
+
             $ap->redirect(true, ['upd' => 1]);
         } else {
             $series = [];
@@ -291,15 +292,17 @@ class BackendBehaviors
                     'post_id'   => (int) $id, ])->toStatic()->rows();
                 foreach ($post_series as $v) {
                     if (isset($series[$v['meta_id']])) {
-                        $series[$v['meta_id']]++;
+                        ++$series[$v['meta_id']];
                     } else {
                         $series[$v['meta_id']] = 1;
                     }
                 }
             }
-            if (empty($series)) {
+
+            if ($series === []) {
                 throw new Exception(__('No series for selected entries'));
             }
+
             $ap->beginPage(
                 Page::breadcrumb(
                     [
@@ -321,6 +324,7 @@ class BackendBehaviors
                 if ($posts_count == $n) {
                     $label = sprintf($label, '%s', '<strong>%s</strong>');
                 }
+
                 echo '<p>' . sprintf(
                     $label,
                     form::checkbox(['meta_id[]'], Html::escapeHTML((string) $k)),
@@ -389,7 +393,7 @@ class BackendBehaviors
                 ],
             ]) .
             My::jsLoad('legacy-post.js');
-        } elseif ($editor == 'dcCKEditor') {
+        } elseif ($editor === 'dcCKEditor') {
             return
             Page::jsJson('ck_editor_series', [
                 'serie_title' => __('Serie'),
@@ -409,6 +413,7 @@ class BackendBehaviors
         if ($context !== 'post') {
             return '';
         }
+
         $extraPlugins[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
@@ -439,11 +444,7 @@ class BackendBehaviors
 
     public static function adminUserForm(?MetaRecord $rs): string
     {
-        if ($rs instanceof MetaRecord) {
-            $opts = $rs->options();
-        } else {
-            $opts = [];
-        }
+        $opts = $rs instanceof MetaRecord ? $rs->options() : [];
 
         $combo                 = [];
         $combo[__('Short')]    = 'more';

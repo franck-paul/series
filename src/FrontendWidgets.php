@@ -27,7 +27,7 @@ class FrontendWidgets
             return '';
         }
 
-        if (($w->homeonly == 1 && !App::url()->isHome(App::url()->type)) || ($w->homeonly == 2 && App::url()->isHome(App::url()->type))) {
+        if (($w->homeonly == 1 && !App::url()->isHome(App::url()->getType())) || ($w->homeonly == 2 && App::url()->isHome(App::url()->getType()))) {
             return '';
         }
 
@@ -69,12 +69,13 @@ class FrontendWidgets
 
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';
 
-        if (App::url()->type == 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
+        if (App::url()->getType() == 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
             App::frontend()->context()->meta = App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta, 'serie');
         }
+
         while ($rs->fetch()) {
             $class = '';
-            if (App::url()->type == 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
+            if (App::url()->getType() == 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
                 while (App::frontend()->context()->meta->fetch()) {
                     if (App::frontend()->context()->meta->meta_id == $rs->meta_id) {
                         $class = ' class="serie-current"';
@@ -83,6 +84,7 @@ class FrontendWidgets
                     }
                 }
             }
+
             $res .= '<li' . $class . '><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
             'class="serie' . $rs->roundpercent . '">' .
             $rs->meta_id . '</a></li>';
@@ -104,7 +106,7 @@ class FrontendWidgets
             return '';
         }
 
-        if (App::url()->type != 'post') {
+        if (App::url()->getType() != 'post') {
             return '';
         }
 
@@ -128,22 +130,26 @@ class FrontendWidgets
                     $sql .= ' OR ';
                 }
             }
+
             $sql .= ')';
 
             $order = $w->get('orderseriesby');
             if ($order != 'desc') {
                 $order = 'asc';
             }
+
             $sql .= ' ORDER BY meta_id ' . ($order == 'asc' ? 'ASC' : 'DESC') . ', ';
 
             $sort = $w->get('sortentriesby');
             if (!in_array($sort, ['date', 'title'])) {
                 $sort = 'date';
             }
+
             $order = $w->get('orderentriesby');
             if ($order != 'desc') {
                 $order = 'asc';
             }
+
             $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
             $rs = new MetaRecord(App::con()->select($sql));
             if ($rs->isEmpty()) {
@@ -164,6 +170,7 @@ class FrontendWidgets
                 if ($w->get('current') == 'none') {
                     continue;
                 }
+
                 $class = ' class="current"';
                 if ($w->get('current') == 'std') {
                     $link = false;
@@ -174,10 +181,12 @@ class FrontendWidgets
                 if ($serie != '') {
                     $list .= '</ul>' . "\n";
                 }
+
                 if ($w->get('serietitle')) {
                     $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
                     $rs->meta_id . '</a></h3>' . "\n";
                 }
+
                 $list .= '<ul>' . "\n";
                 $serie = $rs->meta_id;
             }
@@ -190,9 +199,11 @@ class FrontendWidgets
                 ($link ? '</a>' : '') .
                 '</li>' . "\n";
         }
+
         if ($list == '') {
             return '';
         }
+
         $res .= $list . '</ul>' . "\n";
 
         return $w->renderDiv((bool) $w->content_only, 'series-posts ' . $w->class, '', $res);

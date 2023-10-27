@@ -53,8 +53,9 @@ class FrontendBehaviors
     {
         if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie'])) {
             return
-            "<?php\n" .
-            "if (!isset(\$params)) { \$params = []; }\n" .
+            '<?php
+if (!isset($params)) { $params = []; }
+' .
             "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
             "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
             "\$params['from'] .= ', '.App::con()->prefix().'meta METAS ';\n" .

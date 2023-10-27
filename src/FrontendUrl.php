@@ -100,11 +100,7 @@ class FrontendUrl extends Url
             } else {
                 App::frontend()->context()->feed_subtitle = ' - ' . __('Serie') . ' - ' . App::frontend()->context()->meta->meta_id;
 
-                if ($type == 'atom') {
-                    $mime = 'application/atom+xml';
-                } else {
-                    $mime = 'application/xml';
-                }
+                $mime = $type == 'atom' ? 'application/atom+xml' : 'application/xml';
 
                 $tpl = $type;
                 if ($comments) {
@@ -114,6 +110,7 @@ class FrontendUrl extends Url
                     App::frontend()->context()->nb_entry_per_page = App::blog()->settings()->system->nb_post_per_feed;
                     App::frontend()->context()->short_feed_items  = App::blog()->settings()->system->short_feed_items;
                 }
+
                 $tpl .= '.xml';
 
                 self::serveDocument($tpl, $mime);

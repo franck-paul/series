@@ -87,11 +87,11 @@ class Manage extends Process
                 if (App::backend()->series->index() >= round(App::backend()->series->count() / 2)) {
                     $col = 1;
                 }
+
                 $cols[$col] .= '<tr class="serieLetter"><td colspan="2"><span>' . $letter . '</span></td></tr>';
             }
 
-            $cols[$col] .= '<tr class="line">' .
-            '<td class="maximal"><a href="' . App::backend()->getPageURL() .
+            $cols[$col] .= '<tr class="line"><td class="maximal"><a href="' . App::backend()->getPageURL() .
             '&amp;m=serie_posts&amp;serie=' . rawurlencode(App::backend()->series->meta_id) . '">' . App::backend()->series->meta_id . '</a></td>' .
             '<td class="nowrap count"><strong>' . App::backend()->series->count . '</strong> ' .
                 ((App::backend()->series->count == 1) ? __('entry') : __('entries')) . '</td>' .
@@ -102,12 +102,13 @@ class Manage extends Process
 
         $table = '<div class="col"><table class="series">%s</table></div>';
 
-        if ($cols[0]) {
+        if ($cols[0] !== '' && $cols[0] !== '0') {
             echo '<div class="two-cols clearfix">';
             printf($table, $cols[0]);
-            if ($cols[1]) {
+            if ($cols[1] !== '' && $cols[1] !== '0') {
                 printf($table, $cols[1]);
             }
+
             echo '</div>';
         } else {
             echo '<p>' . __('No series on this blog.') . '</p>';

@@ -44,7 +44,7 @@ class ManagePosts extends Process
 
         App::backend()->serie = $_REQUEST['serie'] ?? '';
 
-        App::backend()->page        = !empty($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
+        App::backend()->page        = empty($_GET['page']) ? 1 : max(1, (int) $_GET['page']);
         App::backend()->nb_per_page = 30;
 
         // Get posts
@@ -63,8 +63,8 @@ class ManagePosts extends Process
             App::backend()->posts     = App::meta()->getPostsByMeta($params);
             $counter                  = App::meta()->getPostsByMeta($params, true);
             App::backend()->post_list = new ListingPosts(App::backend()->posts, $counter->f(0));
-        } catch (Exception $e) {
-            App::error()->add($e->getMessage());
+        } catch (Exception $exception) {
+            App::error()->add($exception->getMessage());
         }
 
         App::backend()->posts_actions_page = new BackendActions(
@@ -159,8 +159,7 @@ class ManagePosts extends Process
         if (!App::error()->flag()) {
             if (!App::backend()->posts?->isEmpty()) {
                 echo
-                '<div class="series-actions vertical-separator">' .
-                '<h3>' . Html::escapeHTML(App::backend()->serie) . '</h3>' .
+                '<div class="series-actions vertical-separator"><h3>' . Html::escapeHTML(App::backend()->serie) . '</h3>' .
                 '<form action="' . $this_url . '" method="post" id="serie_rename">' .
                 '<p><label for="new_serie_id" class="classic">' . __('Rename:') . '</label> ' .
                 form::field('new_serie_id', 40, 255, Html::escapeHTML(App::backend()->serie)) .
@@ -177,6 +176,7 @@ class ManagePosts extends Process
                     My::parsedHiddenFields() .
                     '</p></form>';
                 }
+
                 echo '</div>';
             }
 
