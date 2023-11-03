@@ -22,9 +22,19 @@ use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Database\Cursor;
 use Dotclear\Database\MetaRecord;
+use Dotclear\Helper\Html\Form\Checkbox;
+use Dotclear\Helper\Html\Form\Div;
+use Dotclear\Helper\Html\Form\Fieldset;
+use Dotclear\Helper\Html\Form\Form;
+use Dotclear\Helper\Html\Form\Label;
+use Dotclear\Helper\Html\Form\Legend;
+use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Select;
+use Dotclear\Helper\Html\Form\Submit;
+use Dotclear\Helper\Html\Form\Text;
+use Dotclear\Helper\Html\Form\Textarea;
 use Dotclear\Helper\Html\Html;
 use Exception;
-use form;
 
 class BackendBehaviors
 {
@@ -89,8 +99,14 @@ class BackendBehaviors
         if ($item_type == 'series') {
             $series_combo = self::adminSimpleMenuGetCombo();
 
-            return '<p class="field"><label for="item_select" class="classic">' . __('Select serie (if necessary):') . '</label>' .
-            form::combo($id, $series_combo);
+            return
+            (new Para())
+                ->items([
+                    (new Select($id))
+                        ->label(new Label(__('Select serie (if necessary):')))
+                        ->items($series_combo),
+                ])
+            ->render();
         }
 
         return '';
@@ -133,8 +149,22 @@ class BackendBehaviors
             $value = ($post instanceof \Dotclear\Database\MetaRecord) ? App::meta()->getMetaStr($post->post_meta, 'serie') : '';
         }
 
-        $sidebar['metas-box']['items']['post_series'] = '<h5><label class="s-series" for="post_series">' . __('Series:') . '</label></h5>' .
-        '<div class="p s-series" id="series-edit">' . form::textarea('post_series', 20, 3, $value, 'maximal') . '</div>';
+        $sidebar['metas-box']['items']['post_series'] = (new Para(null, 'h5'))
+            ->items([
+                (new Label(__('Series:'), Label::OUTSIDE_LABEL_BEFORE))
+                    ->for('post_series')
+                    ->class('s-series'),
+            ])
+        ->render() .
+            (new Div('series-edit'))
+                ->class('p s-series')
+                ->items([
+                    (new Textarea('post_series', $value))
+                        ->cols(20)
+                        ->rows(3)
+                        ->class('maximal'),
+                ])
+        ->render();
 
         return '';
     }
@@ -156,7 +186,7 @@ class BackendBehaviors
     public static function adminPostsActions(ActionsPosts $ap): string
     {
         $ap->addAction(
-            [__('Series') => [__('Add series') => 'series']],
+            [__('Series') => [__('Add series') => 'series_add']],
             static::adminAddSeries(...)
         );
 
@@ -248,19 +278,30 @@ class BackendBehaviors
                 My::jsLoad('posts_actions.js') .
                 My::cssLoad('style.css')
             );
-            echo
-            '<form action="' . $ap->getURI() . '" method="post">' .
-            $ap->getCheckboxes() .
-            '<div><label for="new_series" class="area">' . __('Series to add:') . '</label> ' .
-            form::textarea('new_series', 60, 3) .
-            '</div>' .
-            $ap->getHiddenFields() .
-            My::parsedHiddenFields([
-                'action' => 'series',
-            ]) .
-            '<p><input type="submit" value="' . __('Save') . '" ' .
-                'name="save_series" /></p>' .
-                '</form>';
+
+            echo (new Form('frm_new_series'))
+                ->action($ap->getURI())
+                ->method('post')
+                ->items([
+                    $ap->checkboxes(),
+                    (new Div())
+                        ->items([
+                            (new Textarea('new_series'))
+                                ->label(new Label(__('Series to add:'), Label::INSIDE_LABEL_AFTER, 'new_series'))
+                                ->cols(60)
+                                ->rows(3),
+                        ]),
+                    ...$ap->hiddenFields(),
+                    ...My::hiddenFields([
+                        'action' => 'series_add',
+                    ]),
+                    (new Para())
+                        ->items([
+                            (new Submit(['save_series'], __('Save'))),
+                        ]),
+                ])
+            ->render();
+
             $ap->endPage();
         }
     }
@@ -314,31 +355,42 @@ class BackendBehaviors
             );
             $posts_count = is_countable($_POST['entries']) ? count($_POST['entries']) : 0;
 
-            echo
-            '<form action="' . $ap->getURI() . '" method="post">' .
-            $ap->getCheckboxes() .
-            '<div><p>' . __('Following series have been found in selected entries:') . '</p>';
-
-            foreach ($series as $k => $n) {
-                $label = '<label class="classic">%s %s</label>';
-                if ($posts_count == $n) {
-                    $label = sprintf($label, '%s', '<strong>%s</strong>');
-                }
-
-                echo '<p>' . sprintf(
-                    $label,
-                    form::checkbox(['meta_id[]'], Html::escapeHTML((string) $k)),
-                    Html::escapeHTML((string) $k)
-                ) . '</p>';
+            $list = [];
+            $i    = 0;
+            foreach ($series as $name => $number) {
+                $label  = sprintf($posts_count == $number ? '<strong>%s</strong>' : '%s', Html::escapeHTML((string) $name));
+                $list[] = (new Para())
+                    ->items([
+                        (new Checkbox(['meta_id[]','meta_id-' . ++$i]))
+                            ->value(Html::escapeHTML((string) $name))
+                            ->label(new Label($label, Label::INSIDE_TEXT_AFTER)),
+                    ]);
             }
 
-            echo
-            '<p><input type="submit" value="' . __('ok') . '" />' .
-            $ap->getHiddenFields() .
-            My::parsedHiddenFields([
-                'action' => 'series_remove',
-            ]) .
-            '</p></div></form>';
+            echo (new Form('frm_rem_series'))
+                ->action($ap->getURI())
+                ->method('post')
+                ->items([
+                    $ap->checkboxes(),
+                    (new Div())
+                        ->items([
+                            (new Para())
+                                ->items([
+                                    (new Text(null, __('Following series have been found in selected entries:'))),
+                                ]),
+                            ...$list,
+                        ]),
+                    ...$ap->hiddenFields(),
+                    ...My::hiddenFields([
+                        'action' => 'series_remove',
+                    ]),
+                    (new Para())
+                        ->items([
+                            (new Submit(['rem_series'], __('ok'))),
+                        ]),
+                ])
+            ->render();
+
             $ap->endPage();
         }
     }
@@ -434,10 +486,18 @@ class BackendBehaviors
         $value = array_key_exists('serie_list_format', $opts) ? $opts['serie_list_format'] : 'more';
 
         echo
-        '<div class="fieldset"><h5 id="series_prefs">' . __('Series') . '</h5>' .
-        '<p><label for="user_serie_list_format" class="classic">' . __('Series list format:') . '</label> ' .
-        form::combo('user_serie_list_format', $combo, $value) .
-        '</p></div>';
+        (new Fieldset('series_prefs'))
+            ->legend((new Legend(__('Series'))))
+            ->fields([
+                (new Para())
+                    ->items([
+                        (new Select('user_serie_list_format'))
+                            ->label(new Label(__('Series list format:'), Label::INSIDE_LABEL_BEFORE))
+                            ->default($value)
+                            ->items($combo),
+                    ]),
+            ])
+        ->render();
 
         return '';
     }
@@ -453,10 +513,18 @@ class BackendBehaviors
         $value = array_key_exists('serie_list_format', $opts) ? $opts['serie_list_format'] : 'more';
 
         echo
-        '<div class="fieldset"><h5 id="series_prefs">' . __('Series') . '</h5>' .
-        '<p><label for="user_serie_list_format" class="classic">' . __('Series list format:') . '</label> ' .
-        form::combo('user_serie_list_format', $combo, $value) .
-        '</p></div>';
+        (new Fieldset('series_prefs'))
+            ->legend((new Legend(__('Series'))))
+            ->fields([
+                (new Para())
+                    ->items([
+                        (new Select('user_serie_list_format'))
+                            ->label(new Label(__('Series list format:'), Label::INSIDE_LABEL_BEFORE))
+                            ->default($value)
+                            ->items($combo),
+                    ]),
+            ])
+        ->render();
 
         return '';
     }

@@ -69,7 +69,11 @@ class ManagePosts extends Process
 
         App::backend()->posts_actions_page = new BackendActions(
             App::backend()->url()->get('admin.plugin'),
-            ['p' => My::id(), 'm' => 'serie_posts', 'series' => App::backend()->serie]
+            [
+                'p'     => My::id(),
+                'm'     => 'serie_posts',
+                'serie' => App::backend()->serie,
+            ]
         );
 
         App::backend()->posts_actions_page_rendered = null;
