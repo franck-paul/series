@@ -14,7 +14,7 @@ $this->registerModule(
     'Series',
     'Series of posts',
     'Franck Paul',
-    '5.5',
+    '5.6',
     [
         'requires'    => [['core', '2.28']],
         'permissions' => 'My',
