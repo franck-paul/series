@@ -34,6 +34,10 @@ L10n::$locales['Entries'] = '';
 L10n::$locales['Add series to this selection'] = '';
 L10n::$locales['Series to add:'] = '';
 L10n::$locales['Save'] = '';
+L10n::$locales['Serie has been successfully removed from selected entries'] = [
+	'',
+	'',
+];
 L10n::$locales['No series for selected entries'] = '';
 L10n::$locales['Remove selected series from this selection'] = '';
 L10n::$locales['Following series have been found in selected entries:'] = '';
@@ -45,9 +49,9 @@ L10n::$locales['The serie “%s” has been successfully renamed to “%s”'] =
 L10n::$locales['The serie “%s” has been successfully deleted'] = '';
 L10n::$locales['Are you sure you want to remove serie: “%s”?'] = '';
 L10n::$locales['Back to series list'] = '';
+L10n::$locales['Delete this serie'] = '';
 L10n::$locales['Rename:'] = '';
 L10n::$locales['OK'] = '';
-L10n::$locales['Delete this serie'] = '';
 L10n::$locales['List of entries in this serie'] = '';
 L10n::$locales['Selected entries action:'] = '';
 L10n::$locales['List of series'] = '';

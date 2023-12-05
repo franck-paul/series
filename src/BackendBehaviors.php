@@ -26,6 +26,7 @@ use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Fieldset;
 use Dotclear\Helper\Html\Form\Form;
+use Dotclear\Helper\Html\Form\Hidden;
 use Dotclear\Helper\Html\Form\Label;
 use Dotclear\Helper\Html\Form\Legend;
 use Dotclear\Helper\Html\Form\Para;
@@ -143,10 +144,12 @@ class BackendBehaviors
      */
     public static function seriesField(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
+        $meta = App::meta();
+
         if (!empty($_POST['post_series'])) {
             $value = $_POST['post_series'];
         } else {
-            $value = ($post instanceof \Dotclear\Database\MetaRecord) ? App::meta()->getMetaStr($post->post_meta, 'serie') : '';
+            $value = ($post) ? $meta->getMetaStr($post->post_meta, 'serie') : '';
         }
 
         $sidebar['metas-box']['items']['post_series'] = (new Para(null, 'h5'))
@@ -169,25 +172,39 @@ class BackendBehaviors
         return '';
     }
 
-    public static function setSeries(Cursor $cur, int $post_id): string
+    /**
+     * Store the series of an entry.
+     *
+     * @param   Cursor  $cur        The current
+     * @param   mixed   $post_id    The post identifier
+     */
+    public static function setSeries(Cursor $cur, $post_id): string
     {
+        $post_id = (int) $post_id;
+
         if (isset($_POST['post_series'])) {
             $series = $_POST['post_series'];
-            App::meta()->delPostMeta($post_id, 'serie');
+            $meta   = App::meta();
+            $meta->delPostMeta($post_id, 'serie');
 
-            foreach (App::meta()->splitMetaValues($series) as $serie) {
-                App::meta()->setPostMeta($post_id, 'serie', $serie);
+            foreach ($meta->splitMetaValues($series) as $serie) {
+                $meta->setPostMeta($post_id, 'serie', $serie);
             }
         }
 
         return '';
     }
 
+    /**
+     * Add series actions.
+     *
+     * @param   ActionsPosts    $ap     The current action instance
+     */
     public static function adminPostsActions(ActionsPosts $ap): string
     {
         $ap->addAction(
             [__('Series') => [__('Add series') => 'series_add']],
-            static::adminAddSeries(...)
+            BackendBehaviors::adminAddSeries(...)
         );
 
         if (App::auth()->check(App::auth()->makePermissions([
@@ -196,7 +213,7 @@ class BackendBehaviors
         ]), App::blog()->id())) {
             $ap->addAction(
                 [__('Series') => [__('Remove series') => 'series_remove']],
-                static::adminRemoveSeries(...)
+                BackendBehaviors::adminRemoveSeries(...)
             );
         }
 
@@ -204,18 +221,21 @@ class BackendBehaviors
     }
 
     /**
+     * Add series to entries.
+     *
      * @param      ActionsPosts                 $ap     Actions
      * @param      ArrayObject<string, mixed>   $post   The post
      */
     public static function adminAddSeries(ActionsPosts $ap, ArrayObject $post): void
     {
         if (!empty($post['new_series'])) {
-            $series = App::meta()->splitMetaValues($_POST['new_series']);
+            $meta   = App::meta();
+            $series = $meta->splitMetaValues($post['new_series']);
             $posts  = $ap->getRS();
 
             while ($posts->fetch()) {
                 # Get series for post
-                $post_meta = App::meta()->getMetadata([
+                $post_meta = $meta->getMetadata([
                     'meta_type' => 'serie',
                     'post_id'   => $posts->post_id,
                 ]);
@@ -226,7 +246,7 @@ class BackendBehaviors
 
                 foreach ($series as $s) {
                     if (!in_array($s, $pm)) {
-                        App::meta()->setPostMeta($posts->post_id, 'serie', $s);
+                        $meta->setPostMeta($posts->post_id, 'serie', $s);
                     }
                 }
             }
@@ -291,12 +311,11 @@ class BackendBehaviors
                                 ->cols(60)
                                 ->rows(3),
                         ]),
-                    ...$ap->hiddenFields(),
-                    ...My::hiddenFields([
-                        'action' => 'series_add',
-                    ]),
                     (new Para())
                         ->items([
+                            ...$ap->hiddenFields(),
+                            App::nonce()->formNonce(),
+                            (new Hidden('action', 'series_add')),
                             (new Submit(['save_series'], __('Save'))),
                         ]),
                 ])
@@ -307,6 +326,8 @@ class BackendBehaviors
     }
 
     /**
+     * Remove series from entries.
+     *
      * @param      ActionsPosts                 $ap     Actions
      * @param      ArrayObject<string, mixed>   $post   The post
      */
@@ -316,31 +337,41 @@ class BackendBehaviors
             App::auth()::PERMISSION_DELETE,
             App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id())) {
+            $meta  = App::meta();
             $posts = $ap->getRS();
             while ($posts->fetch()) {
                 foreach ($_POST['meta_id'] as $v) {
-                    App::meta()->delPostMeta($posts->post_id, 'serie', $v);
+                    $meta->delPostMeta($posts->post_id, 'serie', $v);
                 }
             }
 
+            Notices::addSuccessNotice(
+                __(
+                    'Serie has been successfully removed from selected entries',
+                    'Series have been successfully removed from selected entries',
+                    is_countable($_POST['meta_id']) ? count($_POST['meta_id']) : 0
+                )
+            );
+
             $ap->redirect(true, ['upd' => 1]);
         } else {
+            $meta   = App::meta();
             $series = [];
 
             foreach ($ap->getIDS() as $id) {
-                $post_series = App::meta()->getMetadata([
+                $post_series = $meta->getMetadata([
                     'meta_type' => 'serie',
                     'post_id'   => (int) $id, ])->toStatic()->rows();
                 foreach ($post_series as $v) {
                     if (isset($series[$v['meta_id']])) {
-                        ++$series[$v['meta_id']];
+                        $series[$v['meta_id']]++;
                     } else {
                         $series[$v['meta_id']] = 1;
                     }
                 }
             }
 
-            if ($series === []) {
+            if (empty($series)) {
                 throw new Exception(__('No series for selected entries'));
             }
 
@@ -380,12 +411,11 @@ class BackendBehaviors
                                 ]),
                             ...$list,
                         ]),
-                    ...$ap->hiddenFields(),
-                    ...My::hiddenFields([
-                        'action' => 'series_remove',
-                    ]),
                     (new Para())
                         ->items([
+                            ...$ap->hiddenFields(),
+                            App::nonce()->formNonce(),
+                            (new Hidden('action', 'series_remove')),
                             (new Submit(['rem_series'], __('ok'))),
                         ]),
                 ])

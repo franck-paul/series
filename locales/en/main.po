@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-08 10:26+0200\n"
+"POT-Creation-Date: 2023-12-05 10:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -80,6 +80,11 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+msgid "Serie has been successfully removed from selected entries"
+msgid_plural "Series have been successfully removed from selected entries"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "No series for selected entries"
 msgstr ""
 
@@ -116,13 +121,13 @@ msgstr ""
 msgid "Back to series list"
 msgstr ""
 
+msgid "Delete this serie"
+msgstr ""
+
 msgid "Rename:"
 msgstr ""
 
 msgid "OK"
-msgstr ""
-
-msgid "Delete this serie"
 msgstr ""
 
 msgid "List of entries in this serie"
