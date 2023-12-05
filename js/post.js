@@ -13,7 +13,7 @@ $(() => {
     if (series_edit.length > 0) {
       post_id = post_id.length > 0 ? post_id.get(0).value : false;
       if (post_id == false) {
-        meta_field = $('<input type="hidden" name="post_series" />');
+        meta_field = $('<input type="hidden" name="post_series">');
         meta_field.val($('#post_series').val());
       }
 
