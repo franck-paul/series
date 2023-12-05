@@ -35,6 +35,11 @@ L10n::$locales['Entries'] = 'Séries';
 L10n::$locales['Add series to this selection'] = 'Ajouter des séries à cette sélection';
 L10n::$locales['Series to add:'] = 'Séries à ajouter :';
 L10n::$locales['Save'] = 'Enregistrer';
+L10n::$locales['Serie has been successfully removed from selected entries'] = [
+	'Serie a été supprimé avec succès des entrées sélectionnées',
+	'Les séries ont été supprimées avec succès des entrées sélectionnées',
+	'Les séries ont été supprimées avec succès des entrées sélectionnées',
+];
 L10n::$locales['No series for selected entries'] = 'Aucune série pour les billets sélectionnés';
 L10n::$locales['Remove selected series from this selection'] = 'Supprimer les séries sélectionnées de cette sélection';
 L10n::$locales['Following series have been found in selected entries:'] = 'Les séries suivantes ont été trouvées pour les billets sélectionnés :';
@@ -46,9 +51,9 @@ L10n::$locales['The serie “%s” has been successfully renamed to “%s”'] =
 L10n::$locales['The serie “%s” has been successfully deleted'] = 'La série « %s » a été supprimée';
 L10n::$locales['Are you sure you want to remove serie: “%s”?'] = 'Êtes-vous sûr·e de vouloir supprimer la série : « %s » ?';
 L10n::$locales['Back to series list'] = 'Retour à la liste des séries';
+L10n::$locales['Delete this serie'] = 'Supprimer cette série';
 L10n::$locales['Rename:'] = 'Renommer :';
 L10n::$locales['OK'] = 'Ok';
-L10n::$locales['Delete this serie'] = 'Supprimer cette série';
 L10n::$locales['List of entries in this serie'] = 'Liste des billets de cette série';
 L10n::$locales['Selected entries action:'] = 'Action sur les billets sélectionnés :';
 L10n::$locales['List of series'] = 'Liste des séries';
