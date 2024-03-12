@@ -307,7 +307,7 @@ class BackendBehaviors
                     (new Div())
                         ->items([
                             (new Textarea('new_series'))
-                                ->label(new Label(__('Series to add:'), Label::INSIDE_LABEL_AFTER, 'new_series'))
+                                ->label(new Label(__('Series to add:'), Label::INSIDE_LABEL_AFTER))
                                 ->cols(60)
                                 ->rows(3),
                         ]),
