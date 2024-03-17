@@ -25,7 +25,7 @@ Object.assign(dotclear.msg, dotclear.getData('ck_editor_series'));
         label: dotclear.msg.serie_title,
         command: 'dcSeriesCommand',
         toolbar: 'insert',
-        icon: `${this.path}serie.png`,
+        icon: `${this.path}icon.svg`,
       });
     },
   });
