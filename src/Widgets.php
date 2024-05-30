@@ -19,7 +19,7 @@ use Dotclear\Plugin\widgets\WidgetsStack;
 
 class Widgets
 {
-    private const WIDGET_ID_SERIES       = 'series';
+    private const WIDGET_ID_SERIES = 'series';
 
     private const WIDGET_ID_SERIES_POSTS = 'seriesPosts';
 
@@ -32,7 +32,7 @@ class Widgets
             ->setting('limit', __('Limit (empty means no limit):'), '20')
             ->setting(
                 'sortby',
-                __('Order by:'),
+                __('Order series by:'),
                 'meta_id_lower',
                 'combo',
                 [
@@ -65,7 +65,7 @@ class Widgets
             ->setting('serietitle', __('Show titles of series'), 1, 'check')
             ->setting(
                 'orderseriesby',
-                __('Order series by:'),
+                __('Order entries in series by:'),
                 'asc',
                 'combo',
                 [

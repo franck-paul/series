@@ -1,5 +1,6 @@
 table.series {
   margin-left: 3em;
+  width: calc(100% - 8ex);
 }
 
 tr.serieLetter span {
@@ -24,7 +25,7 @@ ul.metaList li {
   list-style-position: inside;
 }
 
-#series-edit input[type=text] {
+#series-edit input[type='text'] {
   width: 11.5em;
 }
 

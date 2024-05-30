@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-05 10:32+0100\n"
+"POT-Creation-Date: 2024-05-30 19:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -184,10 +184,6 @@ msgstr ""
 msgid "Delete this serie"
 msgstr ""
 
-#: ../git-plugins/series/src/ManagePosts.php:205
-msgid "Rename:"
-msgstr ""
-
 #: ../git-plugins/series/src/ManagePosts.php:206
 msgid "OK"
 msgstr ""
@@ -205,7 +201,7 @@ msgid "List of series"
 msgstr ""
 
 #: ../git-plugins/series/src/Widgets.php:35
-msgid "Order by:"
+msgid "Order series by:"
 msgstr ""
 
 #: ../git-plugins/series/src/Widgets.php:39
@@ -247,7 +243,7 @@ msgid "Show titles of series"
 msgstr ""
 
 #: ../git-plugins/series/src/Widgets.php:68
-msgid "Order series by:"
+msgid "Order entries in series by:"
 msgstr ""
 
 #: ../git-plugins/series/src/Widgets.php:78

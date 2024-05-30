@@ -103,7 +103,7 @@ class Manage extends Process
         $table = '<div class="col"><table class="series">%s</table></div>';
 
         if ($cols[0] !== '' && $cols[0] !== '0') {
-            echo '<div class="two-cols clearfix">';
+            echo '<div class="two-cols">';
             printf($table, $cols[0]);
             if ($cols[1] !== '' && $cols[1] !== '0') {
                 printf($table, $cols[1]);
