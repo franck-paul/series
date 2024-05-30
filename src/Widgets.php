@@ -65,7 +65,7 @@ class Widgets
             ->setting('serietitle', __('Show titles of series'), 1, 'check')
             ->setting(
                 'orderseriesby',
-                __('Order entries in series by:'),
+                __('Order series by:'),
                 'asc',
                 'combo',
                 [
