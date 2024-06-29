@@ -33,7 +33,7 @@ class FrontendWidgets
 
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
-        $sort = $w->get('sortby');
+        $sort = (string) $w->get('sortby');
         if (!in_array($sort, $combo)) {
             $sort = 'meta_id_lower';
         }
@@ -62,9 +62,9 @@ class FrontendWidgets
             return '';
         }
 
-        if ($sort == 'meta_id_lower') {
+        if ($sort === 'meta_id_lower') {
             // Sort resulting recordset on cleaned id
-            $rs->sort($sort, $order);
+            $rs->lexicalSort($sort, $order);
         }
 
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';

@@ -33,7 +33,7 @@ class FrontendTemplate
 
         $sortby = 'meta_id_lower';
         if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
-            $sortby = strtolower($attr['sortby']);
+            $sortby = mb_strtolower($attr['sortby']);
         }
 
         $order = 'asc';
@@ -42,12 +42,16 @@ class FrontendTemplate
         }
 
         $res = "<?php\n" .
-            "App::frontend()->context()->meta = App::meta()->computeMetaStats(App::meta()->getMetadata(['meta_type'=>'" .
-            $type . "','limit'=>" . $limit .
-            ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC') . "'" : '') .
-            '])); ' .
-            "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
-            '?>';
+        "App::frontend()->context()->meta = App::meta()->computeMetaStats(App::meta()->getMetadata(['meta_type'=>'" .
+        $type . "','limit'=>" . $limit .
+        ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC') . "'" : '') .
+        '])); ' .
+        "if ('" . $sortby . "' === 'meta_id_lower') { " .
+        "App::frontend()->context()->meta->lexicalSort('" . $sortby . "','" . $order . "'); " .
+        '} else { ' .
+        "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
+        '}' . "\n" .
+        '?>';
 
         return $res . ('<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
             'App::frontend()->context()->meta = null; ?>');
@@ -102,9 +106,13 @@ class FrontendTemplate
         }
 
         $res = "<?php\n" .
-            "App::frontend()->context()->meta = App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta,'" . $type . "'); " .
-            "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
-            '?>';
+        "App::frontend()->context()->meta = App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta,'" . $type . "'); " .
+        "if ('" . $sortby . "' === 'meta_id_lower') { " .
+        "App::frontend()->context()->meta->lexicalSort('" . $sortby . "','" . $order . "'); " .
+        '} else { ' .
+        "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
+        '}' .
+        '?>';
 
         return $res . ('<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
             'App::frontend()->context()->meta = null; ?>');
@@ -119,17 +127,17 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'App::frontend()->context()->meta->meta_id') . '; ?>';
+        return '<?= ' . sprintf($f, 'App::frontend()->context()->meta->meta_id') . ' ?>';
     }
 
     public static function SeriePercent(): string
     {
-        return '<?php echo App::frontend()->context()->meta->percent; ?>';
+        return '<?= App::frontend()->context()->meta->percent ?>';
     }
 
     public static function SerieRoundPercent(): string
     {
-        return '<?php echo App::frontend()->context()->meta->roundpercent; ?>';
+        return '<?= App::frontend()->context()->meta->roundpercent ?>';
     }
 
     /**
@@ -141,8 +149,8 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("serie",' .
-            'rawurlencode(App::frontend()->context()->meta->meta_id))') . '; ?>';
+        return '<?= ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("serie",' .
+            'rawurlencode(App::frontend()->context()->meta->meta_id))') . ' ?>';
     }
 
     /**
@@ -154,7 +162,7 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("series")') . '; ?>';
+        return '<?= ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("series")') . ' ?>';
     }
 
     /**
@@ -172,7 +180,7 @@ class FrontendTemplate
 
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("serie_feed",' .
-            'rawurlencode(App::frontend()->context()->meta->meta_id)."/' . $type . '")') . '; ?>';
+        return '<?= ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("serie_feed",' .
+            'rawurlencode(App::frontend()->context()->meta->meta_id)."/' . $type . '")') . ' ?>';
     }
 }

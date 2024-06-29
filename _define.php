@@ -26,6 +26,6 @@ $this->registerModule(
 
         'details'    => 'https://open-time.net/?q=series',
         'support'    => 'https://github.com/franck-paul/series',
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/series/master/dcstore.xml',
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/series/main/dcstore.xml',
     ]
 );

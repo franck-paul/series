@@ -45,7 +45,7 @@ class Manage extends Process
 
         App::backend()->series = App::meta()->getMetadata(['meta_type' => 'serie']);
         App::backend()->series = App::meta()->computeMetaStats(App::backend()->series);
-        App::backend()->series->sort('meta_id_lower', 'asc');
+        App::backend()->series->lexicalSort('meta_id_lower', 'asc');
 
         return true;
     }
