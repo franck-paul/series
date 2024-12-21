@@ -3,7 +3,7 @@
 
 dotclear.mergeDeep(dotclear.msg, dotclear.getData('editor_series_msg'));
 
-$(() => {
+dotclear.ready(() => {
   const serie_field = $('#new_series');
 
   serie_field.after('<div id="series_list"></div>');
