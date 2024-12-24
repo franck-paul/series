@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-30 19:26+0200\n"
+"POT-Creation-Date: 2024-12-24 09:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: ../git-plugins/series/__html_tpl_dummy.php:7
-#: ../git-plugins/series/src/BackendBehaviors.php:472
-#: ../git-plugins/series/src/BackendBehaviors.php:481
+#: ../git-plugins/series/src/BackendBehaviors.php:459
+#: ../git-plugins/series/src/BackendBehaviors.php:468
 #: ../git-plugins/series/src/FrontendUrl.php:101
 #: ../git-plugins/series/src/ManagePosts.php:162
 msgid "Serie"
@@ -27,12 +27,12 @@ msgstr ""
 
 #: ../git-plugins/series/__html_tpl_dummy.php:8
 #: ../git-plugins/series/src/Backend.php:25
-#: ../git-plugins/series/src/BackendBehaviors.php:45
-#: ../git-plugins/series/src/BackendBehaviors.php:91
-#: ../git-plugins/series/src/BackendBehaviors.php:206
-#: ../git-plugins/series/src/BackendBehaviors.php:215
-#: ../git-plugins/series/src/BackendBehaviors.php:520
-#: ../git-plugins/series/src/BackendBehaviors.php:547
+#: ../git-plugins/series/src/BackendBehaviors.php:46
+#: ../git-plugins/series/src/BackendBehaviors.php:92
+#: ../git-plugins/series/src/BackendBehaviors.php:207
+#: ../git-plugins/series/src/BackendBehaviors.php:216
+#: ../git-plugins/series/src/BackendBehaviors.php:507
+#: ../git-plugins/series/src/BackendBehaviors.php:534
 #: ../git-plugins/series/src/ManagePosts.php:161
 #: ../git-plugins/series/src/Widgets.php:30
 #: ../git-plugins/series/src/Widgets.php:31
@@ -53,103 +53,103 @@ msgstr ""
 msgid "Series of posts"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:67
-#: ../git-plugins/series/src/BackendBehaviors.php:127
+#: ../git-plugins/series/src/BackendBehaviors.php:68
+#: ../git-plugins/series/src/BackendBehaviors.php:128
 #: ../git-plugins/series/src/FrontendBehaviors.php:26
 #: ../git-plugins/series/src/FrontendBehaviors.php:32
 #: ../git-plugins/series/src/Widgets.php:55
 msgid "All series"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:107
+#: ../git-plugins/series/src/BackendBehaviors.php:108
 msgid "Select serie (if necessary):"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:132
+#: ../git-plugins/series/src/BackendBehaviors.php:133
 #, php-format
 msgid "Recent posts for %s serie"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:157
+#: ../git-plugins/series/src/BackendBehaviors.php:158
 msgid "Series:"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:206
+#: ../git-plugins/series/src/BackendBehaviors.php:207
 msgid "Add series"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:215
+#: ../git-plugins/series/src/BackendBehaviors.php:216
 msgid "Remove series"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:256
+#: ../git-plugins/series/src/BackendBehaviors.php:257
 msgid "Serie has been successfully added to selected entries"
 msgid_plural "Series have been successfully added to selected entries"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:272
-#: ../git-plugins/series/src/BackendBehaviors.php:439
+#: ../git-plugins/series/src/BackendBehaviors.php:273
+#: ../git-plugins/series/src/BackendBehaviors.php:433
 msgid "Are you sure you want to remove this serie?"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:273
-#: ../git-plugins/series/src/BackendBehaviors.php:440
+#: ../git-plugins/series/src/BackendBehaviors.php:274
+#: ../git-plugins/series/src/BackendBehaviors.php:434
 msgid "Add a serie to this entry"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:275
-#: ../git-plugins/series/src/BackendBehaviors.php:442
+#: ../git-plugins/series/src/BackendBehaviors.php:276
+#: ../git-plugins/series/src/BackendBehaviors.php:436
 msgid "all series"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:276
-#: ../git-plugins/series/src/BackendBehaviors.php:443
+#: ../git-plugins/series/src/BackendBehaviors.php:277
+#: ../git-plugins/series/src/BackendBehaviors.php:437
 msgid "Enter series separated by comma"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:289
-#: ../git-plugins/series/src/BackendBehaviors.php:382
+#: ../git-plugins/series/src/BackendBehaviors.php:284
+#: ../git-plugins/series/src/BackendBehaviors.php:376
 msgid "Entries"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:290
+#: ../git-plugins/series/src/BackendBehaviors.php:285
 msgid "Add series to this selection"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:310
+#: ../git-plugins/series/src/BackendBehaviors.php:304
 msgid "Series to add:"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:319
+#: ../git-plugins/series/src/BackendBehaviors.php:313
 msgid "Save"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:350
+#: ../git-plugins/series/src/BackendBehaviors.php:344
 msgid "Serie has been successfully removed from selected entries"
 msgid_plural "Series have been successfully removed from selected entries"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:375
+#: ../git-plugins/series/src/BackendBehaviors.php:369
 msgid "No series for selected entries"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:383
+#: ../git-plugins/series/src/BackendBehaviors.php:377
 msgid "Remove selected series from this selection"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:410
+#: ../git-plugins/series/src/BackendBehaviors.php:404
 msgid "Following series have been found in selected entries:"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:419
+#: ../git-plugins/series/src/BackendBehaviors.php:413
 #: ../git-plugins/series/src/ManagePosts.php:237
 msgid "ok"
 msgstr ""
 
-#: ../git-plugins/series/src/BackendBehaviors.php:525
-#: ../git-plugins/series/src/BackendBehaviors.php:552
+#: ../git-plugins/series/src/BackendBehaviors.php:512
+#: ../git-plugins/series/src/BackendBehaviors.php:539
 msgid "Series list format:"
 msgstr ""
 

@@ -62,7 +62,6 @@ L10n::$locales['Link to all series:'] = '';
 L10n::$locales['Other posts of the same serie(s)'] = '';
 L10n::$locales['Siblings'] = '';
 L10n::$locales['Show titles of series'] = '';
-L10n::$locales['Order entries in series by:'] = '';
 L10n::$locales['Include current entry:'] = '';
 L10n::$locales['Standard'] = '';
 L10n::$locales['With link'] = '';
