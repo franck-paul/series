@@ -3,16 +3,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Franck Paul <carnet.franck.paul@gmail.com>, 2024
+# Franck Paul <carnet.franck.paul@gmail.com>, 2023
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-30 19:19+0200\n"
+"POT-Creation-Date: 2024-12-24 09:14+0100\n"
 "PO-Revision-Date: 2023-06-08 08:29+0000\n"
-"Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>, 2024\n"
+"Last-Translator: Franck Paul <carnet.franck.paul@gmail.com>, 2023\n"
 "Language-Team: French (https://app.transifex.com/open-time/teams/109573/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -169,9 +169,6 @@ msgstr "Connexes"
 
 msgid "Show titles of series"
 msgstr "Afficher le titre des séries"
-
-msgid "Order entries in series by:"
-msgstr "Trier les billets de la série par :"
 
 msgid "Include current entry:"
 msgstr "Inclure le billet courant :"
