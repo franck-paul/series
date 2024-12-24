@@ -64,7 +64,6 @@ L10n::$locales['Link to all series:'] = 'Lien vers toutes les séries :';
 L10n::$locales['Other posts of the same serie(s)'] = 'Autres billets de la/des même(s) série(s)';
 L10n::$locales['Siblings'] = 'Connexes';
 L10n::$locales['Show titles of series'] = 'Afficher le titre des séries';
-L10n::$locales['Order entries in series by:'] = 'Trier les billets de la série par :';
 L10n::$locales['Include current entry:'] = 'Inclure le billet courant :';
 L10n::$locales['Standard'] = 'Normal';
 L10n::$locales['With link'] = 'Avec l\'URL';
