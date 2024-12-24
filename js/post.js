@@ -1,8 +1,6 @@
 /*global $, dotclear, metaEditor */
 'use strict';
 
-dotclear.mergeDeep(dotclear.msg, dotclear.getData('editor_series_msg'));
-
 dotclear.ready(() => {
   const series_edit = $('#series-edit');
   let post_id = $('#id');

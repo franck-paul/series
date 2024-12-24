@@ -1,8 +1,6 @@
 /*global $, dotclear, metaEditor */
 'use strict';
 
-dotclear.mergeDeep(dotclear.msg, dotclear.getData('editor_series_msg'));
-
 dotclear.ready(() => {
   const serie_field = $('#new_series');
 
@@ -43,7 +41,6 @@ dotclear.ready(() => {
             data: {
               id: elt.meta_id,
               count: elt.count,
-              percent: elt.roundpercent,
             },
             result: elt.meta_id,
           };
@@ -52,14 +49,7 @@ dotclear.ready(() => {
       return results;
     },
     formatItem(serie) {
-      return (
-        serie.id +
-        ' <em>(' +
-        dotclear.msg.series_autocomplete
-          .replace('%p', serie.percent)
-          .replace('%e', `${serie.count} ${serie.count > 1 ? dotclear.msg.entries : dotclear.msg.entry}`) +
-        ')</em>'
-      );
+      return serie.id;
     },
     formatResult(serie) {
       return serie.result;

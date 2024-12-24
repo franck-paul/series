@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -276,12 +277,6 @@ class BackendBehaviors
                 'text_separation'     => __('Enter series separated by comma'),
             ];
 
-            $msg = [
-                'series_autocomplete' => __('used in %e - frequency %p%'),
-                'entry'               => __('entry'),
-                'entries'             => __('entries'),
-            ];
-
             $ap->beginPage(
                 Page::breadcrumb(
                     [
@@ -293,7 +288,6 @@ class BackendBehaviors
                 Page::jsLoad('js/jquery/jquery.autocomplete.js') .
                 Page::jsMetaEditor() .
                 Page::jsJson('editor_series_options', $editor_series_options) .
-                Page::jsJson('editor_series_msg', $msg) .
                 Page::jsLoad('js/jquery/jquery.autocomplete.js') .
                 My::jsLoad('posts_actions.js') .
                 My::cssLoad('style.css')
@@ -443,15 +437,8 @@ class BackendBehaviors
             'text_separation'     => __('Enter series separated by comma'),
         ];
 
-        $msg = [
-            'series_autocomplete' => __('used in %e - frequency %p%'),
-            'entry'               => __('entry'),
-            'entries'             => __('entries'),
-        ];
-
         return
         Page::jsJson('editor_series_options', $editor_series_options) .
-        Page::jsJson('editor_series_msg', $msg) .
         Page::jsLoad('js/jquery/jquery.autocomplete.js') .
         My::jsLoad('post.js') .
         My::cssLoad('style.css');
