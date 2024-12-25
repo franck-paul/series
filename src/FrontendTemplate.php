@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -27,13 +28,13 @@ class FrontendTemplate
      */
     public static function Series(array|ArrayObject $attr, string $content): string
     {
-        $type  = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
+        $type  = isset($attr['type']) ? addslashes((string) $attr['type']) : 'serie';
         $limit = isset($attr['limit']) ? (int) $attr['limit'] : 'null';
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
         $sortby = 'meta_id_lower';
         if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
-            $sortby = mb_strtolower($attr['sortby']);
+            $sortby = mb_strtolower((string) $attr['sortby']);
         }
 
         $order = 'asc';
@@ -93,11 +94,11 @@ class FrontendTemplate
      */
     public static function EntrySeries(array|ArrayObject $attr, string $content): string
     {
-        $type   = isset($attr['type']) ? addslashes($attr['type']) : 'serie';
+        $type   = isset($attr['type']) ? addslashes((string) $attr['type']) : 'serie';
         $combo  = ['meta_id_lower', 'count', 'latest', 'oldest'];
         $sortby = 'meta_id_lower';
         if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
-            $sortby = strtolower($attr['sortby']);
+            $sortby = mb_strtolower((string) $attr['sortby']);
         }
 
         $order = 'asc';
