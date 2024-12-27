@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -45,7 +46,7 @@ class FrontendWidgets
 
         $params = ['meta_type' => 'serie'];
 
-        if ($sort != 'meta_id_lower') {
+        if ($sort !== 'meta_id_lower') {
             // As optional limit may restrict result, we should set order (if not computed after)
             $params['order'] = $sort . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
         }
@@ -200,7 +201,7 @@ class FrontendWidgets
                 '</li>' . "\n";
         }
 
-        if ($list == '') {
+        if ($list === '') {
             return '';
         }
 

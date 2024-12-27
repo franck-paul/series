@@ -23,8 +23,6 @@ class FrontendTemplate
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
      * @param      string                                            $content   The content
-     *
-     * @return     string
      */
     public static function Series(array|ArrayObject $attr, string $content): string
     {
@@ -45,7 +43,7 @@ class FrontendTemplate
         $res = "<?php\n" .
         "App::frontend()->context()->meta = App::meta()->computeMetaStats(App::meta()->getMetadata(['meta_type'=>'" .
         $type . "','limit'=>" . $limit .
-        ($sortby != 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order == 'asc' ? 'ASC' : 'DESC') . "'" : '') .
+        ($sortby !== 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order === 'asc' ? 'ASC' : 'DESC') . "'" : '') .
         '])); ' .
         "if ('" . $sortby . "' === 'meta_id_lower') { " .
         "App::frontend()->context()->meta->lexicalSort('" . $sortby . "','" . $order . "'); " .
@@ -61,8 +59,6 @@ class FrontendTemplate
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
      * @param      string                                            $content   The content
-     *
-     * @return     string
      */
     public static function SeriesHeader(array|ArrayObject $attr, string $content): string
     {
@@ -75,8 +71,6 @@ class FrontendTemplate
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
      * @param      string                                            $content   The content
-     *
-     * @return     string
      */
     public static function SeriesFooter(array|ArrayObject $attr, string $content): string
     {
@@ -89,8 +83,6 @@ class FrontendTemplate
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
      * @param      string                                            $content   The content
-     *
-     * @return     string
      */
     public static function EntrySeries(array|ArrayObject $attr, string $content): string
     {
@@ -121,8 +113,6 @@ class FrontendTemplate
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function SerieID(array|ArrayObject $attr): string
     {
@@ -143,8 +133,6 @@ class FrontendTemplate
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function SerieURL(array|ArrayObject $attr): string
     {
@@ -156,8 +144,6 @@ class FrontendTemplate
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function SerieCloudURL(array|ArrayObject $attr): string
     {
@@ -168,8 +154,6 @@ class FrontendTemplate
 
     /**
      * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
-     *
-     * @return     string
      */
     public static function SerieFeedURL(array|ArrayObject $attr): string
     {

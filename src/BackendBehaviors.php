@@ -79,8 +79,6 @@ class BackendBehaviors
 
     /**
      * @param      ArrayObject<string, ArrayObject<string, bool>>  $items  The items
-     *
-     * @return     string
      */
     public static function adminSimpleMenuAddType(ArrayObject $items): string
     {
@@ -98,7 +96,7 @@ class BackendBehaviors
 
     public static function adminSimpleMenuSelect(string $item_type, string $id): string
     {
-        if ($item_type == 'series') {
+        if ($item_type === 'series') {
             $series_combo = self::adminSimpleMenuGetCombo();
 
             return
@@ -121,10 +119,10 @@ class BackendBehaviors
      */
     public static function adminSimpleMenuBeforeEdit(string $item_type, string $item_select, array $menu_item): string
     {
-        if ($item_type == 'series') {
+        if ($item_type === 'series') {
             $series_combo = self::adminSimpleMenuGetCombo();
             $menu_item[3] = array_search($item_select, $series_combo, true);
-            if ($item_select == '-') {
+            if ($item_select === '-') {
                 $menu_item[0] = __('All series');
                 $menu_item[1] = '';
                 $menu_item[2] .= App::url()->getURLFor('series');
@@ -141,7 +139,7 @@ class BackendBehaviors
     /**
      * @param      ArrayObject<string, mixed>           $main     The main
      * @param      ArrayObject<string, mixed>           $sidebar  The sidebar
-     * @param      \Dotclear\Database\MetaRecord|null   $post     The post
+     * @param      MetaRecord|null                      $post     The post
      */
     public static function seriesField(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
@@ -150,7 +148,7 @@ class BackendBehaviors
         if (!empty($_POST['post_series'])) {
             $value = $_POST['post_series'];
         } else {
-            $value = ($post) ? $meta->getMetaStr($post->post_meta, 'serie') : '';
+            $value = ($post instanceof MetaRecord) ? $meta->getMetaStr($post->post_meta, 'serie') : '';
         }
 
         $sidebar['metas-box']['items']['post_series'] = (new Para(null, 'h5'))
@@ -365,7 +363,7 @@ class BackendBehaviors
                 }
             }
 
-            if (empty($series)) {
+            if ($series === []) {
                 throw new Exception(__('No series for selected entries'));
             }
 
@@ -446,13 +444,13 @@ class BackendBehaviors
 
     public static function adminPostEditor(string $editor = '', string $context = ''): string
     {
-        if (($editor != 'dcLegacyEditor' && $editor != 'dcCKEditor') || $context != 'post') {
+        if (($editor !== 'dcLegacyEditor' && $editor !== 'dcCKEditor') || $context !== 'post') {
             return '';
         }
 
         $serie_url = App::blog()->url() . App::url()->getURLFor('serie');
 
-        if ($editor == 'dcLegacyEditor') {
+        if ($editor === 'dcLegacyEditor') {
             return
             Page::jsJson('legacy_editor_series', [
                 'serie' => [
@@ -474,8 +472,6 @@ class BackendBehaviors
     /**
      * @param      ArrayObject<int, mixed>  $extraPlugins  The extra plugins
      * @param      string                   $context       The context
-     *
-     * @return     string
      */
     public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, string $context): string
     {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -18,8 +19,6 @@ class BackendActions extends ActionsPosts
 {
     /**
      * Use render method.
-     *
-     * @var     bool    $use_render
      */
     protected bool $use_render = true;
 }

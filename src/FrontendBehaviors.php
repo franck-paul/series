@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -21,10 +22,10 @@ class FrontendBehaviors
 {
     public static function publicBreadcrumb(string $context, string $separator): string
     {
-        if ($context == 'series') {
+        if ($context === 'series') {
             // All series
             return __('All series');
-        } elseif ($context == 'serie') {
+        } elseif ($context === 'serie') {
             // Serie
 
             // Get current page if set
@@ -46,12 +47,10 @@ class FrontendBehaviors
     /**
      * @param      string                                               $b      The block
      * @param      array<string, string>|ArrayObject<string, string>    $attr   The attribute
-     *
-     * @return     string
      */
     public static function templateBeforeBlock(string $b, array|ArrayObject $attr): string
     {
-        if (($b == 'Entries' || $b == 'Comments') && isset($attr['serie'])) {
+        if (($b === 'Entries' || $b === 'Comments') && isset($attr['serie'])) {
             return
             '<?php
 if (!isset($params)) { $params = []; }
@@ -63,7 +62,7 @@ if (!isset($params)) { $params = []; }
             "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
             "\$params['sql'] .= \"AND METAS.meta_id = '" . App::con()->escapeStr($attr['serie']) . "' \";\n" .
                 "?>\n";
-        } elseif (empty($attr['no_context']) && ($b == 'Entries' || $b == 'Comments')) {
+        } elseif (empty($attr['no_context']) && ($b === 'Entries' || $b === 'Comments')) {
             return
                 '<?php if (App::frontend()->context()->exists("meta") && App::frontend()->context()->meta->rows() && (App::frontend()->context()->meta->meta_type == "serie")) { ' .
                 "if (!isset(\$params)) { \$params = []; }\n" .

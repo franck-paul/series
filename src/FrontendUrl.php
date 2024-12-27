@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -29,7 +30,7 @@ class FrontendUrl extends Url
         if ($args == '' && !$n) {
             self::p404();
         } elseif (preg_match('%(.*?)/feed/(rss2|atom)?$%u', (string) $args, $m)) {
-            $type = ($m[2] ?? '') == 'atom' ? 'atom' : 'rss2';
+            $type = ($m[2] ?? '') === 'atom' ? 'atom' : 'rss2';
             $mime = 'application/xml';
 
             App::frontend()->context()->meta = App::meta()->computeMetaStats(
@@ -44,7 +45,7 @@ class FrontendUrl extends Url
             } else {
                 $tpl = $type;
 
-                if ($type == 'atom') {
+                if ($type === 'atom') {
                     $mime = 'application/atom+xml';
                 }
 
@@ -100,7 +101,7 @@ class FrontendUrl extends Url
             } else {
                 App::frontend()->context()->feed_subtitle = ' - ' . __('Serie') . ' - ' . App::frontend()->context()->meta->meta_id;
 
-                $mime = $type == 'atom' ? 'application/atom+xml' : 'application/xml';
+                $mime = $type === 'atom' ? 'application/atom+xml' : 'application/xml';
 
                 $tpl = $type;
                 if ($comments) {
