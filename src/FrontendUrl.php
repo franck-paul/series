@@ -86,7 +86,7 @@ class FrontendUrl extends Url
         } else {
             $serie    = $m[1];
             $type     = $m[2];
-            $comments = !empty($m[3]);
+            $comments = isset($m[3]) && $m[3] !== '';
 
             App::frontend()->context()->meta = App::meta()->computeMetaStats(
                 App::meta()->getMetadata([
