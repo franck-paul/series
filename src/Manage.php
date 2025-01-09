@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -20,6 +21,9 @@ use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Html;
 
+/**
+ * @todo switch Helper/Html/Form/...
+ */
 class Manage extends Process
 {
     /**

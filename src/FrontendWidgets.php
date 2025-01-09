@@ -122,7 +122,7 @@ class FrontendWidgets
             App::con()->prefix() . App::blog()::POST_TABLE_NAME . ' as p ' .
             ' WHERE m.post_id = p.post_id ' .
             ' AND post_type = \'post\' ' .
-            ' AND post_status = ' . App::blog()::POST_PUBLISHED . ' ' .
+            ' AND post_status > ' . App::status()->post()->threshold() . ' ' .
             ' AND blog_id = \'' . App::blog()->id() . '\'' .
                 ' AND meta_type = \'serie\' AND ( ';
             foreach ($metas['serie'] as $key => $meta) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -16,7 +17,7 @@ $this->registerModule(
     'Franck Paul',
     '5.13',
     [
-        'requires'    => [['core', '2.30']],
+        'requires'    => [['core', '2.33']],
         'permissions' => 'My',
         'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
         'type'        => 'plugin',
