@@ -53,7 +53,7 @@ class FrontendTemplate
         '?>';
 
         return $res . ('<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-            'App::frontend()->context()->meta = null; ?>');
+        'App::frontend()->context()->meta = null; ?>');
     }
 
     /**

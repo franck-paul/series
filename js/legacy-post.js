@@ -25,7 +25,7 @@ dotclear.mergeDeep(jsToolBar.prototype.elements, dotclear.getData('legacy_editor
 jsToolBar.prototype.elements.serie.context = 'post';
 jsToolBar.prototype.elements.serie.fn.wiki = function () {
   this.encloseSelection('', '', (str) => {
-    if (str == '') {
+    if (str === '') {
       window.alert(dotclear.msg.no_selection);
       return '';
     }
@@ -39,7 +39,7 @@ jsToolBar.prototype.elements.serie.fn.wiki = function () {
 jsToolBar.prototype.elements.serie.fn.markdown = function () {
   const { url } = this.elements.serie;
   this.encloseSelection('', '', function (str) {
-    if (str == '') {
+    if (str === '') {
       window.alert(dotclear.msg.no_selection);
       return '';
     }
@@ -54,7 +54,7 @@ jsToolBar.prototype.elements.serie.fn.markdown = function () {
 jsToolBar.prototype.elements.serie.fn.xhtml = function () {
   const { url } = this.elements.serie;
   this.encloseSelection('', '', function (str) {
-    if (str == '') {
+    if (str === '') {
       window.alert(dotclear.msg.no_selection);
       return '';
     }
@@ -69,7 +69,7 @@ jsToolBar.prototype.elements.serie.fn.xhtml = function () {
 jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {
   const t = this.getSelectedText();
 
-  if (t == '') {
+  if (t === '') {
     window.alert(dotclear.msg.no_selection);
     return;
   }

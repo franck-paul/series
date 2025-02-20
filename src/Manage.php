@@ -19,11 +19,17 @@ use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
+use Dotclear\Helper\Html\Form\Div;
+use Dotclear\Helper\Html\Form\Link;
+use Dotclear\Helper\Html\Form\None;
+use Dotclear\Helper\Html\Form\Note;
+use Dotclear\Helper\Html\Form\Table;
+use Dotclear\Helper\Html\Form\Tbody;
+use Dotclear\Helper\Html\Form\Td;
+use Dotclear\Helper\Html\Form\Text;
+use Dotclear\Helper\Html\Form\Tr;
 use Dotclear\Helper\Html\Html;
 
-/**
- * @todo switch Helper/Html/Form/...
- */
 class Manage extends Process
 {
     /**
@@ -81,41 +87,77 @@ class Manage extends Process
         );
         echo Notices::getNotices();
 
-        $last_letter = null;
-        $cols        = ['', ''];
-        $col         = 0;
+        $last_letter = '';
+        $lines       = [[], []];
+        $column      = 0;
         while (App::backend()->series->fetch()) {
             $letter = mb_strtoupper(mb_substr(App::backend()->series->meta_id_lower, 0, 1));
 
-            if ($last_letter != $letter) {
+            if ($last_letter !== $letter) {
                 if (App::backend()->series->index() >= round(App::backend()->series->count() / 2)) {
-                    $col = 1;
+                    $column = 1;
                 }
 
-                $cols[$col] .= '<tr class="serieLetter"><td colspan="2"><span>' . $letter . '</span></td></tr>';
+                $lines[$column][] = (new Tr())
+                    ->class('serieLetter')
+                    ->cols([
+                        (new Td())
+                            ->colspan(2)
+                            ->items([
+                                (new Text('span', $letter)),
+                            ]),
+                    ]);
             }
 
-            $cols[$col] .= '<tr class="line"><td class="maximal"><a href="' . App::backend()->getPageURL() .
-            '&amp;m=serie_posts&amp;serie=' . rawurlencode(App::backend()->series->meta_id) . '">' . App::backend()->series->meta_id . '</a></td>' .
-            '<td class="nowrap count"><strong>' . App::backend()->series->count . '</strong> ' .
-                ((App::backend()->series->count == 1) ? __('entry') : __('entries')) . '</td>' .
-                '</tr>';
+            $lines[$column][] = (new Tr())
+                ->class('line')
+                ->cols([
+                    (new Td())
+                        ->class('maximal')
+                        ->items([
+                            (new Link())
+                                ->href(App::backend()->getPageURL() . '&m=serie_posts&serie=' . rawurlencode(App::backend()->series->meta_id))
+                                ->text(App::backend()->series->meta_id),
+                        ]),
+                    (new Td())
+                        ->class(['nowrap', 'count'])
+                        ->items([
+                            (new Text('strong', App::backend()->series->count)),
+                            (new Text(null, App::backend()->series->count === 1 ? __('entry') : __('entries'))),
+                        ]),
+                ]);
 
             $last_letter = $letter;
         }
 
-        $table = '<div class="col"><table class="series">%s</table></div>';
-
-        if ($cols[0] !== '' && $cols[0] !== '0') {
-            echo '<div class="two-cols">';
-            printf($table, $cols[0]);
-            if ($cols[1] !== '' && $cols[1] !== '0') {
-                printf($table, $cols[1]);
-            }
-
-            echo '</div>';
+        if ($lines[0] !== []) {
+            echo (new Div())
+                ->class('two-cols')
+                ->items([
+                    (new Div())
+                        ->class('col')
+                        ->items([
+                            (new Table())
+                                ->class('series')
+                                ->tbody((new Tbody())
+                                    ->rows($lines[0])),
+                        ]),
+                    $lines[1] !== [] ?
+                    (new Div())
+                        ->class('col')
+                        ->items([
+                            (new Table())
+                                ->class('series')
+                                ->tbody((new Tbody())
+                                    ->rows($lines[1])),
+                        ]) :
+                    (new None()),
+                ])
+            ->render();
         } else {
-            echo '<p>' . __('No series on this blog.') . '</p>';
+            echo (new Note())
+                ->text(__('No series on this blog.'))
+            ->render();
         }
 
         Page::closeModule();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -23,6 +24,7 @@ use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Input;
 use Dotclear\Helper\Html\Form\Label;
+use Dotclear\Helper\Html\Form\Link;
 use Dotclear\Helper\Html\Form\Para;
 use Dotclear\Helper\Html\Form\Select;
 use Dotclear\Helper\Html\Form\Submit;
@@ -165,7 +167,14 @@ class ManagePosts extends Process
         echo Notices::getNotices();
 
         // Form
-        echo '<p><a class="back" href="' . App::backend()->getPageURL() . '&amp;m=series">' . __('Back to series list') . '</a></p>';
+        echo (new Para())
+            ->items([
+                (new Link())
+                    ->href(App::backend()->getPageURL() . '&m=series')
+                    ->class('back')
+                    ->text(__('Back to series list')),
+            ])
+        ->render();
 
         if (!App::error()->flag()) {
             if (!App::backend()->posts?->isEmpty()) {

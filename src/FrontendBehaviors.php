@@ -52,27 +52,25 @@ class FrontendBehaviors
     {
         if (($b === 'Entries' || $b === 'Comments') && isset($attr['serie'])) {
             return
-            '<?php
-if (!isset($params)) { $params = []; }
-' .
+            '<?php if (!isset($params)) { $params = []; }' .
             "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
             "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
             "\$params['from'] .= ', '.App::con()->prefix().'meta METAS ';\n" .
             "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
             "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
             "\$params['sql'] .= \"AND METAS.meta_id = '" . App::con()->escapeStr($attr['serie']) . "' \";\n" .
-                "?>\n";
+            "?>\n";
         } elseif (empty($attr['no_context']) && ($b === 'Entries' || $b === 'Comments')) {
             return
-                '<?php if (App::frontend()->context()->exists("meta") && App::frontend()->context()->meta->rows() && (App::frontend()->context()->meta->meta_type == "serie")) { ' .
-                "if (!isset(\$params)) { \$params = []; }\n" .
-                "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
-                "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-                "\$params['from'] .= ', '.App::con()->prefix().'meta METAS ';\n" .
-                "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
-                "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-                "\$params['sql'] .= \"AND METAS.meta_id = '\".App::con()->escapeStr(App::frontend()->context()->meta->meta_id).\"' \";\n" .
-                "} ?>\n";
+            '<?php if (App::frontend()->context()->exists("meta") && App::frontend()->context()->meta->rows() && (App::frontend()->context()->meta->meta_type == "serie")) { ' .
+            "if (!isset(\$params)) { \$params = []; }\n" .
+            "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
+            "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
+            "\$params['from'] .= ', '.App::con()->prefix().'meta METAS ';\n" .
+            "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
+            "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
+            "\$params['sql'] .= \"AND METAS.meta_id = '\".App::con()->escapeStr(App::frontend()->context()->meta->meta_id).\"' \";\n" .
+            "} ?>\n";
         }
 
         return '';
