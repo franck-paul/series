@@ -145,7 +145,7 @@ class ManagePosts extends Process
             return;
         }
 
-        $this_url = App::backend()->getPageURL() . '&amp;m=serie_posts&amp;serie=' . rawurlencode(App::backend()->serie);
+        $this_url = App::backend()->getPageURL() . '&amp;m=serie_posts&amp;serie=' . rawurlencode((string) App::backend()->serie);
 
         $head = My::cssLoad('style.css') .
         Page::jsLoad('js/_posts_list.js') .

@@ -91,7 +91,7 @@ class Manage extends Process
         $lines       = [[], []];
         $column      = 0;
         while (App::backend()->series->fetch()) {
-            $letter = mb_strtoupper(mb_substr(App::backend()->series->meta_id_lower, 0, 1));
+            $letter = mb_strtoupper(mb_substr((string) App::backend()->series->meta_id_lower, 0, 1));
 
             if ($last_letter !== $letter) {
                 if (App::backend()->series->index() >= round(App::backend()->series->count() / 2)) {
@@ -116,7 +116,7 @@ class Manage extends Process
                         ->class('maximal')
                         ->items([
                             (new Link())
-                                ->href(App::backend()->getPageURL() . '&m=serie_posts&serie=' . rawurlencode(App::backend()->series->meta_id))
+                                ->href(App::backend()->getPageURL() . '&m=serie_posts&serie=' . rawurlencode((string) App::backend()->series->meta_id))
                                 ->text(App::backend()->series->meta_id),
                         ]),
                     (new Td())

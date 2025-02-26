@@ -86,7 +86,7 @@ class FrontendWidgets
                 }
             }
 
-            $res .= '<li' . $class . '><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($rs->meta_id)) . '" ' .
+            $res .= '<li' . $class . '><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode((string) $rs->meta_id)) . '" ' .
             'class="serie' . $rs->roundpercent . '">' .
             $rs->meta_id . '</a></li>';
         }

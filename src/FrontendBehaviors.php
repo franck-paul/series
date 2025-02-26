@@ -34,7 +34,7 @@ class FrontendBehaviors
             if ($page == 0) {
                 $ret .= $separator . App::frontend()->context()->meta->meta_id;
             } else {
-                $ret .= $separator . '<a href="' . App::blog()->url() . App::url()->getURLFor('serie') . '/' . rawurlencode(App::frontend()->context()->meta->meta_id) . '">' . App::frontend()->context()->meta->meta_id . '</a>';
+                $ret .= $separator . '<a href="' . App::blog()->url() . App::url()->getURLFor('serie') . '/' . rawurlencode((string) App::frontend()->context()->meta->meta_id) . '">' . App::frontend()->context()->meta->meta_id . '</a>';
                 $ret .= $separator . sprintf(__('page %d'), $page);
             }
 
