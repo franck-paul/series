@@ -15,9 +15,9 @@ $this->registerModule(
     'Series',
     'Series of posts',
     'Franck Paul',
-    '6.3',
+    '6.4',
     [
-        'date'        => '2025-02-26T16:06:09+0100',
+        'date'        => '2025-02-27T09:12:13+0100',
         'requires'    => [['core', '2.33']],
         'permissions' => 'My',
         'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
