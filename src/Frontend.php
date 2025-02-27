@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief series, a plugin for Dotclear 2
  *
@@ -49,6 +50,7 @@ class Frontend extends Process
         App::frontend()->template()->addBlock('SeriesFooter', FrontendTemplate::SeriesFooter(...));
         App::frontend()->template()->addBlock('EntrySeries', FrontendTemplate::EntrySeries(...));
         App::frontend()->template()->addValue('SerieID', FrontendTemplate::SerieID(...));
+        App::frontend()->template()->addValue('SerieCount', FrontendTemplate::SerieCount(...));
         App::frontend()->template()->addValue('SeriePercent', FrontendTemplate::SeriePercent(...));
         App::frontend()->template()->addValue('SerieRoundPercent', FrontendTemplate::SerieRoundPercent(...));
         App::frontend()->template()->addValue('SerieURL', FrontendTemplate::SerieURL(...));

@@ -121,6 +121,11 @@ class FrontendTemplate
         return '<?= ' . sprintf($f, 'App::frontend()->context()->meta->meta_id') . ' ?>';
     }
 
+    public static function SerieCount(): string
+    {
+        return '<?= App::frontend()->context()->meta->count ?>';
+    }
+
     public static function SeriePercent(): string
     {
         return '<?= App::frontend()->context()->meta->percent ?>';
