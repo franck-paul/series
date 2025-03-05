@@ -20,7 +20,7 @@ $this->registerModule(
         'date'        => '2025-02-27T09:12:13+0100',
         'requires'    => [['core', '2.33']],
         'permissions' => 'My',
-        'priority'    => 1001,                      // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
+        'priority'    => 1010,  // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
         'type'        => 'plugin',
         'settings'    => [
             'pref' => '#user-options.series_prefs',
@@ -29,5 +29,6 @@ $this->registerModule(
         'details'    => 'https://open-time.net/?q=series',
         'support'    => 'https://github.com/franck-paul/series',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/series/main/dcstore.xml',
+        'license'    => 'gpl2',
     ]
 );
