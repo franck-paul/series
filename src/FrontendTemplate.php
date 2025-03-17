@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use ArrayObject;
-use Dotclear\App;
+use Dotclear\Plugin\TemplateHelper\Code;
 
 class FrontendTemplate
 {
@@ -27,7 +27,7 @@ class FrontendTemplate
     public static function Series(array|ArrayObject $attr, string $content): string
     {
         $type  = isset($attr['type']) ? addslashes((string) $attr['type']) : 'serie';
-        $limit = isset($attr['limit']) ? (int) $attr['limit'] : 'null';
+        $limit = isset($attr['limit']) ? (int) $attr['limit'] : null;
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
         $sortby = 'meta_id_lower';
@@ -40,20 +40,17 @@ class FrontendTemplate
             $order = 'desc';
         }
 
-        $res = "<?php\n" .
-        "App::frontend()->context()->meta = App::meta()->computeMetaStats(App::meta()->getMetadata(['meta_type'=>'" .
-        $type . "','limit'=>" . $limit .
-        ($sortby !== 'meta_id_lower' ? ",'order'=>'" . $sortby . ' ' . ($order === 'asc' ? 'ASC' : 'DESC') . "'" : '') .
-        '])); ' .
-        "if ('" . $sortby . "' === 'meta_id_lower') { " .
-        "App::frontend()->context()->meta->lexicalSort('" . $sortby . "','" . $order . "'); " .
-        '} else { ' .
-        "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
-        '}' . "\n" .
-        '?>';
-
-        return $res . ('<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-        'App::frontend()->context()->meta = null; ?>');
+        return Code::getPHPTemplateBlockCode(
+            FrontendTemplateCode::Series(...),
+            [
+                $type,
+                $limit,
+                $sortby,
+                $order,
+            ],
+            $content,
+            $attr,
+        );
     }
 
     /**
@@ -62,10 +59,12 @@ class FrontendTemplate
      */
     public static function SeriesHeader(array|ArrayObject $attr, string $content): string
     {
-        return
-            '<?php if (App::frontend()->context()->meta->isStart()) : ?>' .
-            $content .
-            '<?php endif; ?>';
+        return Code::getPHPTemplateBlockCode(
+            FrontendTemplateCode::SeriesHeader(...),
+            [],
+            $content,
+            $attr,
+        );
     }
 
     /**
@@ -74,10 +73,12 @@ class FrontendTemplate
      */
     public static function SeriesFooter(array|ArrayObject $attr, string $content): string
     {
-        return
-            '<?php if (App::frontend()->context()->meta->isEnd()) : ?>' .
-            $content .
-            '<?php endif; ?>';
+        return Code::getPHPTemplateBlockCode(
+            FrontendTemplateCode::SeriesFooter(...),
+            [],
+            $content,
+            $attr,
+        );
     }
 
     /**
@@ -98,17 +99,16 @@ class FrontendTemplate
             $order = 'desc';
         }
 
-        $res = "<?php\n" .
-        "App::frontend()->context()->meta = App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta,'" . $type . "'); " .
-        "if ('" . $sortby . "' === 'meta_id_lower') { " .
-        "App::frontend()->context()->meta->lexicalSort('" . $sortby . "','" . $order . "'); " .
-        '} else { ' .
-        "App::frontend()->context()->meta->sort('" . $sortby . "','" . $order . "'); " .
-        '}' .
-        '?>';
-
-        return $res . ('<?php while (App::frontend()->context()->meta->fetch()) : ?>' . $content . '<?php endwhile; ' .
-            'App::frontend()->context()->meta = null; ?>');
+        return Code::getPHPTemplateBlockCode(
+            FrontendTemplateCode::EntrySeries(...),
+            [
+                $type,
+                $sortby,
+                $order,
+            ],
+            $content,
+            $attr,
+        );
     }
 
     /**
@@ -116,24 +116,43 @@ class FrontendTemplate
      */
     public static function SerieID(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
-
-        return '<?= ' . sprintf($f, 'App::frontend()->context()->meta->meta_id') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::SerieID(...),
+            attr: $attr,
+        );
     }
 
-    public static function SerieCount(): string
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     */
+    public static function SerieCount(array|ArrayObject $attr): string
     {
-        return '<?= App::frontend()->context()->meta->count ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::SerieCount(...),
+            attr: $attr,
+        );
     }
 
-    public static function SeriePercent(): string
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     */
+    public static function SeriePercent(array|ArrayObject $attr): string
     {
-        return '<?= App::frontend()->context()->meta->percent ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::SeriePercent(...),
+            attr: $attr,
+        );
     }
 
-    public static function SerieRoundPercent(): string
+    /**
+     * @param      array<string, mixed>|\ArrayObject<string, mixed>  $attr      The attribute
+     */
+    public static function SerieRoundPercent(array|ArrayObject $attr): string
     {
-        return '<?= App::frontend()->context()->meta->roundpercent ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::SerieRoundPercent(...),
+            attr: $attr,
+        );
     }
 
     /**
@@ -141,10 +160,10 @@ class FrontendTemplate
      */
     public static function SerieURL(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
-
-        return '<?= ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("serie",' .
-            'rawurlencode(App::frontend()->context()->meta->meta_id))') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::SerieURL(...),
+            attr: $attr,
+        );
     }
 
     /**
@@ -152,9 +171,10 @@ class FrontendTemplate
      */
     public static function SerieCloudURL(array|ArrayObject $attr): string
     {
-        $f = App::frontend()->template()->getFilters($attr);
-
-        return '<?= ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("series")') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::SerieCloudURL(...),
+            attr: $attr,
+        );
     }
 
     /**
@@ -168,9 +188,12 @@ class FrontendTemplate
             $type = 'rss2';
         }
 
-        $f = App::frontend()->template()->getFilters($attr);
-
-        return '<?= ' . sprintf($f, 'App::blog()->url().App::url()->getURLFor("serie_feed",' .
-            'rawurlencode(App::frontend()->context()->meta->meta_id)."/' . $type . '")') . ' ?>';
+        return Code::getPHPTemplateValueCode(
+            FrontendTemplateCode::SerieFeedURL(...),
+            [
+                $type,
+            ],
+            attr: $attr,
+        );
     }
 }
