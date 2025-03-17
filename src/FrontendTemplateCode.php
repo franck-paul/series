@@ -166,7 +166,7 @@ class FrontendTemplateCode
         string $_tag_
     ): void {
         echo \Dotclear\Core\Frontend\Ctx::global_filters(
-            App::blog()->url() . App::url()->getURLFor('serie', rawurlencode(App::frontend()->context()->meta->meta_id)),
+            App::blog()->url() . App::url()->getURLFor('serie', rawurlencode((string) App::frontend()->context()->meta->meta_id)),
             $_params_,
             $_tag_
         );
@@ -199,7 +199,7 @@ class FrontendTemplateCode
         string $_tag_
     ): void {
         echo \Dotclear\Core\Frontend\Ctx::global_filters(
-            App::blog()->url() . App::url()->getURLFor('serie_feed', rawurlencode(App::frontend()->context()->meta->meta_id) . '/' . $_type_),
+            App::blog()->url() . App::url()->getURLFor('serie_feed', rawurlencode((string) App::frontend()->context()->meta->meta_id) . '/' . $_type_),
             $_params_,
             $_tag_
         );
