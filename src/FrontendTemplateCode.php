@@ -56,7 +56,7 @@ class FrontendTemplateCode
         string $_content_HTML
     ): void {
         if (App::frontend()->context()->meta->isStart()) : ?>
-            $content_HTML
+            $_content_HTML
         <?php endif;
     }
 
@@ -67,7 +67,7 @@ class FrontendTemplateCode
         string $_content_HTML
     ): void {
         if (App::frontend()->context()->meta->isEnd()) : ?>
-            $content_HTML
+            $_content_HTML
         <?php endif;
     }
 
