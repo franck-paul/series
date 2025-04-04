@@ -15,9 +15,9 @@ $this->registerModule(
     'Series',
     'Series of posts',
     'Franck Paul',
-    '7.0',
+    '7.0.1',
     [
-        'date'     => '2025-03-17T19:19:26+0100',
+        'date'     => '2025-04-04T09:34:37+0200',
         'requires' => [
             ['core', '2.34'],
             ['TemplateHelper'],
