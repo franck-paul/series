@@ -99,7 +99,7 @@ class ManagePosts extends Process
 
             try {
                 if (App::meta()->updateMeta(App::backend()->serie, $new_id, 'serie')) {
-                    Notices::addSuccessNotice(sprintf(__('The serie “%s” has been successfully renamed to “%s”'), Html::escapeHTML(App::backend()->serie), Html::escapeHTML($new_id)));
+                    Notices::addSuccessNotice(sprintf(__('The serie “%1$s” has been successfully renamed to “%2$s”'), Html::escapeHTML(App::backend()->serie), Html::escapeHTML($new_id)));
                     My::redirect([
                         'm'     => 'serie_posts',
                         'serie' => $new_id,

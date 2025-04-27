@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 series module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-24 09:14+0100\n"
+"POT-Creation-Date: 2025-04-27 16:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,7 +107,7 @@ msgid "No series on this blog."
 msgstr ""
 
 #, php-format
-msgid "The serie “%s” has been successfully renamed to “%s”"
+msgid "The serie “%1$s” has been successfully renamed to “%2$s”"
 msgstr ""
 
 #, php-format
