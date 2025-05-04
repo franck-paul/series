@@ -23,6 +23,7 @@ use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Link;
 use Dotclear\Helper\Html\Form\None;
 use Dotclear\Helper\Html\Form\Note;
+use Dotclear\Helper\Html\Form\Span;
 use Dotclear\Helper\Html\Form\Table;
 use Dotclear\Helper\Html\Form\Tbody;
 use Dotclear\Helper\Html\Form\Td;
@@ -104,7 +105,7 @@ class Manage extends Process
                         (new Td())
                             ->colspan(2)
                             ->items([
-                                (new Text('span', $letter)),
+                                (new Span($letter)),
                             ]),
                     ]);
             }
