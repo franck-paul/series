@@ -24,6 +24,7 @@ use Dotclear\Helper\Html\Form\Link;
 use Dotclear\Helper\Html\Form\None;
 use Dotclear\Helper\Html\Form\Note;
 use Dotclear\Helper\Html\Form\Span;
+use Dotclear\Helper\Html\Form\Strong;
 use Dotclear\Helper\Html\Form\Table;
 use Dotclear\Helper\Html\Form\Tbody;
 use Dotclear\Helper\Html\Form\Td;
@@ -123,7 +124,7 @@ class Manage extends Process
                     (new Td())
                         ->class(['nowrap', 'count'])
                         ->items([
-                            (new Text('strong', App::backend()->series->count)),
+                            (new Strong(App::backend()->series->count)),
                             (new Text(null, App::backend()->series->count === 1 ? __('entry') : __('entries'))),
                         ]),
                 ]);
