@@ -28,7 +28,7 @@ class Widgets
     {
         // Widget for all series
         $w
-            ->create(self::WIDGET_ID_SERIES, __('Series'), FrontendWidgets::seriesWidget(...), null, __('List of series'))
+            ->create(self::WIDGET_ID_SERIES, __('Series'), FrontendWidgets::seriesWidget(...), null, __('List of series'), My::id())
             ->addTitle(__('Series'))
             ->setting('limit', __('Limit (empty means no limit):'), '20')
             ->setting(
@@ -61,7 +61,7 @@ class Widgets
 
         // Widget for currently displayed post
         $w
-            ->create(self::WIDGET_ID_SERIES_POSTS, __('Siblings'), FrontendWidgets::seriePostsWidget(...), null, __('Other posts of the same serie(s)'))
+            ->create(self::WIDGET_ID_SERIES_POSTS, __('Siblings'), FrontendWidgets::seriePostsWidget(...), null, __('Other posts of the same serie(s)'), My::id())
             ->addTitle(__('Siblings'))
             ->setting('serietitle', __('Show titles of series'), 1, 'check')
             ->setting(
