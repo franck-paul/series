@@ -454,9 +454,10 @@ class BackendBehaviors
             return
             Page::jsJson('legacy_editor_series', [
                 'serie' => [
-                    'title' => __('Serie'),
-                    'url'   => $serie_url,
-                    'icon'  => urldecode(Page::getPF(My::id() . '/icon.svg')),
+                    'title'     => __('Serie'),
+                    'url'       => $serie_url,
+                    'icon'      => urldecode(Page::getPF(My::id() . '/icon.svg')),
+                    'icon_dark' => urldecode(Page::getPF(My::id() . '/icon-dark.svg')),
                 ],
             ]) .
             My::jsLoad('legacy-post.js');
