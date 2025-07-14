@@ -350,7 +350,7 @@ class BackendBehaviors
             $meta   = App::meta();
             $series = [];
 
-            foreach ($ap->getIDS() as $id) {
+            foreach ($ap->getIDs() as $id) {
                 $post_series = $meta->getMetadata([
                     'meta_type' => 'serie',
                     'post_id'   => (int) $id, ])->toStatic()->rows();
