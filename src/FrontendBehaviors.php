@@ -55,10 +55,10 @@ class FrontendBehaviors
             '<?php if (!isset($params)) { $params = []; }' .
             "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
             "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-            "\$params['from'] .= ', '.App::con()->prefix().'meta METAS ';\n" .
+            "\$params['from'] .= ', '.App::db()->con()->prefix().'meta METAS ';\n" .
             "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
             "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-            "\$params['sql'] .= \"AND METAS.meta_id = '" . App::con()->escapeStr($attr['serie']) . "' \";\n" .
+            "\$params['sql'] .= \"AND METAS.meta_id = '" . App::db()->con()->escapeStr($attr['serie']) . "' \";\n" .
             "?>\n";
         } elseif (empty($attr['no_context']) && ($b === 'Entries' || $b === 'Comments')) {
             return
@@ -66,10 +66,10 @@ class FrontendBehaviors
             "if (!isset(\$params)) { \$params = []; }\n" .
             "if (!isset(\$params['from'])) { \$params['from'] = ''; }\n" .
             "if (!isset(\$params['sql'])) { \$params['sql'] = ''; }\n" .
-            "\$params['from'] .= ', '.App::con()->prefix().'meta METAS ';\n" .
+            "\$params['from'] .= ', '.App::db()->con()->prefix().'meta METAS ';\n" .
             "\$params['sql'] .= 'AND METAS.post_id = P.post_id ';\n" .
             "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
-            "\$params['sql'] .= \"AND METAS.meta_id = '\".App::con()->escapeStr(App::frontend()->context()->meta->meta_id).\"' \";\n" .
+            "\$params['sql'] .= \"AND METAS.meta_id = '\".App::db()->con()->escapeStr(App::frontend()->context()->meta->meta_id).\"' \";\n" .
             "} ?>\n";
         }
 

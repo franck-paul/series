@@ -118,8 +118,8 @@ class FrontendWidgets
         $metas = unserialize(App::frontend()->context()->posts->post_meta);
         if (isset($metas['serie'])) {
             $sql = 'SELECT * FROM ' .
-            App::con()->prefix() . App::meta()::META_TABLE_NAME . ' as m,' .
-            App::con()->prefix() . App::blog()::POST_TABLE_NAME . ' as p ' .
+            App::db()->con()->prefix() . App::meta()::META_TABLE_NAME . ' as m,' .
+            App::db()->con()->prefix() . App::blog()::POST_TABLE_NAME . ' as p ' .
             ' WHERE m.post_id = p.post_id ' .
             ' AND post_type = \'post\' ' .
             ' AND post_status = ' . App::status()->post()::PUBLISHED . ' ' .
@@ -152,7 +152,7 @@ class FrontendWidgets
             }
 
             $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
-            $rs = new MetaRecord(App::con()->select($sql));
+            $rs = new MetaRecord(App::db()->con()->select($sql));
             if ($rs->isEmpty()) {
                 return '';
             }
