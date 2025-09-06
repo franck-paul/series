@@ -1,12 +1,12 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="series">
     <name>Series</name>
-    <version>7.6</version>
+    <version>8.0</version>
     <author>Franck Paul</author>
     <desc>Series of posts</desc>
-    <date>2025-07-14T16:59:44+0200</date>
-    <file>https://github.com/franck-paul/series/releases/download/7.6/plugin-series-7.6.zip</file>
-    <da:dcmin>2.34</da:dcmin>
+    <date>2025-09-06T22:18:50+0200</date>
+    <file>https://github.com/franck-paul/series/releases/download/8.0/plugin-series-8.0.zip</file>
+    <da:dcmin>2.36</da:dcmin>
     <da:details>https://open-time.net/docs/plugins/series</da:details>
     <da:support>https://github.com/franck-paul/series</da:support>
   </module>
