@@ -16,10 +16,12 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use Dotclear\App;
-use Dotclear\Core\Process;
+use Dotclear\Helper\Process\TraitProcess;
 
-class Frontend extends Process
+class Frontend
 {
+    use TraitProcess;
+
     public static function init(): bool
     {
         // Localized string we find in template
