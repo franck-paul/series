@@ -78,14 +78,14 @@ class BackendBehaviors
     }
 
     /**
-     * @param      ArrayObject<string, ArrayObject<string, bool>>  $items  The items
+     * @param      ArrayObject<array-key, ArrayObject<int, mixed>>  $items  The items
      */
     public static function adminSimpleMenuAddType(ArrayObject $items): string
     {
         $series_combo = self::adminSimpleMenuGetCombo();
         if (count($series_combo) > 1) {
             /**
-             * @var        ArrayObject<string, bool>
+             * @var        ArrayObject<int, string|bool>
              */
             $menu            = new ArrayObject([__('Series'), true]);
             $items['series'] = $menu;
@@ -461,13 +461,13 @@ class BackendBehaviors
                 ],
             ]) .
             My::jsLoad('legacy-post.js');
-        } elseif ($editor === 'dcCKEditor') {
-            return
-            Page::jsJson('ck_editor_series', [
-                'serie_title' => __('Serie'),
-                'serie_url'   => $serie_url,
-            ]);
         }
+
+        return
+        Page::jsJson('ck_editor_series', [
+            'serie_title' => __('Serie'),
+            'serie_url'   => $serie_url,
+        ]);
     }
 
     /**
