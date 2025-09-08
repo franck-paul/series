@@ -78,17 +78,13 @@ class BackendBehaviors
     }
 
     /**
-     * @param      ArrayObject<array-key, ArrayObject<int, mixed>>  $items  The items
+     * @param      ArrayObject<array-key, array{string, bool}>  $items  The items
      */
     public static function adminSimpleMenuAddType(ArrayObject $items): string
     {
         $series_combo = self::adminSimpleMenuGetCombo();
         if (count($series_combo) > 1) {
-            /**
-             * @var        ArrayObject<int, string|bool>
-             */
-            $menu            = new ArrayObject([__('Series'), true]);
-            $items['series'] = $menu;
+            $items['series'] = [__('Series'), true];
         }
 
         return '';
