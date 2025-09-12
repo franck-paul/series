@@ -101,7 +101,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::frontend()->context()->meta->meta_id,
             $_params_,
             $_tag_
@@ -117,7 +117,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::frontend()->context()->meta->count,
             $_params_,
             $_tag_
@@ -133,7 +133,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::frontend()->context()->meta->percent,
             $_params_,
             $_tag_
@@ -149,7 +149,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::frontend()->context()->meta->roundpercent,
             $_params_,
             $_tag_
@@ -165,7 +165,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::blog()->url() . App::url()->getURLFor('serie', rawurlencode((string) App::frontend()->context()->meta->meta_id)),
             $_params_,
             $_tag_
@@ -181,7 +181,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::blog()->url() . App::url()->getURLFor('series'),
             $_params_,
             $_tag_
@@ -198,7 +198,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        echo \Dotclear\Core\Frontend\Ctx::global_filters(
+        echo App::frontend()->context()::global_filters(
             App::blog()->url() . App::url()->getURLFor('serie_feed', rawurlencode((string) App::frontend()->context()->meta->meta_id) . '/' . $_type_),
             $_params_,
             $_tag_
