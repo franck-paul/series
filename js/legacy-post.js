@@ -2,12 +2,30 @@
 'use strict';
 
 // Toolbar button for series
+jsToolBar.prototype.elements.serieSpaceBefore = {
+  type: 'space',
+  format: {
+    wysiwyg: true,
+    wiki: true,
+    xhtml: true,
+    markdown: true,
+  },
+};
 jsToolBar.prototype.elements.serie = {
   type: 'button',
   title: 'Serie',
   shortkey: 'KeyS',
   shortkey_name: 'S',
   fn: {},
+};
+jsToolBar.prototype.elements.serieSpaceAfter = {
+  type: 'space',
+  format: {
+    wysiwyg: true,
+    wiki: true,
+    xhtml: true,
+    markdown: true,
+  },
 };
 
 dotclear.mergeDeep(jsToolBar.prototype.elements, dotclear.getData('legacy_editor_series'));
