@@ -19,8 +19,6 @@ use ArrayObject;
 use Dotclear\App;
 use Dotclear\Core\Backend\Action\ActionsPosts;
 use Dotclear\Core\Backend\Favorites;
-use Dotclear\Core\Backend\Notices;
-use Dotclear\Core\Backend\Page;
 use Dotclear\Database\Cursor;
 use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Form\Checkbox;
@@ -246,7 +244,7 @@ class BackendBehaviors
                 }
             }
 
-            Notices::addSuccessNotice(
+            App::backend()->notices()->addSuccessNotice(
                 __(
                     'Serie has been successfully added to selected entries',
                     'Series have been successfully added to selected entries',
@@ -272,17 +270,17 @@ class BackendBehaviors
             ];
 
             $ap->beginPage(
-                Page::breadcrumb(
+                App::backend()->page()->breadcrumb(
                     [
                         Html::escapeHTML(App::blog()->name()) => '',
                         __('Entries')                         => $ap->getRedirection(true),
                         __('Add series to this selection')    => '',
                     ]
                 ),
-                Page::jsLoad('js/jquery/jquery.autocomplete.js') .
-                Page::jsMetaEditor() .
-                Page::jsJson('editor_series_options', $editor_series_options) .
-                Page::jsLoad('js/jquery/jquery.autocomplete.js') .
+                App::backend()->page()->jsLoad('js/jquery/jquery.autocomplete.js') .
+                App::backend()->page()->jsMetaEditor() .
+                App::backend()->page()->jsJson('editor_series_options', $editor_series_options) .
+                App::backend()->page()->jsLoad('js/jquery/jquery.autocomplete.js') .
                 My::jsLoad('posts_actions.js') .
                 My::cssLoad('style.css')
             );
@@ -333,7 +331,7 @@ class BackendBehaviors
                 }
             }
 
-            Notices::addSuccessNotice(
+            App::backend()->notices()->addSuccessNotice(
                 __(
                     'Serie has been successfully removed from selected entries',
                     'Series have been successfully removed from selected entries',
@@ -364,7 +362,7 @@ class BackendBehaviors
             }
 
             $ap->beginPage(
-                Page::breadcrumb(
+                App::backend()->page()->breadcrumb(
                     [
                         Html::escapeHTML(App::blog()->name())            => '',
                         __('Entries')                                    => App::backend()->url()->get('admin.posts'),
@@ -432,8 +430,8 @@ class BackendBehaviors
         ];
 
         return
-        Page::jsJson('editor_series_options', $editor_series_options) .
-        Page::jsLoad('js/jquery/jquery.autocomplete.js') .
+        App::backend()->page()->jsJson('editor_series_options', $editor_series_options) .
+        App::backend()->page()->jsLoad('js/jquery/jquery.autocomplete.js') .
         My::jsLoad('post.js') .
         My::cssLoad('style.css');
     }
@@ -448,19 +446,19 @@ class BackendBehaviors
 
         if ($editor === 'dcLegacyEditor') {
             return
-            Page::jsJson('legacy_editor_series', [
+            App::backend()->page()->jsJson('legacy_editor_series', [
                 'serie' => [
                     'title'     => __('Serie'),
                     'url'       => $serie_url,
-                    'icon'      => urldecode(Page::getPF(My::id() . '/icon.svg')),
-                    'icon_dark' => urldecode(Page::getPF(My::id() . '/icon-dark.svg')),
+                    'icon'      => urldecode((string) App::backend()->page()->getPF(My::id() . '/icon.svg')),
+                    'icon_dark' => urldecode((string) App::backend()->page()->getPF(My::id() . '/icon-dark.svg')),
                 ],
             ]) .
             My::jsLoad('legacy-post.js');
         }
 
         return
-        Page::jsJson('ck_editor_series', [
+        App::backend()->page()->jsJson('ck_editor_series', [
             'serie_title' => __('Serie'),
             'serie_url'   => $serie_url,
         ]);
@@ -479,7 +477,7 @@ class BackendBehaviors
         $extraPlugins[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
-            'url'    => urldecode(App::config()->adminUrl() . Page::getPF(My::id() . '/js/ckeditor-series-plugin.js')),
+            'url'    => urldecode(App::config()->adminUrl() . App::backend()->page()->getPF(My::id() . '/js/ckeditor-series-plugin.js')),
         ];
 
         return '';

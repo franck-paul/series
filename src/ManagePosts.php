@@ -16,9 +16,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use Dotclear\App;
-use Dotclear\Core\Backend\Listing\ListingPosts;
-use Dotclear\Core\Backend\Notices;
-use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Input;
@@ -73,7 +70,7 @@ class ManagePosts
         try {
             App::backend()->posts     = App::meta()->getPostsByMeta($params);
             $counter                  = App::meta()->getPostsByMeta($params, true);
-            App::backend()->post_list = new ListingPosts(App::backend()->posts, $counter->f(0));
+            App::backend()->post_list = App::backend()->listing()->posts(App::backend()->posts, $counter->f(0));
         } catch (Exception $exception) {
             App::error()->add($exception->getMessage());
         }
@@ -101,7 +98,7 @@ class ManagePosts
 
             try {
                 if (App::meta()->updateMeta(App::backend()->serie, $new_id, 'serie')) {
-                    Notices::addSuccessNotice(sprintf(__('The serie “%1$s” has been successfully renamed to “%2$s”'), Html::escapeHTML(App::backend()->serie), Html::escapeHTML($new_id)));
+                    App::backend()->notices()->addSuccessNotice(sprintf(__('The serie “%1$s” has been successfully renamed to “%2$s”'), Html::escapeHTML(App::backend()->serie), Html::escapeHTML($new_id)));
                     My::redirect([
                         'm'     => 'serie_posts',
                         'serie' => $new_id,
@@ -120,7 +117,7 @@ class ManagePosts
 
             try {
                 App::meta()->delMeta(App::backend()->serie, 'serie');
-                Notices::addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML(App::backend()->serie)));
+                App::backend()->notices()->addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML(App::backend()->serie)));
                 My::redirect([
                     'm' => 'series',
                 ]);
@@ -150,23 +147,23 @@ class ManagePosts
         $this_url = App::backend()->getPageURL() . '&amp;m=serie_posts&amp;serie=' . rawurlencode((string) App::backend()->serie);
 
         $head = My::cssLoad('style.css') .
-        Page::jsLoad('js/_posts_list.js') .
-        Page::jsJson('posts_series_msg', [
+        App::backend()->page()->jsLoad('js/_posts_list.js') .
+        App::backend()->page()->jsJson('posts_series_msg', [
             'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), Html::escapeHTML(App::backend()->serie)),
         ]) .
         My::jsLoad('posts.js') .
-        Page::jsConfirmClose('serie_rename');
+        App::backend()->page()->jsConfirmClose('serie_rename');
 
-        Page::openModule(My::name(), $head);
+        App::backend()->page()->openModule(My::name(), $head);
 
-        echo Page::breadcrumb(
+        echo App::backend()->page()->breadcrumb(
             [
                 Html::escapeHTML(App::blog()->name())                                          => '',
                 __('Series')                                                                   => App::backend()->getPageURL() . '&amp;m=series',
                 __('Serie') . ' &ldquo;' . Html::escapeHTML(App::backend()->serie) . '&rdquo;' => '',
             ]
         );
-        echo Notices::getNotices();
+        echo App::backend()->notices()->getNotices();
 
         // Form
         echo (new Para())
@@ -264,6 +261,6 @@ class ManagePosts
             }
         }
 
-        Page::closeModule();
+        App::backend()->page()->closeModule();
     }
 }

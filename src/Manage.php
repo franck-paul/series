@@ -16,8 +16,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use Dotclear\App;
-use Dotclear\Core\Backend\Notices;
-use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Link;
 use Dotclear\Helper\Html\Form\None;
@@ -81,15 +79,15 @@ class Manage
 
         $head = My::cssLoad('style.css');
 
-        Page::openModule(My::name(), $head);
+        App::backend()->page()->openModule(My::name(), $head);
 
-        echo Page::breadcrumb(
+        echo App::backend()->page()->breadcrumb(
             [
                 Html::escapeHTML(App::blog()->name()) => '',
                 __('series')                          => '',
             ]
         );
-        echo Notices::getNotices();
+        echo App::backend()->notices()->getNotices();
 
         $last_letter = '';
         $lines       = [[], []];
@@ -164,6 +162,6 @@ class Manage
             ->render();
         }
 
-        Page::closeModule();
+        App::backend()->page()->closeModule();
     }
 }
