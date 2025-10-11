@@ -375,7 +375,7 @@ class BackendBehaviors
             $list = [];
             $i    = 0;
             foreach ($series as $name => $number) {
-                $label  = sprintf($posts_count == $number ? '<strong>%s</strong>' : '%s', Html::escapeHTML((string) $name));
+                $label  = sprintf($posts_count === $number ? '<strong>%s</strong>' : '%s', Html::escapeHTML((string) $name));
                 $list[] = (new Para())
                     ->items([
                         (new Checkbox(['meta_id[]','meta_id-' . ++$i]))

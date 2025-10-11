@@ -20,6 +20,9 @@ use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Plugin\widgets\WidgetsElement;
 
+/**
+ * @todo switch to SqlStatement
+ */
 class FrontendWidgets
 {
     public static function seriesWidget(WidgetsElement $w): string
