@@ -181,9 +181,10 @@ class FrontendWidgets
                 }
             }
 
+            $suffix = $w->get('folded') ? '</details>' . "\n" : '';
             if ($rs->meta_id != $serie) {
                 if ($serie != '') {
-                    $list .= '</ul>' . "\n";
+                    $list .= '</ul>' . "\n" . $suffix;
                 }
 
                 if ($w->get('serietitle')) {
@@ -191,8 +192,10 @@ class FrontendWidgets
                     $rs->meta_id . '</a></h3>' . "\n";
                 }
 
-                $list .= '<ul>' . "\n";
-                $serie = $rs->meta_id;
+                $serie  = $rs->meta_id;
+                $prefix = $w->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
+
+                $list .= $prefix . '<ul>' . "\n";
             }
 
             $href = App::blog()->url() . App::postTypes()->get($rs->post_type)->publicUrl(Html::sanitizeURL($rs->post_url));

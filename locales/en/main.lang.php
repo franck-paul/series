@@ -69,3 +69,4 @@ L10n::$locales['None'] = '';
 L10n::$locales['Order entries by:'] = '';
 L10n::$locales['Date'] = '';
 L10n::$locales['Entry title'] = '';
+L10n::$locales['Collapse entry list'] = '';

@@ -105,6 +105,7 @@ class Widgets
                     __('Descending') => 'desc',
                 ]
             )
+            ->setting('folded', __('Collapse entry list'), 0, 'check')
             ->addContentOnly()
             ->addClass()
             ->addOffline();
