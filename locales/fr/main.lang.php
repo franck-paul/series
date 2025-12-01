@@ -71,3 +71,4 @@ L10n::$locales['None'] = 'Non';
 L10n::$locales['Order entries by:'] = 'Trier les billets par :';
 L10n::$locales['Date'] = 'Date';
 L10n::$locales['Entry title'] = 'Titre du billet';
+L10n::$locales['Collapse entry list'] = 'Réduire la liste des billets';
