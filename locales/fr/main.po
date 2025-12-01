@@ -192,4 +192,4 @@ msgid "Entry title"
 msgstr "Titre du billet"
 
 msgid "Collapse entry list"
-msgstr "Réduire la liste des entrées"
+msgstr "Réduire la liste des billets"
