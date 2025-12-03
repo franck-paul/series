@@ -122,6 +122,7 @@ class Manage
                                 ->text(App::backend()->series->meta_id),
                         ]),
                     (new Td())
+                        ->separator(' ')
                         ->class(['nowrap', 'count'])
                         ->items([
                             (new Strong(App::backend()->series->count)),
