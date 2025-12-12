@@ -6,6 +6,7 @@ jsToolBar.prototype.elements.serie = {
   group: 'metadata',
   type: 'button',
   title: 'Serie',
+  key: 's',
   shortkey: 'KeyS',
   shortkey_name: 'S',
   fn: {},
