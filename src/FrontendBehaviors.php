@@ -25,7 +25,9 @@ class FrontendBehaviors
         if ($context === 'series') {
             // All series
             return __('All series');
-        } elseif ($context === 'serie') {
+        }
+
+        if ($context === 'serie') {
             // Serie
 
             // Get current page if set
@@ -60,7 +62,9 @@ class FrontendBehaviors
             "\$params['sql'] .= \"AND METAS.meta_type = 'serie' \";\n" .
             "\$params['sql'] .= \"AND METAS.meta_id = '" . App::db()->con()->escapeStr($attr['serie']) . "' \";\n" .
             "?>\n";
-        } elseif (empty($attr['no_context']) && ($b === 'Entries' || $b === 'Comments')) {
+        }
+
+        if (empty($attr['no_context']) && ($b === 'Entries' || $b === 'Comments')) {
             return
             '<?php if (App::frontend()->context()->exists("meta") && App::frontend()->context()->meta->rows() && (App::frontend()->context()->meta->meta_type == "serie")) { ' .
             "if (!isset(\$params)) { \$params = []; }\n" .

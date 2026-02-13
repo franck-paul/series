@@ -12,7 +12,7 @@ CKEDITOR.plugins.add('dcseries', {
         }
         const str = editor.getSelection().getNative().toString().replace(/\s*/, '');
         const url = dotclear.msg.serie_url;
-        window.dc_serie_editor.addMeta(str);
+        globalThis.dc_serie_editor.addMeta(str);
         const uri = $.stripBaseURL(`${url}/${str}`);
         const link = `<a href="${uri}">${str}</a>`;
         const element = CKEDITOR.dom.element.createFromHtml(link);

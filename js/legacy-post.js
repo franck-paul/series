@@ -7,7 +7,6 @@ jsToolBar.prototype.elements.serie = {
   type: 'button',
   title: 'Serie',
   key: 's',
-  shortkey: 'KeyS',
   shortkey_name: 'S',
   fn: {},
 };
@@ -18,13 +17,13 @@ jsToolBar.prototype.elements.serie.context = 'post';
 jsToolBar.prototype.elements.serie.fn.wiki = function () {
   this.encloseSelection('', '', (str) => {
     if (str === '') {
-      window.alert(dotclear.msg.no_selection);
+      globalThis.alert(dotclear.msg.no_selection);
       return '';
     }
     if (str.includes(',')) {
       return str;
     }
-    window.dc_serie_editor.addMeta(str);
+    globalThis.dc_serie_editor.addMeta(str);
     return `[${str}|serie:${str}]`;
   });
 };
@@ -32,13 +31,13 @@ jsToolBar.prototype.elements.serie.fn.markdown = function () {
   const { url } = this.elements.serie;
   this.encloseSelection('', '', function (str) {
     if (str === '') {
-      window.alert(dotclear.msg.no_selection);
+      globalThis.alert(dotclear.msg.no_selection);
       return '';
     }
     if (str.includes(',')) {
       return str;
     }
-    window.dc_serie_editor.addMeta(str);
+    globalThis.dc_serie_editor.addMeta(str);
     const uri = this.stripBaseURL(`${url}/${str}`);
     return `[${str}](${uri})`;
   });
@@ -47,13 +46,13 @@ jsToolBar.prototype.elements.serie.fn.xhtml = function () {
   const { url } = this.elements.serie;
   this.encloseSelection('', '', function (str) {
     if (str === '') {
-      window.alert(dotclear.msg.no_selection);
+      globalThis.alert(dotclear.msg.no_selection);
       return '';
     }
     if (str.includes(',')) {
       return str;
     }
-    window.dc_serie_editor.addMeta(str);
+    globalThis.dc_serie_editor.addMeta(str);
     const uri = this.stripBaseURL(`${url}/${str}`);
     return `<a href="${uri}">${str}</a>`;
   });
@@ -62,7 +61,7 @@ jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {
   const t = this.getSelectedText();
 
   if (t === '') {
-    window.alert(dotclear.msg.no_selection);
+    globalThis.alert(dotclear.msg.no_selection);
     return;
   }
   if (t.includes(',')) {
@@ -74,5 +73,5 @@ jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {
   a.href = this.stripBaseURL(`${this.elements.serie.url}/${t}`);
   a.appendChild(n);
   this.insertNode(a);
-  window.dc_serie_editor.addMeta(t);
+  globalThis.dc_serie_editor.addMeta(t);
 };

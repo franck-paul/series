@@ -20,7 +20,7 @@ dotclear.ready(() => {
     mEdit.displayMeta('serie', post_id, 'post_meta_serie_input');
 
     // mEdit object reference for toolBar
-    window.dc_serie_editor = mEdit;
+    globalThis.dc_serie_editor = mEdit;
   }
 
   $('#post_meta_serie_input').autocomplete(mEdit.service_uri, {
