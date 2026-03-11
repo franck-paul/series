@@ -55,7 +55,7 @@ class FrontendTemplateCode
     public static function SeriesHeader(
         string $_content_HTML
     ): void {
-        if (App::frontend()->context()->meta->isStart()) : ?>
+        if (App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && App::frontend()->context()->meta->isStart()) : ?>
             $_content_HTML
         <?php endif;
     }
@@ -66,7 +66,7 @@ class FrontendTemplateCode
     public static function SeriesFooter(
         string $_content_HTML
     ): void {
-        if (App::frontend()->context()->meta->isEnd()) : ?>
+        if (App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && App::frontend()->context()->meta->isEnd()) : ?>
             $_content_HTML
         <?php endif;
     }
@@ -80,16 +80,22 @@ class FrontendTemplateCode
         string $_order_,
         string $_content_HTML,
     ): void {
-        App::frontend()->context()->meta = App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta, $_type_);
-        if ($_sortby_ === 'meta_id_lower') {
-            App::frontend()->context()->meta->lexicalSort($_sortby_, $_order_);
-        } else {
-            App::frontend()->context()->meta->sort($_sortby_, $_order_);
+        if (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord) {
+            $series_post_meta = is_string($series_post_meta = App::frontend()->context()->posts->post_meta) ? $series_post_meta : '';
+            if ($series_post_meta !== '') {
+                App::frontend()->context()->meta = App::meta()->getMetaRecordset($series_post_meta, $_type_);
+                if ($_sortby_ === 'meta_id_lower') {
+                    App::frontend()->context()->meta->lexicalSort($_sortby_, $_order_);
+                } else {
+                    App::frontend()->context()->meta->sort($_sortby_, $_order_);
+                }
+                while (App::frontend()->context()->meta->fetch()) : ?>
+                $_content_HTML
+                <?php endwhile;
+                App::frontend()->context()->meta = null;
+            }
+            unset($series_post_meta);
         }
-        while (App::frontend()->context()->meta->fetch()) : ?>
-            $_content_HTML
-        <?php endwhile;
-        App::frontend()->context()->meta = null;
     }
 
     /**
@@ -101,11 +107,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
+        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_meta_id = App::frontend()->context()->meta->meta_id) ? $series_meta_id : '';
         echo App::frontend()->context()::global_filters(
-            App::frontend()->context()->meta->meta_id,
+            $series_meta_id,
             $_params_,
             $_tag_
         );
+        unset($series_meta_id);
     }
 
     /**
@@ -117,11 +125,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
+        $series_count = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_count = App::frontend()->context()->meta->count) ? (int) $series_count : 0;
         echo App::frontend()->context()::global_filters(
-            App::frontend()->context()->meta->count,
+            (string) $series_count,
             $_params_,
             $_tag_
         );
+        unset($series_count);
     }
 
     /**
@@ -133,11 +143,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
+        $series_percent = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_percent = App::frontend()->context()->meta->percent) ? (int) $series_percent : 0;
         echo App::frontend()->context()::global_filters(
-            App::frontend()->context()->meta->percent,
+            (string) $series_percent,
             $_params_,
             $_tag_
         );
+        unset($series_percent);
     }
 
     /**
@@ -149,11 +161,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
+        $series_roundpercent = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_roundpercent = App::frontend()->context()->meta->roundpercent) ? (int) $series_roundpercent : 0;
         echo App::frontend()->context()::global_filters(
-            App::frontend()->context()->meta->roundpercent,
+            (string) $series_roundpercent,
             $_params_,
             $_tag_
         );
+        unset($series_roundpercent);
     }
 
     /**
@@ -165,11 +179,13 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
+        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_meta_id = App::frontend()->context()->meta->meta_id) ? $series_meta_id : '';
         echo App::frontend()->context()::global_filters(
-            App::blog()->url() . App::url()->getURLFor('serie', rawurlencode((string) App::frontend()->context()->meta->meta_id)),
+            App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($series_meta_id)),
             $_params_,
             $_tag_
         );
+        unset($series_meta_id);
     }
 
     /**
@@ -198,10 +214,12 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
+        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_meta_id = App::frontend()->context()->meta->meta_id) ? $series_meta_id : '';
         echo App::frontend()->context()::global_filters(
-            App::blog()->url() . App::url()->getURLFor('serie_feed', rawurlencode((string) App::frontend()->context()->meta->meta_id) . '/' . $_type_),
+            App::blog()->url() . App::url()->getURLFor('serie_feed', rawurlencode($series_meta_id) . '/' . $_type_),
             $_params_,
             $_tag_
         );
+        unset($series_meta_id);
     }
 }

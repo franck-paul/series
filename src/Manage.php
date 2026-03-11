@@ -16,16 +16,15 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use Dotclear\App;
+use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Link;
 use Dotclear\Helper\Html\Form\None;
 use Dotclear\Helper\Html\Form\Note;
 use Dotclear\Helper\Html\Form\Span;
-use Dotclear\Helper\Html\Form\Strong;
 use Dotclear\Helper\Html\Form\Table;
 use Dotclear\Helper\Html\Form\Tbody;
 use Dotclear\Helper\Html\Form\Td;
-use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Form\Tr;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Helper\Process\TraitProcess;
@@ -92,45 +91,49 @@ class Manage
         $last_letter = '';
         $lines       = [[], []];
         $column      = 0;
-        while (App::backend()->series->fetch()) {
-            $letter = mb_strtoupper(mb_substr((string) App::backend()->series->meta_id_lower, 0, 1));
 
-            if ($last_letter !== $letter) {
-                if (App::backend()->series->index() >= round(App::backend()->series->count() / 2)) {
-                    $column = 1;
+        if (App::backend()->series instanceof MetaRecord) {
+            while (App::backend()->series->fetch()) {
+                $meta_id       = is_string($meta_id = App::backend()->series->meta_id) ? $meta_id : '';
+                $meta_id_lower = is_string($meta_id_lower = App::backend()->series->meta_id_lower) ? $meta_id_lower : '';
+                $count         = is_numeric($count = App::backend()->series->count) ? (int) $count : 0;
+                if ($meta_id !== '' && $meta_id_lower !== '') {
+                    $letter = mb_strtoupper(mb_substr($meta_id_lower, 0, 1));
+
+                    if ($last_letter !== $letter) {
+                        if (App::backend()->series->index() >= round(App::backend()->series->count() / 2)) {
+                            $column = 1;
+                        }
+
+                        $lines[$column][] = (new Tr())
+                            ->class('serieLetter')
+                            ->cols([
+                                (new Td())
+                                    ->colspan(2)
+                                    ->items([
+                                        (new Span($letter)),
+                                    ]),
+                            ]);
+                    }
+
+                    $lines[$column][] = (new Tr())
+                        ->class('line')
+                        ->cols([
+                            (new Td())
+                                ->class('maximal')
+                                ->items([
+                                    (new Link())
+                                        ->href(App::backend()->getPageURL() . '&m=serie_posts&serie=' . rawurlencode($meta_id))
+                                        ->text($meta_id),
+                                ]),
+                            (new Td())
+                                ->class(['nowrap', 'count'])
+                                ->text(sprintf(__('<strong>%d</strong> entry', '<strong>%d</strong> entries', $count), $count)),
+                        ]);
+
+                    $last_letter = $letter;
                 }
-
-                $lines[$column][] = (new Tr())
-                    ->class('serieLetter')
-                    ->cols([
-                        (new Td())
-                            ->colspan(2)
-                            ->items([
-                                (new Span($letter)),
-                            ]),
-                    ]);
             }
-
-            $lines[$column][] = (new Tr())
-                ->class('line')
-                ->cols([
-                    (new Td())
-                        ->class('maximal')
-                        ->items([
-                            (new Link())
-                                ->href(App::backend()->getPageURL() . '&m=serie_posts&serie=' . rawurlencode((string) App::backend()->series->meta_id))
-                                ->text(App::backend()->series->meta_id),
-                        ]),
-                    (new Td())
-                        ->separator(' ')
-                        ->class(['nowrap', 'count'])
-                        ->items([
-                            (new Strong(App::backend()->series->count)),
-                            (new Text(null, App::backend()->series->count === 1 ? __('entry') : __('entries'))),
-                        ]),
-                ]);
-
-            $last_letter = $letter;
         }
 
         if ($lines[0] !== []) {

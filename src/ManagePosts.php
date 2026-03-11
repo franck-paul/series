@@ -16,6 +16,8 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\series;
 
 use Dotclear\App;
+use Dotclear\Core\Backend\Listing\ListingPosts;
+use Dotclear\Database\MetaRecord;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Input;
@@ -52,7 +54,10 @@ class ManagePosts
 
         App::backend()->serie = $_REQUEST['serie'] ?? '';
 
-        App::backend()->page        = empty($_GET['page']) ? 1 : max(1, (int) $_GET['page']);
+        // Get data helper
+        $_Int = fn (string $name, int $default = 0): int => isset($_GET[$name]) && is_numeric($val = $_GET[$name]) ? (int) $val : $default;
+
+        App::backend()->page        = max(1, $_Int('page', 1));
         App::backend()->nb_per_page = 30;
 
         // Get posts
@@ -91,14 +96,15 @@ class ManagePosts
             return true;
         }
 
-        if (isset($_POST['new_serie_id'])) {
+        if (isset($_POST['new_serie_id']) && is_string($_POST['new_serie_id'])) {
             // Rename a serie
 
             $new_id = App::meta()->sanitizeMetaID($_POST['new_serie_id']);
 
             try {
-                if (App::meta()->updateMeta(App::backend()->serie, $new_id, 'serie')) {
-                    App::backend()->notices()->addSuccessNotice(sprintf(__('The serie “%1$s” has been successfully renamed to “%2$s”'), Html::escapeHTML(App::backend()->serie), Html::escapeHTML($new_id)));
+                $serie = is_string($serie = App::backend()->serie) ? $serie : '';
+                if ($serie !== '' && App::meta()->updateMeta($serie, $new_id, 'serie')) {
+                    App::backend()->notices()->addSuccessNotice(sprintf(__('The serie “%1$s” has been successfully renamed to “%2$s”'), Html::escapeHTML($serie), Html::escapeHTML($new_id)));
                     My::redirect([
                         'm'     => 'serie_posts',
                         'serie' => $new_id,
@@ -116,11 +122,14 @@ class ManagePosts
             // Delete a serie
 
             try {
-                App::meta()->delMeta(App::backend()->serie, 'serie');
-                App::backend()->notices()->addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML(App::backend()->serie)));
-                My::redirect([
-                    'm' => 'series',
-                ]);
+                $serie = is_string($serie = App::backend()->serie) ? $serie : '';
+                if ($serie !== '') {
+                    App::meta()->delMeta($serie, 'serie');
+                    App::backend()->notices()->addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML($serie)));
+                    My::redirect([
+                        'm' => 'series',
+                    ]);
+                }
             } catch (Exception $e) {
                 App::error()->add($e->getMessage());
             }
@@ -138,18 +147,19 @@ class ManagePosts
             return;
         }
 
-        if (App::backend()->posts_actions_page_rendered) {
+        if (App::backend()->posts_actions_page instanceof BackendActions && App::backend()->posts_actions_page_rendered) {
             App::backend()->posts_actions_page->render();
 
             return;
         }
 
-        $this_url = App::backend()->getPageURL() . '&amp;m=serie_posts&amp;serie=' . rawurlencode((string) App::backend()->serie);
+        $serie    = is_string($serie = App::backend()->serie) ? $serie : '';
+        $this_url = App::backend()->getPageURL() . '&amp;m=serie_posts&amp;serie=' . rawurlencode($serie);
 
         $head = My::cssLoad('style.css') .
         App::backend()->page()->jsLoad('js/_posts_list.js') .
         App::backend()->page()->jsJson('posts_series_msg', [
-            'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), Html::escapeHTML(App::backend()->serie)),
+            'confirm_serie_delete' => sprintf(__('Are you sure you want to remove serie: “%s”?'), Html::escapeHTML($serie)),
         ]) .
         My::jsLoad('posts.js') .
         App::backend()->page()->jsConfirmClose('serie_rename');
@@ -158,9 +168,9 @@ class ManagePosts
 
         echo App::backend()->page()->breadcrumb(
             [
-                Html::escapeHTML(App::blog()->name())                                          => '',
-                __('Series')                                                                   => App::backend()->getPageURL() . '&amp;m=series',
-                __('Serie') . ' &ldquo;' . Html::escapeHTML(App::backend()->serie) . '&rdquo;' => '',
+                Html::escapeHTML(App::blog()->name())                           => '',
+                __('Series')                                                    => App::backend()->getPageURL() . '&amp;m=series',
+                __('Serie') . ' &ldquo;' . Html::escapeHTML($serie) . '&rdquo;' => '',
             ]
         );
         echo App::backend()->notices()->getNotices();
@@ -176,10 +186,10 @@ class ManagePosts
         ->render();
 
         if (!App::error()->flag()) {
-            if (!App::backend()->posts?->isEmpty()) {
+            if (App::backend()->posts instanceof MetaRecord && !App::backend()->posts->isEmpty()) {
                 // Remove serie
                 $delete = '';
-                if (!App::backend()->posts->isEmpty() && App::auth()->check(App::auth()->makePermissions([
+                if (App::auth()->check(App::auth()->makePermissions([
                     App::auth()::PERMISSION_CONTENT_ADMIN,
                 ]), App::blog()->id())) {
                     $delete = (new Form('serie_delete'))
@@ -199,7 +209,7 @@ class ManagePosts
                 echo (new Div())
                     ->class(['series-actions', 'vertical-separator'])
                     ->items([
-                        (new Text('h3', Html::escapeHTML(App::backend()->serie))),
+                        (new Text('h3', Html::escapeHTML($serie))),
                         (new Form('serie_rename'))
                             ->action($this_url)
                             ->method('post')
@@ -207,7 +217,7 @@ class ManagePosts
                                 (new Para())
                                     ->items([
                                         (new Input('new_serie_id'))
-                                            ->value(Html::escapeHTML(App::backend()->serie))
+                                            ->value(Html::escapeHTML($serie))
                                             ->size(40)
                                             ->maxlength(255)
                                             ->label((new Label(__('Rename:'), Label::INSIDE_LABEL_BEFORE))->class('classic')),
@@ -225,8 +235,12 @@ class ManagePosts
                 ->class('vertical-separator pretty-title')
             ->render();
 
-            if (App::backend()->post_list) {
-                $form = (new Form('form-entries'))
+            if (App::backend()->post_list instanceof ListingPosts && App::backend()->posts_actions_page instanceof BackendActions) {
+                /**
+                 * @var array<string, string|array<string, string>> $combo
+                 */
+                $combo = App::backend()->posts_actions_page->getCombo();
+                $form  = (new Form('form-entries'))
                     ->action(App::backend()->getPageURL())
                     ->method('post')
                     ->fields([
@@ -240,24 +254,23 @@ class ManagePosts
                                     ->class(['col', 'right', 'form-buttons'])
                                     ->items([
                                         (new Select('action'))
-                                            ->items(App::backend()->posts_actions_page->getCombo())
+                                            ->items($combo)
                                             ->label((new Label(__('Selected entries action:'), Label::INSIDE_LABEL_BEFORE))->class('classic')),
                                         (new Submit('do_action', __('ok'))),
                                         ...My::hiddenFields([
                                             'post_type' => '',
                                             'm'         => 'serie_posts',
-                                            'serie'     => App::backend()->serie,
+                                            'serie'     => $serie,
                                         ]),
                                     ]),
                             ]),
                     ])
                 ->render();
 
-                App::backend()->post_list->display(
-                    App::backend()->page,
-                    App::backend()->nb_per_page,
-                    $form
-                );
+                $page        = is_numeric($page = App::backend()->page) ? (int) $page : 0;
+                $nb_per_page = is_numeric($nb_per_page = App::backend()->nb_per_page) ? (int) $nb_per_page : 0;
+
+                App::backend()->post_list->display($page, $nb_per_page, $form);
             }
         }
 

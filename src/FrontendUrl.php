@@ -27,9 +27,10 @@ class FrontendUrl extends Url
     {
         $n = self::getPageNumber($args);
 
-        if ($args == '' && !$n) {
+        $args = is_string($args) ? $args : '';
+        if ($args === '' && !$n) {
             self::p404();
-        } elseif (preg_match('%(.*?)/feed/(rss2|atom)?$%u', (string) $args, $m)) {
+        } elseif (preg_match('%(.*?)/feed/(rss2|atom)?$%u', $args, $m)) {
             $type = ($m[2] ?? '') === 'atom' ? 'atom' : 'rss2';
             $mime = 'application/xml';
 
@@ -96,10 +97,16 @@ class FrontendUrl extends Url
             );
 
             if (App::frontend()->context()->meta->isEmpty()) {
-                # The specified serie does not exist.
+                // The specified serie does not exist.
                 self::p404();
             } else {
-                App::frontend()->context()->feed_subtitle = ' - ' . __('Serie') . ' - ' . App::frontend()->context()->meta->meta_id;
+                $meta_id = is_string($meta_id = App::frontend()->context()->meta->meta_id) ? $meta_id : '';
+                if ($meta_id === '') {
+                    // Serie id not given
+                    self::p404();
+                }
+
+                App::frontend()->context()->feed_subtitle = ' - ' . __('Serie') . ' - ' . $meta_id;
 
                 $mime = $type === 'atom' ? 'application/atom+xml' : 'application/xml';
 

@@ -26,18 +26,19 @@ class FrontendTemplate
      */
     public static function Series(array|ArrayObject $attr, string $content): string
     {
-        $type  = isset($attr['type']) ? addslashes((string) $attr['type']) : 'serie';
-        $limit = isset($attr['limit']) ? (int) $attr['limit'] : null;
-        $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
+        $combo_sort  = ['meta_id_lower', 'count', 'latest', 'oldest'];
+        $combo_order = ['asc', 'desc'];
 
-        $sortby = 'meta_id_lower';
-        if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
-            $sortby = mb_strtolower((string) $attr['sortby']);
+        $type   = isset($attr['type'])   && is_string($type = $attr['type']) ? addslashes($type) : 'serie';
+        $limit  = isset($attr['limit'])  && is_numeric($limit = $attr['limit']) ? (int) $limit : null;
+        $sortby = isset($attr['sortby']) && is_string($sortby = $attr['sortby']) ? mb_strtolower($sortby) : 'meta_id_lower';
+        $order  = isset($attr['order'])  && is_string($order = $attr['order']) ? mb_strtolower($order) : 'asc';
+
+        if (!in_array($sortby, $combo_sort)) {
+            $sortby = 'meta_id_lower';
         }
-
-        $order = 'asc';
-        if (isset($attr['order']) && $attr['order'] == 'desc') {
-            $order = 'desc';
+        if (!in_array($order, $combo_order)) {
+            $order = 'asc';
         }
 
         return Code::getPHPTemplateBlockCode(
@@ -87,16 +88,18 @@ class FrontendTemplate
      */
     public static function EntrySeries(array|ArrayObject $attr, string $content): string
     {
-        $type   = isset($attr['type']) ? addslashes((string) $attr['type']) : 'serie';
-        $combo  = ['meta_id_lower', 'count', 'latest', 'oldest'];
-        $sortby = 'meta_id_lower';
-        if (isset($attr['sortby']) && in_array($attr['sortby'], $combo)) {
-            $sortby = mb_strtolower((string) $attr['sortby']);
-        }
+        $combo_sort  = ['meta_id_lower', 'count', 'latest', 'oldest'];
+        $combo_order = ['asc', 'desc'];
 
-        $order = 'asc';
-        if (isset($attr['order']) && $attr['order'] == 'desc') {
-            $order = 'desc';
+        $type   = isset($attr['type'])   && is_string($type = $attr['type']) ? addslashes($type) : 'serie';
+        $sortby = isset($attr['sortby']) && is_string($sortby = $attr['sortby']) ? mb_strtolower($sortby) : 'meta_id_lower';
+        $order  = isset($attr['order'])  && is_string($order = $attr['order']) ? mb_strtolower($order) : 'asc';
+
+        if (!in_array($sortby, $combo_sort)) {
+            $sortby = 'meta_id_lower';
+        }
+        if (!in_array($order, $combo_order)) {
+            $order = 'asc';
         }
 
         return Code::getPHPTemplateBlockCode(
@@ -182,9 +185,11 @@ class FrontendTemplate
      */
     public static function SerieFeedURL(array|ArrayObject $attr): string
     {
-        $type = empty($attr['type']) ? 'rss2' : (string) $attr['type'];
+        $combo_type = ['rss2', 'atom'];
 
-        if (!preg_match('#^(rss2|atom)$#', $type)) {
+        $type = isset($attr['type']) && is_string($type = $attr['type']) ? mb_strtolower($type) : 'serie';
+
+        if (!in_array($type, $combo_type)) {
             $type = 'rss2';
         }
 

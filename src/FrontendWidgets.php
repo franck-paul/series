@@ -37,13 +37,13 @@ class FrontendWidgets
 
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
-        $sort = (string) $w->get('sortby');
+        $sort = is_string($sort = $w->get('sortby')) ? $sort : '';
         if (!in_array($sort, $combo)) {
             $sort = 'meta_id_lower';
         }
 
-        $order = $w->get('orderby');
-        if ($order != 'asc') {
+        $order = is_string($order = $w->get('orderby')) ? $order : '';
+        if ($order !== 'asc') {
             $order = 'desc';
         }
 
@@ -51,11 +51,12 @@ class FrontendWidgets
 
         if ($sort !== 'meta_id_lower') {
             // As optional limit may restrict result, we should set order (if not computed after)
-            $params['order'] = $sort . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
+            $params['order'] = $sort . ' ' . ($order === 'asc' ? 'ASC' : 'DESC');
         }
 
-        if ($w->get('limit') !== '') {
-            $params['limit'] = abs((int) $w->get('limit'));
+        $limit = is_numeric($limit = $w->get('limit')) ? abs((int) $limit) : 0;
+        if ($limit > 0) {
+            $params['limit'] = $limit;
         }
 
         $rs = App::meta()->computeMetaStats(
@@ -73,32 +74,38 @@ class FrontendWidgets
 
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';
 
-        if (App::url()->getType() == 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
-            App::frontend()->context()->meta = App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta, 'serie');
+        if (App::url()->getType() === 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
+            $post_meta = is_string($post_meta = App::frontend()->context()->posts->post_meta) ? $post_meta : null;
+
+            App::frontend()->context()->meta = App::meta()->getMetaRecordset($post_meta, 'serie');
         }
 
         while ($rs->fetch()) {
-            $class = '';
-            if (App::url()->getType() == 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
-                while (App::frontend()->context()->meta->fetch()) {
-                    if (App::frontend()->context()->meta->meta_id == $rs->meta_id) {
-                        $class = ' class="serie-current"';
+            $class        = '';
+            $meta_id      = is_string($meta_id = $rs->meta_id) ? $meta_id : '';
+            $roundpercent = is_numeric($roundpercent = $rs->roundpercent) ? (int) $roundpercent : 0;
+            if ($meta_id !== '') {
+                if (App::url()->getType() === 'post' && App::frontend()->context()->meta instanceof MetaRecord) {
+                    while (App::frontend()->context()->meta->fetch()) {
+                        if (App::frontend()->context()->meta->meta_id === $meta_id) {
+                            $class = ' class="serie-current"';
 
-                        break;
+                            break;
+                        }
                     }
                 }
-            }
 
-            $res .= '<li' . $class . '><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode((string) $rs->meta_id)) . '" ' .
-            'class="serie' . $rs->roundpercent . '">' .
-            $rs->meta_id . '</a></li>';
+                $res .= '<li' . $class . '><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($meta_id)) . '" ' . 'class="serie' . $roundpercent . '">' . $meta_id . '</a></li>';
+            }
         }
 
         $res .= '</ul>';
 
         if (App::url()->getURLFor('series') && !is_null($w->get('allserieslinktitle')) && $w->get('allserieslinktitle') !== '') {
-            $res .= '<p><strong><a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' .
-            Html::escapeHTML($w->get('allserieslinktitle')) . '</a></strong></p>';
+            $allserieslinktitle = is_string($allserieslinktitle = $w->get('allserieslinktitle')) ? $allserieslinktitle : '';
+            if ($allserieslinktitle !== '') {
+                $res .= '<p><strong><a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' . Html::escapeHTML($allserieslinktitle) . '</a></strong></p>';
+            }
         }
 
         return $w->renderDiv((bool) $w->content_only, 'series ' . $w->class, '', $res);
@@ -114,13 +121,19 @@ class FrontendWidgets
             return '';
         }
 
-        if (!App::frontend()->context()->posts->post_meta) {
+        $post_meta = App::frontend()->context()->posts instanceof MetaRecord && is_string($post_meta = App::frontend()->context()->posts->post_meta) ? $post_meta : '';
+
+        if ($post_meta === '') {
             return '';
         }
 
-        $metas = unserialize(App::frontend()->context()->posts->post_meta);
-        if (isset($metas['serie'])) {
-            $sql = 'SELECT * FROM ' .
+        $metas = unserialize($post_meta);
+        if (is_array($metas) && isset($metas['serie']) && is_array($metas['serie'])) {
+            /**
+             * @var array<int, string> $metas_serie
+             */
+            $metas_serie = $metas['serie'];
+            $sql         = 'SELECT * FROM ' .
             App::db()->con()->prefix() . App::meta()::META_TABLE_NAME . ' as m,' .
             App::db()->con()->prefix() . App::blog()::POST_TABLE_NAME . ' as p ' .
             ' WHERE m.post_id = p.post_id ' .
@@ -128,9 +141,9 @@ class FrontendWidgets
             ' AND post_status = ' . App::status()->post()::PUBLISHED . ' ' .
             ' AND blog_id = \'' . App::blog()->id() . '\'' .
                 ' AND meta_type = \'serie\' AND ( ';
-            foreach ($metas['serie'] as $key => $meta) {
+            foreach ($metas_serie as $key => $meta) {
                 $sql .= " meta_id = '" . $meta . "' ";
-                if ($key < (is_countable($metas['serie']) ? count($metas['serie']) : 0) - 1) {
+                if ($key < count($metas['serie']) - 1) {
                     $sql .= ' OR ';
                 }
             }
@@ -167,44 +180,48 @@ class FrontendWidgets
 
         $serie = '';
         $list  = '';
-        while ($rs->fetch()) {
-            $class = '';
-            $link  = true;
-            if ($rs->post_id == App::frontend()->context()->posts->post_id) {
-                if ($w->get('current') == 'none') {
-                    continue;
-                }
+        if (App::frontend()->context()->posts instanceof MetaRecord) {
+            while ($rs->fetch()) {
+                $class   = '';
+                $meta_id = is_string($meta_id = $rs->meta_id) ? $meta_id : '';
+                if ($meta_id !== '') {
+                    $link = true;
+                    if ($rs->post_id === App::frontend()->context()->posts->post_id) {
+                        if ($w->get('current') == 'none') {
+                            continue;
+                        }
 
-                $class = ' class="current"';
-                if ($w->get('current') == 'std') {
-                    $link = false;
+                        $class = ' class="current"';
+                        if ($w->get('current') == 'std') {
+                            $link = false;
+                        }
+                    }
+
+                    $suffix = $w->get('folded') ? '</details>' . "\n" : '';
+                    if ($meta_id !== $serie) {
+                        if ($serie !== '') {
+                            $list .= '</ul>' . "\n" . $suffix;
+                        }
+
+                        if ($w->get('serietitle')) {
+                            $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($meta_id)) . '">' .
+                            $meta_id . '</a></h3>' . "\n";
+                        }
+
+                        $serie  = $meta_id;
+                        $prefix = $w->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
+
+                        $list .= $prefix . '<ul>' . "\n";
+                    }
+
+                    $post_type  = is_string($post_type = $rs->post_type) ? $post_type : '';
+                    $post_url   = is_string($post_url = $rs->post_url) ? $post_url : '';
+                    $post_title = is_string($post_title = $rs->post_title) ? $post_title : '';
+                    $href       = App::blog()->url() . App::postTypes()->get($post_type)->publicUrl(Html::sanitizeURL($post_url));
+
+                    $list .= '<li' . $class . '>' . ($link ? '<a href="' . $href . '">' : '') . Html::escapeHTML($post_title) . ($link ? '</a>' : '') . '</li>' . "\n";
                 }
             }
-
-            $suffix = $w->get('folded') ? '</details>' . "\n" : '';
-            if ($rs->meta_id != $serie) {
-                if ($serie != '') {
-                    $list .= '</ul>' . "\n" . $suffix;
-                }
-
-                if ($w->get('serietitle')) {
-                    $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($rs->meta_id)) . '">' .
-                    $rs->meta_id . '</a></h3>' . "\n";
-                }
-
-                $serie  = $rs->meta_id;
-                $prefix = $w->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
-
-                $list .= $prefix . '<ul>' . "\n";
-            }
-
-            $href = App::blog()->url() . App::postTypes()->get($rs->post_type)->publicUrl(Html::sanitizeURL($rs->post_url));
-
-            $list .= '<li' . $class . '>' .
-            ($link ? '<a href="' . $href . '">' : '') .
-            Html::escapeHTML($rs->post_title) .
-                ($link ? '</a>' : '') .
-                '</li>' . "\n";
         }
 
         if ($list === '') {

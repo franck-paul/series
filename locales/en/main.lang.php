@@ -43,6 +43,10 @@ L10n::$locales['Following series have been found in selected entries:'] = '';
 L10n::$locales['ok'] = '';
 L10n::$locales['Series list format:'] = '';
 L10n::$locales['series'] = '';
+L10n::$locales['<strong>%d</strong> entry'] = [
+	'',
+	'',
+];
 L10n::$locales['No series on this blog.'] = '';
 L10n::$locales['The serie “%1$s” has been successfully renamed to “%2$s”'] = '';
 L10n::$locales['The serie “%s” has been successfully deleted'] = '';

@@ -17,6 +17,7 @@ namespace Dotclear\Plugin\series;
 
 use ArrayObject;
 use Dotclear\App;
+use Dotclear\Database\MetaRecord;
 
 class FrontendBehaviors
 {
@@ -27,20 +28,22 @@ class FrontendBehaviors
             return __('All series');
         }
 
-        if ($context === 'serie') {
+        if ($context === 'serie' && App::frontend()->context()->meta instanceof MetaRecord) {
             // Serie
+            $meta_id = is_string($meta_id = App::frontend()->context()->meta->meta_id) ? $meta_id : '';
+            if ($meta_id !== '') {
+                // Get current page if set
+                $page = App::frontend()->getPageNumber();
+                $ret  = '<a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' . __('All series') . '</a>';
+                if ($page === 0) {
+                    $ret .= $separator . $meta_id;
+                } else {
+                    $ret .= $separator . '<a href="' . App::blog()->url() . App::url()->getURLFor('serie') . '/' . rawurlencode($meta_id) . '">' . $meta_id . '</a>';
+                    $ret .= $separator . sprintf(__('page %d'), $page);
+                }
 
-            // Get current page if set
-            $page = App::frontend()->getPageNumber();
-            $ret  = '<a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' . __('All series') . '</a>';
-            if ($page == 0) {
-                $ret .= $separator . App::frontend()->context()->meta->meta_id;
-            } else {
-                $ret .= $separator . '<a href="' . App::blog()->url() . App::url()->getURLFor('serie') . '/' . rawurlencode((string) App::frontend()->context()->meta->meta_id) . '">' . App::frontend()->context()->meta->meta_id . '</a>';
-                $ret .= $separator . sprintf(__('page %d'), $page);
+                return $ret;
             }
-
-            return $ret;
         }
 
         return '';

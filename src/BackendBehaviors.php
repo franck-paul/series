@@ -65,10 +65,9 @@ class BackendBehaviors
             $rs                             = App::meta()->getMetadata(['meta_type' => 'serie']);
             $series_combo[__('All series')] = '-';
             while ($rs->fetch()) {
-                $series_combo[(string) $rs->meta_id] = (string) $rs->meta_id;
+                $meta_id                = is_string($meta_id = $rs->meta_id) ? $meta_id : '';
+                $series_combo[$meta_id] = $meta_id;
             }
-
-            unset($rs);
         } catch (Exception) {
         }
 
@@ -131,18 +130,19 @@ class BackendBehaviors
     }
 
     /**
-     * @param      ArrayObject<string, mixed>           $main     The main
-     * @param      ArrayObject<string, mixed>           $sidebar  The sidebar
-     * @param      MetaRecord|null                      $post     The post
+     * @param      ArrayObject<string, string>                                              $main     The main
+     * @param      ArrayObject<string, array{title: string, items: array<string, string>}>  $sidebar  The sidebar
+     * @param      MetaRecord|null                                                          $post     The post
      */
     public static function seriesField(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
     {
         $meta = App::meta();
 
         if (!empty($_POST['post_series'])) {
-            $value = $_POST['post_series'];
+            $value = is_string($value = $_POST['post_series']) ? $value : '';
         } else {
-            $value = ($post instanceof MetaRecord) ? $meta->getMetaStr($post->post_meta, 'serie') : '';
+            $post_meta = $post instanceof MetaRecord && is_string($post_meta = $post->post_meta) ? $post_meta : '';
+            $value     = ($post instanceof MetaRecord) ? $meta->getMetaStr($post_meta, 'serie') : '';
         }
 
         $sidebar['metas-box']['items']['post_series'] = (new Para(null, 'h5'))
@@ -173,10 +173,10 @@ class BackendBehaviors
      */
     public static function setSeries(Cursor $cur, $post_id): string
     {
-        $post_id = (int) $post_id;
+        $post_id = is_numeric($post_id) ? (int) $post_id : 0;
 
-        if (isset($_POST['post_series'])) {
-            $series = $_POST['post_series'];
+        if ($post_id > 0 && isset($_POST['post_series'])) {
+            $series = is_string($series = $_POST['post_series']) ? $series : '';
             $meta   = App::meta();
             $meta->delPostMeta($post_id, 'serie');
 
@@ -222,24 +222,28 @@ class BackendBehaviors
     public static function adminAddSeries(ActionsPosts $ap, ArrayObject $post): void
     {
         if (!empty($post['new_series'])) {
-            $meta   = App::meta();
-            $series = $meta->splitMetaValues($post['new_series']);
-            $posts  = $ap->getRS();
+            $new_series = is_string($new_series = $post['new_series']) ? $new_series : '';
+            $meta       = App::meta();
+            $series     = $meta->splitMetaValues($new_series);
+            $posts      = $ap->getRS();
 
             while ($posts->fetch()) {
-                # Get series for post
-                $post_meta = $meta->getMetadata([
-                    'meta_type' => 'serie',
-                    'post_id'   => $posts->post_id,
-                ]);
-                $pm = [];
-                while ($post_meta->fetch()) {
-                    $pm[] = $post_meta->meta_id;
-                }
+                $post_id = is_numeric($post_id = $posts->post_id) ? (int) $post_id : 0;
+                if ($post_id > 0) {
+                    // Get series for post
+                    $post_meta = $meta->getMetadata([
+                        'meta_type' => 'serie',
+                        'post_id'   => $post_id,
+                    ]);
+                    $pm = [];
+                    while ($post_meta->fetch()) {
+                        $pm[] = $post_meta->meta_id;
+                    }
 
-                foreach ($series as $s) {
-                    if (!in_array($s, $pm)) {
-                        $meta->setPostMeta($posts->post_id, 'serie', $s);
+                    foreach ($series as $s) {
+                        if (!in_array($s, $pm)) {
+                            $meta->setPostMeta($post_id, 'serie', $s);
+                        }
                     }
                 }
             }
@@ -326,8 +330,14 @@ class BackendBehaviors
             $meta  = App::meta();
             $posts = $ap->getRS();
             while ($posts->fetch()) {
-                foreach ($_POST['meta_id'] as $v) {
-                    $meta->delPostMeta($posts->post_id, 'serie', $v);
+                $post_id = is_numeric($post_id = $posts->post_id) ? (int) $post_id : 0;
+                if ($post_id > 0 && is_array($_POST['meta_id'])) {
+                    foreach ($_POST['meta_id'] as $v) {
+                        $v = is_string($v) ? $v : '';
+                        if ($v !== '') {
+                            $meta->delPostMeta($post_id, 'serie', $v);
+                        }
+                    }
                 }
             }
 
@@ -347,12 +357,17 @@ class BackendBehaviors
             foreach ($ap->getIDs() as $id) {
                 $post_series = $meta->getMetadata([
                     'meta_type' => 'serie',
-                    'post_id'   => (int) $id, ])->toStatic()->rows();
+                    'post_id'   => (int) $id,
+                ])->toStatic()->rows();
+
                 foreach ($post_series as $v) {
-                    if (isset($series[$v['meta_id']])) {
-                        $series[$v['meta_id']]++;
-                    } else {
-                        $series[$v['meta_id']] = 1;
+                    $meta_id = isset($v['meta_id']) && is_string($meta_id = $v['meta_id']) ? $meta_id : '';
+                    if ($meta_id !== '') {
+                        if (isset($series[$meta_id])) {
+                            $series[$meta_id]++;
+                        } else {
+                            $series[$meta_id] = 1;
+                        }
                     }
                 }
             }
@@ -375,11 +390,11 @@ class BackendBehaviors
             $list = [];
             $i    = 0;
             foreach ($series as $name => $number) {
-                $label  = sprintf($posts_count === $number ? '<strong>%s</strong>' : '%s', Html::escapeHTML((string) $name));
+                $label  = sprintf($posts_count === $number ? '<strong>%s</strong>' : '%s', Html::escapeHTML($name));
                 $list[] = (new Para())
                     ->items([
                         (new Checkbox(['meta_id[]','meta_id-' . ++$i]))
-                            ->value(Html::escapeHTML((string) $name))
+                            ->value(Html::escapeHTML($name))
                             ->label(new Label($label, Label::INSIDE_TEXT_AFTER)),
                     ]);
             }
@@ -491,7 +506,7 @@ class BackendBehaviors
         $combo[__('Short')]    = 'more';
         $combo[__('Extended')] = 'all';
 
-        $value = array_key_exists('serie_list_format', $opts) ? $opts['serie_list_format'] : 'more';
+        $value = isset($opts['serie_list_format']) && is_string($value = $opts['serie_list_format']) ? $value : 'more';
 
         echo
         (new Fieldset('series_prefs'))
@@ -512,13 +527,13 @@ class BackendBehaviors
 
     public static function adminUserForm(?MetaRecord $rs): string
     {
-        $opts = $rs instanceof MetaRecord ? $rs->options() : [];
+        $opts = $rs instanceof MetaRecord && is_array($opts = $rs->options()) ? $opts : [];
 
         $combo                 = [];
         $combo[__('Short')]    = 'more';
         $combo[__('Extended')] = 'all';
 
-        $value = array_key_exists('serie_list_format', $opts) ? $opts['serie_list_format'] : 'more';
+        $value = isset($opts['serie_list_format']) && is_string($value = $opts['serie_list_format']) ? $value : 'more';
 
         echo
         (new Fieldset('series_prefs'))
@@ -539,7 +554,7 @@ class BackendBehaviors
 
     public static function setSerieListFormat(Cursor $cur, ?string $user_id = null): string
     {
-        if (!is_null($user_id)) {
+        if (!is_null($user_id) && is_array($cur->user_options)) {
             $cur->user_options['serie_list_format'] = $_POST['user_serie_list_format'];
         }
 

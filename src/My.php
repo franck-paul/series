@@ -29,10 +29,13 @@ class My extends MyPlugin
      */
     public static function tplPath(): string
     {
-        $tplset = App::themes()->moduleInfo(App::blog()->settings()->system->theme, 'tplset');
-        if (!empty($tplset) && is_dir(implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]))) {
-            // a sub-dir exists for my plugin with this tplset
-            return implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]);
+        $theme = is_string($theme = App::blog()->settings()->system->theme) ? $theme : '';
+        if ($theme !== '') {
+            $tplset = App::themes()->moduleInfo($theme, 'tplset');
+            if (!empty($tplset) && is_dir(implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]))) {
+                // a sub-dir exists for my plugin with this tplset
+                return implode(DIRECTORY_SEPARATOR, [My::path(), Utility::TPL_ROOT, $tplset]);
+            }
         }
 
         $tplset = App::config()->defaultTplset();
