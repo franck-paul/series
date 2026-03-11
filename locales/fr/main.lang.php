@@ -45,6 +45,11 @@ L10n::$locales['Following series have been found in selected entries:'] = 'Les s
 L10n::$locales['ok'] = 'ok';
 L10n::$locales['Series list format:'] = 'Format de la liste des séries :';
 L10n::$locales['series'] = 'séries';
+L10n::$locales['<strong>%d</strong> entry'] = [
+	'<strong>%d</strong> entrée',
+	'<strong>%d</strong> entrées',
+	'<strong>%d</strong> entrées',
+];
 L10n::$locales['No series on this blog.'] = 'Aucune série sur ce blog.';
 L10n::$locales['The serie “%1$s” has been successfully renamed to “%2$s”'] = 'La série "%1$s" a été renommée avec succès en "%2$s"';
 L10n::$locales['The serie “%s” has been successfully deleted'] = 'La série « %s » a été supprimée';
