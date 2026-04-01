@@ -237,7 +237,7 @@ class ManagePosts
 
             if (App::backend()->post_list instanceof ListingPosts && App::backend()->posts_actions_page instanceof BackendActions) {
                 /**
-                 * @var array<string, string|array<string, string>> $combo
+                 * @var array<string, array<string, string>> $combo
                  */
                 $combo = App::backend()->posts_actions_page->getCombo();
                 $form  = (new Form('form-entries'))
