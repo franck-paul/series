@@ -37,7 +37,7 @@
 <tpl:Block name="main-content">
   <header id="content-info">
     <h2>{{tpl:lang Serie}} - {{tpl:SerieID}}</h2>
-    <ul class="content-info__feed">
+    <ul class="content-info__feed feeds">
       <li><a type="application/atom+xml" href="{{tpl:SerieFeedURL type="atom"}}"
        title="{{tpl:lang This serie's entries Atom feed}}" class="feed">{{tpl:lang Entries feed}}</a></li>
       <tpl:SysIf operator="or" comments_active="1" pings_active="1">
