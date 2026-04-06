@@ -1,11 +1,11 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="series">
     <name>Series</name>
-    <version>9.3</version>
+    <version>9.4</version>
     <author>Franck Paul</author>
     <desc>Series of posts</desc>
-    <date>2026-04-01T13:54:54+0200</date>
-    <file>https://github.com/franck-paul/series/releases/download/9.3/plugin-series-9.3.zip</file>
+    <date>2026-04-06T15:17:16+0200</date>
+    <file>https://github.com/franck-paul/series/releases/download/9.4/plugin-series-9.4.zip</file>
     <da:dcmin>2.37</da:dcmin>
     <da:details>https://dotclear.org/plugin/detail/series</da:details>
     <da:support>https://github.com/franck-paul/series</da:support>
