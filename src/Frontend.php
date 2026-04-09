@@ -41,6 +41,8 @@ class Frontend
             'templateBeforeBlockV2'  => FrontendBehaviors::templateBeforeBlock(...),
             'publicBeforeDocumentV2' => FrontendBehaviors::addTplPath(...),
 
+            'tplIfConditions' => FrontendBehaviors::tplIfConditions(...),
+
             'publicBreadcrumb' => FrontendBehaviors::publicBreadcrumb(...),
 
             'initWidgets'        => Widgets::initWidgets(...),

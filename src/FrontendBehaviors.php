@@ -18,6 +18,7 @@ namespace Dotclear\Plugin\series;
 use ArrayObject;
 use Dotclear\App;
 use Dotclear\Database\MetaRecord;
+use Dotclear\Plugin\TemplateHelper\Code;
 
 class FrontendBehaviors
 {
@@ -88,5 +89,38 @@ class FrontendBehaviors
         App::frontend()->template()->appendPath(My::tplPath());
 
         return '';
+    }
+
+    /**
+     * Extends tpl:EntryIf attributes.
+     *
+     * attributes:
+     *
+     *      has_series  (0|1)   Entry is in one or several series (if 1), or not (if 0)
+     *
+     * @param   string                      $tag        The current tag
+     * @param   ArrayObject<string, mixed>  $attr       The attributes
+     * @param   string                      $content    The content
+     * @param   ArrayObject<int, string>    $if         The conditions stack
+     */
+    public static function tplIfConditions($tag, $attr, $content, $if): string
+    {
+        if ($tag === 'EntryIf' && isset($attr['has_series'])) {
+            $sign = (bool) $attr['has_series'] ? '' : '!';
+            $if->append($sign . rtrim(Code::getPHPCode(
+                self::tplIfConditionsCode(...),
+                [],
+                false
+            ), ';'));
+        }
+
+        return '';
+    }
+
+    // Template code for tplIfConditions
+
+    protected static function tplIfConditionsCode(
+    ): void {
+        (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord && is_string(App::frontend()->context()->posts->post_meta) && App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta, 'serie')->count() > 0);
     }
 }
