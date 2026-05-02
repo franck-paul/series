@@ -38,7 +38,7 @@ class FrontendWidgets
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
         $sort = is_string($sort = $w->get('sortby')) ? $sort : '';
-        if (!in_array($sort, $combo)) {
+        if (!in_array($sort, $combo, true)) {
             $sort = 'meta_id_lower';
         }
 

@@ -34,10 +34,11 @@ class FrontendTemplate
         $sortby = isset($attr['sortby']) && is_string($sortby = $attr['sortby']) ? mb_strtolower($sortby) : 'meta_id_lower';
         $order  = isset($attr['order'])  && is_string($order = $attr['order']) ? mb_strtolower($order) : 'asc';
 
-        if (!in_array($sortby, $combo_sort)) {
+        if (!in_array($sortby, $combo_sort, true)) {
             $sortby = 'meta_id_lower';
         }
-        if (!in_array($order, $combo_order)) {
+
+        if (!in_array($order, $combo_order, true)) {
             $order = 'asc';
         }
 
@@ -95,10 +96,11 @@ class FrontendTemplate
         $sortby = isset($attr['sortby']) && is_string($sortby = $attr['sortby']) ? mb_strtolower($sortby) : 'meta_id_lower';
         $order  = isset($attr['order'])  && is_string($order = $attr['order']) ? mb_strtolower($order) : 'asc';
 
-        if (!in_array($sortby, $combo_sort)) {
+        if (!in_array($sortby, $combo_sort, true)) {
             $sortby = 'meta_id_lower';
         }
-        if (!in_array($order, $combo_order)) {
+
+        if (!in_array($order, $combo_order, true)) {
             $order = 'asc';
         }
 
@@ -189,7 +191,7 @@ class FrontendTemplate
 
         $type = isset($attr['type']) && is_string($type = $attr['type']) ? mb_strtolower($type) : 'serie';
 
-        if (!in_array($type, $combo_type)) {
+        if (!in_array($type, $combo_type, true)) {
             $type = 'rss2';
         }
 
