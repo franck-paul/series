@@ -554,7 +554,7 @@ class BackendBehaviors
 
     public static function setSerieListFormat(Cursor $cur, ?string $user_id = null): string
     {
-        if (!is_null($user_id) && is_array($cur->user_options)) {
+        if (!is_null($user_id) && (is_array($cur->user_options) || $cur->user_options instanceof ArrayObject)) {
             $cur->user_options['serie_list_format'] = $_POST['user_serie_list_format'];
         }
 
