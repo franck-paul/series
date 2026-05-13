@@ -1,8 +1,8 @@
-/*global dotclear, jsToolBar */
+/*global dotclear */
 'use strict';
 
 // Toolbar button for series
-jsToolBar.prototype.elements.serie = {
+dotclear.ToolBar.prototype.elements.serie = {
   group: 'metadata',
   type: 'button',
   title: 'Serie',
@@ -11,10 +11,10 @@ jsToolBar.prototype.elements.serie = {
   fn: {},
 };
 
-dotclear.mergeDeep(jsToolBar.prototype.elements, dotclear.getData('legacy_editor_series'));
+dotclear.mergeDeep(dotclear.ToolBar.prototype.elements, dotclear.getData('legacy_editor_series'));
 
-jsToolBar.prototype.elements.serie.context = 'post';
-jsToolBar.prototype.elements.serie.fn.wiki = function () {
+dotclear.ToolBar.prototype.elements.serie.context = 'post';
+dotclear.ToolBar.prototype.elements.serie.fn.wiki = function () {
   this.encloseSelection('', '', (str) => {
     if (str === '') {
       globalThis.alert(dotclear.msg.no_selection);
@@ -27,7 +27,7 @@ jsToolBar.prototype.elements.serie.fn.wiki = function () {
     return `[${str}|serie:${str}]`;
   });
 };
-jsToolBar.prototype.elements.serie.fn.markdown = function () {
+dotclear.ToolBar.prototype.elements.serie.fn.markdown = function () {
   const { url } = this.elements.serie;
   this.encloseSelection('', '', function (str) {
     if (str === '') {
@@ -42,7 +42,7 @@ jsToolBar.prototype.elements.serie.fn.markdown = function () {
     return `[${str}](${uri})`;
   });
 };
-jsToolBar.prototype.elements.serie.fn.xhtml = function () {
+dotclear.ToolBar.prototype.elements.serie.fn.xhtml = function () {
   const { url } = this.elements.serie;
   this.encloseSelection('', '', function (str) {
     if (str === '') {
@@ -57,7 +57,7 @@ jsToolBar.prototype.elements.serie.fn.xhtml = function () {
     return `<a href="${uri}">${str}</a>`;
   });
 };
-jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {
+dotclear.ToolBar.prototype.elements.serie.fn.wysiwyg = function () {
   const t = this.getSelectedText();
 
   if (t === '') {
