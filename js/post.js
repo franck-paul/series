@@ -1,11 +1,11 @@
-/*global $, dotclear, metaEditor */
+/*global $, dotclear */
 'use strict';
 
 dotclear.ready(() => {
   const series_edit = $('#series-edit');
   let post_id = $('#id');
   let meta_field = null;
-  let mEdit = null;
+  let meta_editor = null;
 
   if (series_edit.length > 0) {
     post_id = post_id.length > 0 ? post_id.get(0).value : false;
@@ -16,14 +16,16 @@ dotclear.ready(() => {
 
     const data = dotclear.getData('editor_series_options');
 
-    mEdit = new metaEditor(series_edit, meta_field, 'serie', data);
-    mEdit.displayMeta('serie', post_id, 'post_meta_serie_input');
+    meta_editor = dotclear?.modern
+      ? new dotclear.MetaEditor(series_edit, meta_field, 'serie', data)
+      : new metaEditor(series_edit, meta_field, 'serie', data);
+    meta_editor.displayMeta('serie', post_id, 'post_meta_serie_input');
 
     // mEdit object reference for toolBar
-    globalThis.dc_serie_editor = mEdit;
+    dotclear.meta_editor_series = meta_editor;
   }
 
-  $('#post_meta_serie_input').autocomplete(mEdit.service_uri, {
+  $('#post_meta_serie_input').autocomplete(meta_editor.service_uri, {
     extraParams: {
       f: 'searchMetadata',
       metaType: 'serie',

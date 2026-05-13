@@ -23,7 +23,7 @@ jsToolBar.prototype.elements.serie.fn.wiki = function () {
     if (str.includes(',')) {
       return str;
     }
-    globalThis.dc_serie_editor.addMeta(str);
+    dotclear.meta_editor_series.addMeta(str);
     return `[${str}|serie:${str}]`;
   });
 };
@@ -37,7 +37,7 @@ jsToolBar.prototype.elements.serie.fn.markdown = function () {
     if (str.includes(',')) {
       return str;
     }
-    globalThis.dc_serie_editor.addMeta(str);
+    dotclear.meta_editor_series.addMeta(str);
     const uri = this.stripBaseURL(`${url}/${str}`);
     return `[${str}](${uri})`;
   });
@@ -52,7 +52,7 @@ jsToolBar.prototype.elements.serie.fn.xhtml = function () {
     if (str.includes(',')) {
       return str;
     }
-    globalThis.dc_serie_editor.addMeta(str);
+    dotclear.meta_editor_series.addMeta(str);
     const uri = this.stripBaseURL(`${url}/${str}`);
     return `<a href="${uri}">${str}</a>`;
   });
@@ -73,5 +73,5 @@ jsToolBar.prototype.elements.serie.fn.wysiwyg = function () {
   a.href = this.stripBaseURL(`${this.elements.serie.url}/${t}`);
   a.appendChild(n);
   this.insertNode(a);
-  globalThis.dc_serie_editor.addMeta(t);
+  dotclear.meta_editor_series.addMeta(t);
 };

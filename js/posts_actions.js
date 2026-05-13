@@ -1,4 +1,4 @@
-/*global $, dotclear, metaEditor */
+/*global $, dotclear */
 'use strict';
 
 dotclear.ready(() => {
@@ -8,7 +8,9 @@ dotclear.ready(() => {
   serie_field.hide();
 
   const target = $('#series_list');
-  const mEdit = new metaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'));
+  const mEdit = dotclear?.modern
+    ? new dotclear.MetaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'))
+    : new metaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'));
 
   mEdit.meta_url = 'index.php?process=Plugin&p=series&m=serie_posts&amp;serie=';
 
