@@ -1,31 +1,34 @@
-/*global $, dotclear */
+/*global jQuery, dotclear */
 'use strict';
 
 dotclear.ready(() => {
-  const serie_field = $('#new_series');
+  // DOM ready and content loaded
 
-  serie_field.after('<div id="series_list"></div>');
-  serie_field.hide();
+  const serie_field = document.getElementById('new_series');
 
-  const target = $('#series_list');
-  const mEdit = dotclear?.modern
-    ? new dotclear.MetaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'))
-    : new metaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'));
+  serie_field.after(dotclear.htmlToNode('<div id="series_list"></div>'));
+  serie_field.style.display = 'none';
 
-  mEdit.meta_url = 'index.php?process=Plugin&p=series&m=serie_posts&amp;serie=';
+  const target = document.getElementById('series_list');
+  const meta_editor = new dotclear.MetaEditor(target, serie_field, 'serie', dotclear.getData('editor_series_options'));
 
-  mEdit.meta_dialog = $('<input type="text">');
-  mEdit.meta_dialog.attr('title', mEdit.text_add_meta.replace(/%s/, mEdit.meta_type));
-  mEdit.meta_dialog.attr('id', 'post_meta_serie_input');
-  mEdit.meta_dialog.css('width', '90%');
+  meta_editor.meta_url = 'index.php?process=Plugin&p=series&m=serie_posts&amp;serie=';
 
-  mEdit.addMetaDialog();
+  meta_editor.meta_dialog = dotclear.htmlToNode('<input type="text">');
+  meta_editor.meta_dialog.setAttribute('title', meta_editor.text_add_meta.replace(/%s/, meta_editor.meta_type));
+  meta_editor.meta_dialog.setAttribute('id', 'post_meta_serie_input');
+  meta_editor.meta_dialog.style.width = '90%';
 
-  $('input[name="save_series"]').on('click', () => {
-    serie_field.val($('#post_meta_serie_input').val());
+  meta_editor.addMetaDialog();
+
+  const save_series = document.querySelector('input[name="save_series"]');
+  save_series?.addEventListener('click', () => {
+    const serie_input = document.getElementById('post_meta_serie_input');
+    serie_field.value = serie_input?.value;
   });
 
-  $('#post_meta_serie_input').autocomplete(mEdit.service_uri, {
+  const serie_input = document.getElementById('post_meta_serie_input');
+  $(serie_input).autocomplete(meta_editor.service_uri, {
     extraParams: {
       f: 'searchMetadata',
       metaType: 'serie',

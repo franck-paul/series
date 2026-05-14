@@ -1,67 +1,74 @@
-/*global $, dotclear */
+/*global jQuery, dotclear */
 'use strict';
 
 dotclear.ready(() => {
-  const series_edit = $('#series-edit');
-  let post_id = $('#id');
-  let meta_field = null;
-  let meta_editor = null;
+  // DOM ready and content loaded
 
-  if (series_edit.length > 0) {
-    post_id = post_id.length > 0 ? post_id.get(0).value : false;
-    if (post_id === false) {
-      meta_field = $('<input type="hidden" name="post_series">');
-      meta_field.val($('#post_series').val());
+  document.getElementById('edit-entry')?.addEventListener('onetabload', () => {
+    const series_node = document.getElementById('series-edit');
+    const id = document.getElementById('id');
+
+    let meta_field = null;
+    let meta_editor = null;
+
+    if (series_node) {
+      const post_id = id ? id.value : 0;
+      if (!post_id) {
+        meta_field = dotclear.htmlToNode('<input type="hidden" name="post_series">');
+      }
+
+      meta_editor = new dotclear.MetaEditor(series_node, meta_field, 'serie', dotclear.getData('editor_series_options'));
+      meta_editor.displayMeta('serie', post_id, 'post_meta_serie_input');
+
+      // mEdit object reference for toolBar
+      dotclear.meta_editor_series = meta_editor;
     }
 
-    const data = dotclear.getData('editor_series_options');
-
-    meta_editor = dotclear?.modern
-      ? new dotclear.MetaEditor(series_edit, meta_field, 'serie', data)
-      : new metaEditor(series_edit, meta_field, 'serie', data);
-    meta_editor.displayMeta('serie', post_id, 'post_meta_serie_input');
-
-    // mEdit object reference for toolBar
-    dotclear.meta_editor_series = meta_editor;
-  }
-
-  $('#post_meta_serie_input').autocomplete(meta_editor.service_uri, {
-    extraParams: {
-      f: 'searchMetadata',
-      metaType: 'serie',
-      json: 1,
-    },
-    delay: 1000,
-    multiple: true,
-    multipleSeparator: ', ',
-    matchSubset: false,
-    matchContains: true,
-    parse(data) {
-      const results = [];
-      if (data.success) {
-        for (const elt of data.payload) {
-          results[results.length] = {
-            data: {
-              id: elt.meta_id,
-              count: elt.count,
-              percent: elt.roundpercent,
-            },
-            result: elt.meta_id,
-          };
+    const serie_input = document.getElementById('post_meta_serie_input');
+    jQuery(serie_input).autocomplete(meta_editor.service_uri, {
+      extraParams: {
+        f: 'searchMetadata',
+        metaType: 'serie',
+        json: 1,
+      },
+      delay: 1000,
+      multiple: true,
+      multipleSeparator: ', ',
+      matchSubset: false,
+      matchContains: true,
+      parse(data) {
+        const results = [];
+        if (data.success) {
+          for (const elt of data.payload) {
+            results[results.length] = {
+              data: {
+                id: elt.meta_id,
+                count: elt.count,
+                percent: elt.roundpercent,
+              },
+              result: elt.meta_id,
+            };
+          }
         }
-      }
-      return results;
-    },
-    formatItem(serie) {
-      return serie.id;
-    },
-    formatResult(serie) {
-      return serie.result;
-    },
+        return results;
+      },
+      formatItem(serie) {
+        return serie.id;
+      },
+      formatResult(serie) {
+        return serie.result;
+      },
+    });
   });
 
-  $('h5 .s-series').toggleWithLegend($('.s-series').not('label'), {
-    user_pref: 'post_series',
-    legend_click: true,
-  });
+  const target = document.querySelector('h5 .s-series');
+  if (target) {
+    const siblings = document.querySelectorAll('.s-series:not(label)');
+    if (siblings) {
+      dotclear.toggleWithLegend(target, siblings, {
+        user_pref: 'post_series',
+        legend_click: true,
+      });
+    }
+  }
 });
