@@ -20,6 +20,10 @@ dotclear.ready(() => {
       meta_editor = new dotclear.MetaEditor(series_node, meta_field, 'serie', dotclear.getData('editor_series_options'));
       meta_editor.displayMeta('serie', post_id, 'post_meta_serie_input');
 
+      // Retoute h5 label for post_series to post_meta_serie_input
+      const label = document.querySelector('h5 label[for=post_series]');
+      if (label) label.setAttribute('for', 'post_meta_serie_input');
+
       // mEdit object reference for toolBar
       dotclear.meta_editor_series = meta_editor;
     }
