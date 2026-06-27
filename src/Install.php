@@ -15,7 +15,9 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\series;
 
+use Dotclear\App;
 use Dotclear\Helper\Process\TraitProcess;
+use Dotclear\Interface\Core\UserWorkspaceInterface;
 
 class Install
 {
@@ -28,6 +30,23 @@ class Install
 
     public static function process(): bool
     {
-        return (bool) self::status();
+        if (!self::status()) {
+            return false;
+        }
+
+        if (!App::auth()->prefs()->get('interface')->prefExists('serie_list_format', true)) {
+            // Migrate old option if possible
+            $format = App::auth()->getOption('serie_list_format') ?? 'more';
+            App::auth()->prefs()->get('interface')->put(
+                'serie_list_format',
+                $format,
+                UserWorkspaceInterface::WS_STRING,
+                'Serie list format',
+                true,
+                true
+            );
+        }
+
+        return true;
     }
 }

@@ -34,6 +34,7 @@ use Dotclear\Helper\Html\Form\Submit;
 use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Form\Textarea;
 use Dotclear\Helper\Html\Html;
+use Dotclear\Interface\Core\UserWorkspaceInterface;
 use Exception;
 
 class BackendBehaviors
@@ -257,8 +258,7 @@ class BackendBehaviors
             );
             $ap->redirect(true, ['upd' => 1]);
         } else {
-            $opts = App::auth()->getOptions();
-            $type = $opts['serie_list_format'] ?? 'more';
+            $type = is_string($type = App::auth()->prefs()->get('interface')->get('serie_list_format')) ? $type : 'more';
 
             $editor_series_options = [
                 'meta_url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
@@ -428,8 +428,7 @@ class BackendBehaviors
 
     public static function postHeaders(): string
     {
-        $opts = App::auth()->getOptions();
-        $type = $opts['serie_list_format'] ?? 'more';
+        $type = is_string($type = App::auth()->prefs()->get('interface')->get('serie_list_format')) ? $type : 'more';
 
         $editor_series_options = [
             'meta_url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
@@ -500,13 +499,11 @@ class BackendBehaviors
 
     public static function adminPreferencesForm(): string
     {
-        $opts = App::auth()->getOptions();
-
         $combo                 = [];
         $combo[__('Short')]    = 'more';
         $combo[__('Extended')] = 'all';
 
-        $value = isset($opts['serie_list_format']) && is_string($value = $opts['serie_list_format']) ? $value : 'more';
+        $type = is_string($type = App::auth()->prefs()->get('interface')->get('serie_list_format')) ? $type : null;
 
         echo
         (new Fieldset('series_prefs'))
@@ -516,7 +513,7 @@ class BackendBehaviors
                     ->items([
                         (new Select('user_serie_list_format'))
                             ->label(new Label(__('Series list format:'), Label::INSIDE_LABEL_BEFORE))
-                            ->default($value)
+                            ->default($type)
                             ->items($combo),
                     ]),
             ])
@@ -525,15 +522,13 @@ class BackendBehaviors
         return '';
     }
 
-    public static function adminUserForm(?MetaRecord $rs): string
+    public static function adminUserForm(): string
     {
-        $opts = $rs instanceof MetaRecord && is_array($opts = $rs->options()) ? $opts : [];
-
         $combo                 = [];
         $combo[__('Short')]    = 'more';
         $combo[__('Extended')] = 'all';
 
-        $value = isset($opts['serie_list_format']) && is_string($value = $opts['serie_list_format']) ? $value : 'more';
+        $type = is_string($type = App::auth()->prefs()->get('interface')->get('serie_list_format')) ? $type : null;
 
         echo
         (new Fieldset('series_prefs'))
@@ -543,7 +538,7 @@ class BackendBehaviors
                     ->items([
                         (new Select('user_serie_list_format'))
                             ->label(new Label(__('Series list format:'), Label::INSIDE_LABEL_BEFORE))
-                            ->default($value)
+                            ->default($type)
                             ->items($combo),
                     ]),
             ])
@@ -552,11 +547,15 @@ class BackendBehaviors
         return '';
     }
 
-    public static function setSerieListFormat(Cursor $cur, ?string $user_id = null): string
+    public static function setSerieListFormat(): string
     {
-        if (!is_null($user_id) && (is_array($cur->user_options) || $cur->user_options instanceof ArrayObject)) {
-            $cur->user_options['serie_list_format'] = $_POST['user_serie_list_format'];
-        }
+        $type = isset($_POST['user_serie_list_format']) && is_string($type = $_POST['user_serie_list_format']) ? $type : 'more';
+
+        App::auth()->prefs()->get('interface')->put(
+            'serie_list_format',
+            $type,
+            UserWorkspaceInterface::WS_STRING
+        );
 
         return '';
     }

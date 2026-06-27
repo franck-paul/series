@@ -52,7 +52,8 @@ class ManagePosts
             return false;
         }
 
-        App::backend()->serie = $_REQUEST['serie'] ?? '';
+        $serie                = isset($_REQUEST['serie']) && is_string($serie = $_REQUEST['serie']) ? $serie : '';
+        App::backend()->serie = $serie;
 
         // Get data helper
         $_Int = fn (string $name, int $default = 0): int => isset($_GET[$name]) && is_numeric($val = $_GET[$name]) ? (int) $val : $default;
@@ -65,7 +66,7 @@ class ManagePosts
         $params               = [];
         $params['limit']      = [((App::backend()->page - 1) * App::backend()->nb_per_page), App::backend()->nb_per_page];
         $params['no_content'] = true;
-        $params['meta_id']    = App::backend()->serie;
+        $params['meta_id']    = $serie;
         $params['meta_type']  = 'serie';
         $params['post_type']  = '';
 
@@ -85,7 +86,7 @@ class ManagePosts
             [
                 'p'     => My::id(),
                 'm'     => 'serie_posts',
-                'serie' => App::backend()->serie,
+                'serie' => $serie,
             ]
         );
 
@@ -102,7 +103,6 @@ class ManagePosts
             $new_id = App::meta()->sanitizeMetaID($_POST['new_serie_id']);
 
             try {
-                $serie = is_string($serie = App::backend()->serie) ? $serie : '';
                 if ($serie !== '' && App::meta()->updateMeta($serie, $new_id, 'serie')) {
                     App::backend()->notices()->addSuccessNotice(sprintf(__('The serie “%1$s” has been successfully renamed to “%2$s”'), Html::escapeHTML($serie), Html::escapeHTML($new_id)));
                     My::redirect([
@@ -122,7 +122,6 @@ class ManagePosts
             // Delete a serie
 
             try {
-                $serie = is_string($serie = App::backend()->serie) ? $serie : '';
                 if ($serie !== '') {
                     App::meta()->delMeta($serie, 'serie');
                     App::backend()->notices()->addSuccessNotice(sprintf(__('The serie “%s” has been successfully deleted'), Html::escapeHTML($serie)));
