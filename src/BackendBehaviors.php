@@ -66,8 +66,10 @@ class BackendBehaviors
             $rs                             = App::meta()->getMetadata(['meta_type' => 'serie']);
             $series_combo[__('All series')] = '-';
             while ($rs->fetch()) {
-                $meta_id                = is_string($meta_id = $rs->meta_id) ? $meta_id : '';
-                $series_combo[$meta_id] = $meta_id;
+                $meta_id = $rs->strField('meta_id');
+                if ($meta_id !== '') {
+                    $series_combo[$meta_id] = $meta_id;
+                }
             }
         } catch (Exception) {
         }
@@ -229,8 +231,8 @@ class BackendBehaviors
             $posts      = $ap->getRS();
 
             while ($posts->fetch()) {
-                $post_id = is_numeric($post_id = $posts->post_id) ? (int) $post_id : 0;
-                if ($post_id > 0) {
+                $post_id = $posts->intField('post_id');
+                if ($post_id !== 0) {
                     // Get series for post
                     $post_meta = $meta->getMetadata([
                         'meta_type' => 'serie',
@@ -330,8 +332,8 @@ class BackendBehaviors
             $meta  = App::meta();
             $posts = $ap->getRS();
             while ($posts->fetch()) {
-                $post_id = is_numeric($post_id = $posts->post_id) ? (int) $post_id : 0;
-                if ($post_id > 0 && is_array($_POST['meta_id'])) {
+                $post_id = $posts->intField('post_id');
+                if ($post_id !== 0 && is_array($_POST['meta_id'])) {
                     foreach ($_POST['meta_id'] as $v) {
                         $v = is_string($v) ? $v : '';
                         if ($v !== '') {

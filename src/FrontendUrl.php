@@ -100,7 +100,7 @@ class FrontendUrl extends Url
                 // The specified serie does not exist.
                 self::p404();
             } else {
-                $meta_id = is_string($meta_id = App::frontend()->context()->meta->meta_id) ? $meta_id : '';
+                $meta_id = App::frontend()->context()->meta->strField('meta_id');
                 if ($meta_id === '') {
                     // Serie id not given
                     self::p404();

@@ -31,7 +31,7 @@ class FrontendBehaviors
 
         if ($context === 'serie' && App::frontend()->context()->meta instanceof MetaRecord) {
             // Serie
-            $meta_id = is_string($meta_id = App::frontend()->context()->meta->meta_id) ? $meta_id : '';
+            $meta_id = App::frontend()->context()->meta->strField('meta_id');
             if ($meta_id !== '') {
                 // Get current page if set
                 $page = App::frontend()->getPageNumber();

@@ -81,10 +81,10 @@ class FrontendWidgets
         }
 
         while ($rs->fetch()) {
-            $class        = '';
-            $meta_id      = is_string($meta_id = $rs->meta_id) ? $meta_id : '';
-            $roundpercent = is_numeric($roundpercent = $rs->roundpercent) ? (int) $roundpercent : 0;
+            $class   = '';
+            $meta_id = $rs->strField('meta_id');
             if ($meta_id !== '') {
+                $roundpercent = $rs->intField('roundpercent');
                 if (App::url()->getType() === 'post' && App::frontend()->context()->meta instanceof MetaRecord) {
                     while (App::frontend()->context()->meta->fetch()) {
                         if (App::frontend()->context()->meta->strField('meta_id') === $meta_id) {
