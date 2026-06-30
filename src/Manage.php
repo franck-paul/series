@@ -94,9 +94,9 @@ class Manage
 
         if (App::backend()->series instanceof MetaRecord) {
             while (App::backend()->series->fetch()) {
-                $meta_id       = is_string($meta_id = App::backend()->series->meta_id) ? $meta_id : '';
-                $meta_id_lower = is_string($meta_id_lower = App::backend()->series->meta_id_lower) ? $meta_id_lower : '';
-                $count         = is_numeric($count = App::backend()->series->count) ? (int) $count : 0;
+                $meta_id       = App::backend()->series->strField('meta_id');
+                $meta_id_lower = App::backend()->series->strField('meta_id_lower');
+                $count         = App::backend()->series->intField('count');
                 if ($meta_id !== '' && $meta_id_lower !== '') {
                     $letter = mb_strtoupper(mb_substr($meta_id_lower, 0, 1));
 

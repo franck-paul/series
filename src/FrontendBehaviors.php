@@ -53,6 +53,8 @@ class FrontendBehaviors
     /**
      * @param      string                                               $b      The block
      * @param      array<string, string>|ArrayObject<string, string>    $attr   The attribute
+     *
+     * @todo use getPHPCode()
      */
     public static function templateBeforeBlock(string $b, array|ArrayObject $attr): string
     {
@@ -121,6 +123,8 @@ class FrontendBehaviors
 
     protected static function tplIfConditionsCode(
     ): void {
-        (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord && is_string(App::frontend()->context()->posts->post_meta) && App::meta()->getMetaRecordset(App::frontend()->context()->posts->post_meta, 'serie')->count() > 0);
+        (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord
+         && App::frontend()->context()->posts->strField('post_meta') !== ''
+         && App::meta()->getMetaRecordset(App::frontend()->context()->posts->strField('post_meta'), 'serie')->count() > 0);
     }
 }

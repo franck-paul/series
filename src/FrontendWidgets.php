@@ -75,7 +75,7 @@ class FrontendWidgets
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';
 
         if (App::url()->getType() === 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
-            $post_meta = is_string($post_meta = App::frontend()->context()->posts->post_meta) ? $post_meta : null;
+            $post_meta = App::frontend()->context()->posts->strField('post_meta', true);
 
             App::frontend()->context()->meta = App::meta()->getMetaRecordset($post_meta, 'serie');
         }
@@ -87,7 +87,7 @@ class FrontendWidgets
             if ($meta_id !== '') {
                 if (App::url()->getType() === 'post' && App::frontend()->context()->meta instanceof MetaRecord) {
                     while (App::frontend()->context()->meta->fetch()) {
-                        if (App::frontend()->context()->meta->meta_id === $meta_id) {
+                        if (App::frontend()->context()->meta->strField('meta_id') === $meta_id) {
                             $class = ' class="serie-current"';
 
                             break;
@@ -121,7 +121,7 @@ class FrontendWidgets
             return '';
         }
 
-        $post_meta = App::frontend()->context()->posts instanceof MetaRecord && is_string($post_meta = App::frontend()->context()->posts->post_meta) ? $post_meta : '';
+        $post_meta = App::frontend()->context()->posts instanceof MetaRecord ? App::frontend()->context()->posts->strField('post_meta') : '';
 
         if ($post_meta === '') {
             return '';
@@ -183,10 +183,10 @@ class FrontendWidgets
         if (App::frontend()->context()->posts instanceof MetaRecord) {
             while ($rs->fetch()) {
                 $class   = '';
-                $meta_id = is_string($meta_id = $rs->meta_id) ? $meta_id : '';
+                $meta_id = $rs->strField('meta_id');
                 if ($meta_id !== '') {
                     $link = true;
-                    if ($rs->post_id === App::frontend()->context()->posts->post_id) {
+                    if ($rs->intField('post_id') === App::frontend()->context()->posts->intField('post_id')) {
                         if ($w->get('current') == 'none') {
                             continue;
                         }
@@ -214,9 +214,9 @@ class FrontendWidgets
                         $list .= $prefix . '<ul>' . "\n";
                     }
 
-                    $post_type  = is_string($post_type = $rs->post_type) ? $post_type : '';
-                    $post_url   = is_string($post_url = $rs->post_url) ? $post_url : '';
-                    $post_title = is_string($post_title = $rs->post_title) ? $post_title : '';
+                    $post_type  = $rs->strField('post_type');
+                    $post_url   = $rs->strField('post_url');
+                    $post_title = $rs->strField('post_title');
                     $href       = App::blog()->url() . App::postTypes()->get($post_type)->publicUrl(Html::sanitizeURL($post_url));
 
                     $list .= '<li' . $class . '>' . ($link ? '<a href="' . $href . '">' : '') . Html::escapeHTML($post_title) . ($link ? '</a>' : '') . '</li>' . "\n";

@@ -81,7 +81,7 @@ class FrontendTemplateCode
         string $_content_HTML,
     ): void {
         if (App::frontend()->context()->posts instanceof \Dotclear\Database\MetaRecord) {
-            $series_post_meta = is_string($series_post_meta = App::frontend()->context()->posts->post_meta) ? $series_post_meta : '';
+            $series_post_meta = App::frontend()->context()->posts->strField('post_meta');
             if ($series_post_meta !== '') {
                 App::frontend()->context()->meta = App::meta()->getMetaRecordset($series_post_meta, $_type_);
                 if ($_sortby_ === 'meta_id_lower') {
@@ -107,7 +107,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_meta_id = App::frontend()->context()->meta->meta_id) ? $series_meta_id : '';
+        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord ? App::frontend()->context()->meta->strField('meta_id') : '';
         echo App::frontend()->context()::global_filters(
             $series_meta_id,
             $_params_,
@@ -125,7 +125,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        $series_count = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_count = App::frontend()->context()->meta->count) ? (int) $series_count : 0;
+        $series_count = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord ? App::frontend()->context()->meta->intField('count') : 0;
         echo App::frontend()->context()::global_filters(
             (string) $series_count,
             $_params_,
@@ -143,7 +143,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        $series_percent = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_percent = App::frontend()->context()->meta->percent) ? (int) $series_percent : 0;
+        $series_percent = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord ? App::frontend()->context()->meta->intField('percent') : 0;
         echo App::frontend()->context()::global_filters(
             (string) $series_percent,
             $_params_,
@@ -161,7 +161,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        $series_roundpercent = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_roundpercent = App::frontend()->context()->meta->roundpercent) ? (int) $series_roundpercent : 0;
+        $series_roundpercent = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord ? App::frontend()->context()->meta->intField('roundpercent') : 0;
         echo App::frontend()->context()::global_filters(
             (string) $series_roundpercent,
             $_params_,
@@ -179,7 +179,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_meta_id = App::frontend()->context()->meta->meta_id) ? $series_meta_id : '';
+        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord ? App::frontend()->context()->meta->strField('meta_id') : '';
         echo App::frontend()->context()::global_filters(
             App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($series_meta_id)),
             $_params_,
@@ -214,7 +214,7 @@ class FrontendTemplateCode
         array $_params_,
         string $_tag_
     ): void {
-        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord && is_string($series_meta_id = App::frontend()->context()->meta->meta_id) ? $series_meta_id : '';
+        $series_meta_id = App::frontend()->context()->meta instanceof \Dotclear\Database\MetaRecord ? App::frontend()->context()->meta->strField('meta_id') : '';
         echo App::frontend()->context()::global_filters(
             App::blog()->url() . App::url()->getURLFor('serie_feed', rawurlencode($series_meta_id) . '/' . $_type_),
             $_params_,

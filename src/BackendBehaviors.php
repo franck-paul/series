@@ -42,11 +42,11 @@ class BackendBehaviors
     public static function adminDashboardFavorites(Favorites $favs): string
     {
         $favs->register('series', [
-            'title'       => __('Series'),
-            'url'         => My::manageUrl(),
-            'small-icon'  => My::icons(),
-            'large-icon'  => My::icons(),
-            'permissions' => My::checkContext(My::MENU),
+            'title'          => __('Series'),
+            'url'            => My::manageUrl(),
+            'menu-icon'      => My::icon(),
+            'dashboard-icon' => My::icon(),
+            'permissions'    => My::checkContext(My::MENU),
         ]);
 
         return '';
@@ -142,8 +142,8 @@ class BackendBehaviors
         if (!empty($_POST['post_series'])) {
             $value = is_string($value = $_POST['post_series']) ? $value : '';
         } else {
-            $post_meta = $post instanceof MetaRecord && is_string($post_meta = $post->post_meta) ? $post_meta : '';
-            $value     = ($post instanceof MetaRecord) ? $meta->getMetaStr($post_meta, 'serie') : '';
+            $post_meta = $post instanceof MetaRecord ? $post->strField('post_meta') : '';
+            $value     = $post instanceof MetaRecord ? $meta->getMetaStr($post_meta, 'serie') : '';
         }
 
         $sidebar['metas-box']['items']['post_series'] = (new Para(null, 'h5'))
