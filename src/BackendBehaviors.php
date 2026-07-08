@@ -260,7 +260,7 @@ class BackendBehaviors
             );
             $ap->redirect(true, ['upd' => 1]);
         } else {
-            $type = is_string($type = App::auth()->prefs()->get('interface')->get('serie_list_format')) ? $type : 'more';
+            $type = App::auth()->prefs()->get('interface')->getStr('serie_list_format', false) ?: 'more';
 
             $editor_series_options = [
                 'meta_url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
@@ -430,7 +430,7 @@ class BackendBehaviors
 
     public static function postHeaders(): string
     {
-        $type = is_string($type = App::auth()->prefs()->get('interface')->get('serie_list_format')) ? $type : 'more';
+        $type = App::auth()->prefs()->get('interface')->getStr('serie_list_format', false) ?: 'more';
 
         $editor_series_options = [
             'meta_url' => App::backend()->url()->get('admin.plugin.' . My::id(), [
@@ -505,7 +505,7 @@ class BackendBehaviors
         $combo[__('Short')]    = 'more';
         $combo[__('Extended')] = 'all';
 
-        $type = is_string($type = App::auth()->prefs()->get('interface')->get('serie_list_format')) ? $type : null;
+        $type = App::auth()->prefs()->get('interface')->getStr('serie_list_format');
 
         echo
         (new Fieldset('series_prefs'))
@@ -530,7 +530,7 @@ class BackendBehaviors
         $combo[__('Short')]    = 'more';
         $combo[__('Extended')] = 'all';
 
-        $type = is_string($type = App::auth()->prefs()->get('interface')->get('serie_list_format')) ? $type : null;
+        $type = App::auth()->prefs()->get('interface')->getStr('serie_list_format');
 
         echo
         (new Fieldset('series_prefs'))

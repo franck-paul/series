@@ -97,10 +97,11 @@ class ManagePosts
             return true;
         }
 
-        if (isset($_POST['new_serie_id']) && is_string($_POST['new_serie_id'])) {
+        $new_serie_id = isset($_POST['new_serie_id']) && is_string($new_serie_id = $_POST['new_serie_id']) ? $new_serie_id : '';
+        if ($new_serie_id !== '') {
             // Rename a serie
 
-            $new_id = App::meta()->sanitizeMetaID($_POST['new_serie_id']);
+            $new_id = App::meta()->sanitizeMetaID($new_serie_id);
 
             try {
                 if ($serie !== '' && App::meta()->updateMeta($serie, $new_id, 'serie')) {
