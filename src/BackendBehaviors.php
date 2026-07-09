@@ -240,7 +240,7 @@ class BackendBehaviors
                     ]);
                     $pm = [];
                     while ($post_meta->fetch()) {
-                        $pm[] = $post_meta->meta_id;
+                        $pm[] = $post_meta->strField('meta_id');
                     }
 
                     foreach ($series as $s) {
