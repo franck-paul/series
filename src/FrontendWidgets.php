@@ -74,7 +74,7 @@ class FrontendWidgets
 
         $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';
 
-        if (App::url()->getType() === 'post' && App::frontend()->context()->posts instanceof MetaRecord) {
+        if (App::url()->isType('post') && App::frontend()->context()->posts instanceof MetaRecord) {
             $post_meta = App::frontend()->context()->posts->strField('post_meta', true);
 
             App::frontend()->context()->meta = App::meta()->getMetaRecordset($post_meta, 'serie');
@@ -85,7 +85,7 @@ class FrontendWidgets
             $meta_id = $rs->strField('meta_id');
             if ($meta_id !== '') {
                 $roundpercent = $rs->intField('roundpercent');
-                if (App::url()->getType() === 'post' && App::frontend()->context()->meta instanceof MetaRecord) {
+                if (App::url()->isType('post') && App::frontend()->context()->meta instanceof MetaRecord) {
                     while (App::frontend()->context()->meta->fetch()) {
                         if (App::frontend()->context()->meta->strField('meta_id') === $meta_id) {
                             $class = ' class="serie-current"';
@@ -117,7 +117,7 @@ class FrontendWidgets
             return '';
         }
 
-        if (App::url()->getType() != 'post') {
+        if (!App::url()->isType('post')) {
             return '';
         }
 
