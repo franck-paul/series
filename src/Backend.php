@@ -53,9 +53,9 @@ class Backend
             'adminPreferencesFormV2'       => BackendBehaviors::adminPreferencesForm(...),
             'adminBeforeUserOptionsUpdate' => BackendBehaviors::setSerieListFormat(...),
 
-            'adminUserForm'         => BackendBehaviors::adminUserForm(...),
-            'adminBeforeUserCreate' => BackendBehaviors::setSerieListFormatUser(...),
-            'adminBeforeUserUpdate' => BackendBehaviors::setSerieListFormatUser(...),
+            'adminUserForm'        => BackendBehaviors::adminUserForm(...),
+            'adminAfterUserCreate' => BackendBehaviors::setSerieListFormatUser(...),
+            'adminAfterUserUpdate' => BackendBehaviors::setSerieListFormatUser(...),
 
             'adminPostEditor'      => BackendBehaviors::adminPostEditor(...),
             'ckeditorExtraPlugins' => BackendBehaviors::ckeditorExtraPlugins(...),

@@ -524,27 +524,31 @@ class BackendBehaviors
         return '';
     }
 
-    public static function adminUserForm(): string
+    public static function adminUserForm(?MetaRecord $rs): string
     {
-        $combo                 = [];
-        $combo[__('Short')]    = 'more';
-        $combo[__('Extended')] = 'all';
+        $user_id = $rs instanceof MetaRecord ? $rs->strField('user_id') : '';
 
-        $type = App::auth()->prefs()->get('interface')->getStr('serie_list_format');
+        if ($user_id !== '') {
+            $combo                 = [];
+            $combo[__('Short')]    = 'more';
+            $combo[__('Extended')] = 'all';
 
-        echo
-        (new Fieldset('series_prefs'))
-            ->legend((new Legend(__('Series'))))
-            ->fields([
-                (new Para())
-                    ->items([
-                        (new Select('user_serie_list_format'))
-                            ->label(new Label(__('Series list format:'), Label::INSIDE_LABEL_BEFORE))
-                            ->default($type)
-                            ->items($combo),
-                    ]),
-            ])
-        ->render();
+            $type = App::userPreferences()->createFromUser($user_id)->get('interface')->getStr('serie_list_format');
+
+            echo
+            (new Fieldset('series_prefs'))
+                ->legend((new Legend(__('Series'))))
+                ->fields([
+                    (new Para())
+                        ->items([
+                            (new Select('user_serie_list_format'))
+                                ->label(new Label(__('Series list format:'), Label::INSIDE_LABEL_BEFORE))
+                                ->default($type)
+                                ->items($combo),
+                        ]),
+                ])
+            ->render();
+        }
 
         return '';
     }
@@ -570,7 +574,8 @@ class BackendBehaviors
             App::userPreferences()->createFromUser($user_id)->get('interface')->put(
                 'serie_list_format',
                 $type,
-                UserWorkspaceInterface::WS_STRING
+                UserWorkspaceInterface::WS_STRING,
+                ignore_value: true
             );
         }
 
