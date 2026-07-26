@@ -561,4 +561,19 @@ class BackendBehaviors
 
         return '';
     }
+
+    public static function setSerieListFormatUser(Cursor $cur, string $user_id): string
+    {
+        if ($user_id !== '') {
+            $type = isset($_POST['user_serie_list_format']) && is_string($type = $_POST['user_serie_list_format']) ? $type : 'more';
+
+            App::userPreferences()->createFromUser($user_id)->get('interface')->put(
+                'serie_list_format',
+                $type,
+                UserWorkspaceInterface::WS_STRING
+            );
+        }
+
+        return '';
+    }
 }
