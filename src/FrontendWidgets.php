@@ -31,7 +31,9 @@ class FrontendWidgets
             return '';
         }
 
-        if (($w->homeonly == 1 && !App::url()->isHome(App::url()->getType())) || ($w->homeonly == 2 && App::url()->isHome(App::url()->getType()))) {
+        if (($w->homeonly === 1 && !App::url()->isHome(App::url()->getType()))
+            || ($w->homeonly === 2 && App::url()->isHome(App::url()->getType()))
+        ) {
             return '';
         }
 
@@ -101,7 +103,10 @@ class FrontendWidgets
 
         $res .= '</ul>';
 
-        if (App::url()->getURLFor('series') && !is_null($w->get('allserieslinktitle')) && $w->get('allserieslinktitle') !== '') {
+        if (App::url()->getURLFor('series')
+            && !is_null($w->get('allserieslinktitle'))
+            && $w->get('allserieslinktitle') !== ''
+        ) {
             $allserieslinktitle = is_string($allserieslinktitle = $w->get('allserieslinktitle')) ? $allserieslinktitle : '';
             if ($allserieslinktitle !== '') {
                 $res .= '<p><strong><a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' . Html::escapeHTML($allserieslinktitle) . '</a></strong></p>';
@@ -128,7 +133,10 @@ class FrontendWidgets
         }
 
         $metas = unserialize($post_meta);
-        if (is_array($metas) && isset($metas['serie']) && is_array($metas['serie'])) {
+        if (is_array($metas)
+            && isset($metas['serie'])
+            && is_array($metas['serie'])
+        ) {
             /**
              * @var array<int, string> $metas_serie
              */
