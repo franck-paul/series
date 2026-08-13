@@ -11,27 +11,31 @@
  * @copyright Franck Paul contact@open-time.net
  * @copyright GPL-2.0
  */
-$this->registerModule(
-    'Series',
-    'Series of posts',
-    'Franck Paul',
-    '11.0',
-    [
-        'date'     => '2026-08-03T10:09:54+0200',
-        'requires' => [
-            ['core', '2.39'],
-            ['TemplateHelper'],
-        ],
-        'permissions' => 'My',
-        'priority'    => 1010,  // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
-        'type'        => 'plugin',
-        'settings'    => [
-            'pref' => '#user-options.series_prefs',
-        ],
+declare(strict_types=1);
 
-        'details'    => 'https://open-time.net/?q=series',
-        'support'    => 'https://github.com/franck-paul/series',
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/series/main/dcstore.xml',
-        'license'    => 'gpl2',
-    ]
-);
+if (isset($this) && is_object($this) && method_exists($this, 'registerModule') && isset($this->id) && is_string($this->id)) {
+    $this->registerModule(
+        'Series',
+        'Series of posts',
+        'Franck Paul',
+        '11.0',
+        [
+            'date'     => '2026-08-03T10:09:54+0200',
+            'requires' => [
+                ['core', '2.39'],
+                ['TemplateHelper'],
+            ],
+            'permissions' => 'My',
+            'priority'    => 1010,  // Must be higher than dcLegacyEditor/dcCKEditor priority (ie 1000)
+            'type'        => 'plugin',
+            'settings'    => [
+                'pref' => '#user-options.series_prefs',
+            ],
+
+            'details'    => 'https://open-time.net/?q=series',
+            'support'    => 'https://github.com/franck-paul/series',
+            'repository' => 'https://raw.githubusercontent.com/franck-paul/series/main/dcstore.xml',
+            'license'    => 'gpl2',
+        ]
+    );
+}
