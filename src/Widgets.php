@@ -21,8 +21,14 @@ use Dotclear\Plugin\widgets\WidgetsStack;
 
 class Widgets
 {
+    /**
+     * @var string WIDGET_ID_SERIES
+     */
     private const WIDGET_ID_SERIES = 'series';
 
+    /**
+     * @var string WIDGET_ID_SERIES_POSTS
+     */
     private const WIDGET_ID_SERIES_POSTS = 'seriesPosts';
 
     public static function initWidgets(WidgetsStack $w): void
