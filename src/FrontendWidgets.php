@@ -25,26 +25,26 @@ use Dotclear\Plugin\widgets\WidgetsElement;
  */
 class FrontendWidgets
 {
-    public static function seriesWidget(WidgetsElement $w): string
+    public static function seriesWidget(WidgetsElement $widgetsElement): string
     {
-        if ($w->offline) {
+        if ($widgetsElement->offline) {
             return '';
         }
 
-        if (($w->homeonly == 1 && !App::url()->isHome(App::url()->getType()))
-            || ($w->homeonly == 2 && App::url()->isHome(App::url()->getType()))
+        if (($widgetsElement->homeonly == 1 && !App::url()->isHome(App::url()->getType()))
+            || ($widgetsElement->homeonly == 2 && App::url()->isHome(App::url()->getType()))
         ) {
             return '';
         }
 
         $combo = ['meta_id_lower', 'count', 'latest', 'oldest'];
 
-        $sort = is_string($sort = $w->get('sortby')) ? $sort : '';
+        $sort = is_string($sort = $widgetsElement->get('sortby')) ? $sort : '';
         if (!in_array($sort, $combo, true)) {
             $sort = 'meta_id_lower';
         }
 
-        $order = is_string($order = $w->get('orderby')) ? $order : '';
+        $order = is_string($order = $widgetsElement->get('orderby')) ? $order : '';
         if ($order !== 'asc') {
             $order = 'desc';
         }
@@ -56,7 +56,7 @@ class FrontendWidgets
             $params['order'] = $sort . ' ' . ($order === 'asc' ? 'ASC' : 'DESC');
         }
 
-        $limit = is_numeric($limit = $w->get('limit')) ? abs((int) $limit) : 0;
+        $limit = is_numeric($limit = $widgetsElement->get('limit')) ? abs((int) $limit) : 0;
         if ($limit > 0) {
             $params['limit'] = $limit;
         }
@@ -74,7 +74,7 @@ class FrontendWidgets
             $rs->lexicalSort($sort, $order);
         }
 
-        $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) : '') . '<ul>';
+        $res = ($widgetsElement->title ? $widgetsElement->renderTitle(Html::escapeHTML($widgetsElement->title)) : '') . '<ul>';
 
         if (App::url()->isType('post') && App::frontend()->context()->posts instanceof MetaRecord) {
             $post_meta = App::frontend()->context()->posts->strField('post_meta', true);
@@ -104,21 +104,21 @@ class FrontendWidgets
         $res .= '</ul>';
 
         if (App::url()->getURLFor('series')
-            && !is_null($w->get('allserieslinktitle'))
-            && $w->get('allserieslinktitle') !== ''
+            && !is_null($widgetsElement->get('allserieslinktitle'))
+            && $widgetsElement->get('allserieslinktitle') !== ''
         ) {
-            $allserieslinktitle = is_string($allserieslinktitle = $w->get('allserieslinktitle')) ? $allserieslinktitle : '';
+            $allserieslinktitle = is_string($allserieslinktitle = $widgetsElement->get('allserieslinktitle')) ? $allserieslinktitle : '';
             if ($allserieslinktitle !== '') {
                 $res .= '<p><strong><a href="' . App::blog()->url() . App::url()->getURLFor('series') . '">' . Html::escapeHTML($allserieslinktitle) . '</a></strong></p>';
             }
         }
 
-        return $w->renderDiv((bool) $w->content_only, 'series ' . $w->class, '', $res);
+        return $widgetsElement->renderDiv((bool) $widgetsElement->content_only, 'series ' . $widgetsElement->class, '', $res);
     }
 
-    public static function seriePostsWidget(WidgetsElement $w): string
+    public static function seriePostsWidget(WidgetsElement $widgetsElement): string
     {
-        if ($w->offline) {
+        if ($widgetsElement->offline) {
             return '';
         }
 
@@ -158,73 +158,73 @@ class FrontendWidgets
 
             $sql .= ')';
 
-            $order = $w->get('orderseriesby');
+            $order = $widgetsElement->get('orderseriesby');
             if ($order != 'desc') {
                 $order = 'asc';
             }
 
             $sql .= ' ORDER BY meta_id ' . ($order == 'asc' ? 'ASC' : 'DESC') . ', ';
 
-            $sort = $w->get('sortentriesby');
+            $sort = $widgetsElement->get('sortentriesby');
             if (!in_array($sort, ['date', 'title'])) {
                 $sort = 'date';
             }
 
-            $order = $w->get('orderentriesby');
+            $order = $widgetsElement->get('orderentriesby');
             if ($order != 'desc') {
                 $order = 'asc';
             }
 
             $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
-            $rs = new MetaRecord(App::db()->con()->select($sql));
-            if ($rs->isEmpty()) {
+            $metaRecord = new MetaRecord(App::db()->con()->select($sql));
+            if ($metaRecord->isEmpty()) {
                 return '';
             }
         } else {
             return '';
         }
 
-        $res = ($w->title ? $w->renderTitle(Html::escapeHTML($w->title)) . "\n" : '');
+        $res = ($widgetsElement->title ? $widgetsElement->renderTitle(Html::escapeHTML($widgetsElement->title)) . "\n" : '');
 
         $serie = '';
         $list  = '';
         if (App::frontend()->context()->posts instanceof MetaRecord) {
-            while ($rs->fetch()) {
+            while ($metaRecord->fetch()) {
                 $class   = '';
-                $meta_id = $rs->strField('meta_id');
+                $meta_id = $metaRecord->strField('meta_id');
                 if ($meta_id !== '') {
                     $link = true;
-                    if ($rs->intField('post_id') === App::frontend()->context()->posts->intField('post_id')) {
-                        if ($w->get('current') == 'none') {
+                    if ($metaRecord->intField('post_id') === App::frontend()->context()->posts->intField('post_id')) {
+                        if ($widgetsElement->get('current') == 'none') {
                             continue;
                         }
 
                         $class = ' class="current"';
-                        if ($w->get('current') == 'std') {
+                        if ($widgetsElement->get('current') == 'std') {
                             $link = false;
                         }
                     }
 
-                    $suffix = $w->get('folded') ? '</details>' . "\n" : '';
+                    $suffix = $widgetsElement->get('folded') ? '</details>' . "\n" : '';
                     if ($meta_id !== $serie) {
                         if ($serie !== '') {
                             $list .= '</ul>' . "\n" . $suffix;
                         }
 
-                        if ($w->get('serietitle')) {
+                        if ($widgetsElement->get('serietitle')) {
                             $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($meta_id)) . '">' .
                             $meta_id . '</a></h3>' . "\n";
                         }
 
                         $serie  = $meta_id;
-                        $prefix = $w->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
+                        $prefix = $widgetsElement->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
 
                         $list .= $prefix . '<ul>' . "\n";
                     }
 
-                    $post_type  = $rs->strField('post_type');
-                    $post_url   = $rs->strField('post_url');
-                    $post_title = $rs->strField('post_title');
+                    $post_type  = $metaRecord->strField('post_type');
+                    $post_url   = $metaRecord->strField('post_url');
+                    $post_title = $metaRecord->strField('post_title');
                     $href       = App::blog()->url() . App::postTypes()->get($post_type)->publicUrl(Html::sanitizeURL($post_url));
 
                     $list .= '<li' . $class . '>' . ($link ? '<a href="' . $href . '">' : '') . Html::escapeHTML($post_title) . ($link ? '</a>' : '') . '</li>' . "\n";
@@ -238,6 +238,6 @@ class FrontendWidgets
 
         $res .= $list . '</ul>' . "\n";
 
-        return $w->renderDiv((bool) $w->content_only, 'series-posts ' . $w->class, '', $res);
+        return $widgetsElement->renderDiv((bool) $widgetsElement->content_only, 'series-posts ' . $widgetsElement->class, '', $res);
     }
 }

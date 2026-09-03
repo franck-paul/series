@@ -21,9 +21,9 @@ use Dotclear\Helper\Html\WikiToHtml;
 
 class CoreBehaviors
 {
-    public static function coreInitWikiPost(WikiToHtml $wiki): string
+    public static function coreInitWikiPost(WikiToHtml $wikiToHtml): string
     {
-        $wiki->registerFunction('url:serie', static::wikiSerie(...));
+        $wikiToHtml->registerFunction('url:serie', static::wikiSerie(...));
 
         return '';
     }

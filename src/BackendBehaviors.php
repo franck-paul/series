@@ -39,9 +39,9 @@ use Exception;
 
 class BackendBehaviors
 {
-    public static function adminDashboardFavorites(Favorites $favs): string
+    public static function adminDashboardFavorites(Favorites $favorites): string
     {
-        $favs->register('series', [
+        $favorites->register('series', [
             'title'          => __('Series'),
             'url'            => My::manageUrl(),
             'menu-icon'      => My::icon(),
@@ -78,13 +78,13 @@ class BackendBehaviors
     }
 
     /**
-     * @param      ArrayObject<array-key, array{string, bool}>  $items  The items
+     * @param      ArrayObject<array-key, array{string, bool}>  $arrayObject  The items
      */
-    public static function adminSimpleMenuAddType(ArrayObject $items): string
+    public static function adminSimpleMenuAddType(ArrayObject $arrayObject): string
     {
         $series_combo = self::adminSimpleMenuGetCombo();
         if (count($series_combo) > 1) {
-            $items['series'] = [__('Series'), true];
+            $arrayObject['series'] = [__('Series'), true];
         }
 
         return '';
@@ -135,17 +135,17 @@ class BackendBehaviors
     /**
      * @param      ArrayObject<string, string>                                              $main     The main
      * @param      ArrayObject<string, array{title: string, items: array<string, string>}>  $sidebar  The sidebar
-     * @param      MetaRecord|null                                                          $post     The post
+     * @param      MetaRecord|null                                                          $metaRecord     The post
      */
-    public static function seriesField(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $post): string
+    public static function seriesField(ArrayObject $main, ArrayObject $sidebar, ?MetaRecord $metaRecord): string
     {
         $meta = App::meta();
 
         if (!empty($_POST['post_series'])) {
             $value = is_string($value = $_POST['post_series']) ? $value : '';
         } else {
-            $post_meta = $post instanceof MetaRecord ? $post->strField('post_meta') : '';
-            $value     = $post instanceof MetaRecord ? $meta->getMetaStr($post_meta, 'serie') : '';
+            $post_meta = $metaRecord instanceof MetaRecord ? $metaRecord->strField('post_meta') : '';
+            $value     = $metaRecord instanceof MetaRecord ? $meta->getMetaStr($post_meta, 'serie') : '';
         }
 
         $sidebar['metas-box']['items']['post_series'] = (new Para(null, 'h5'))
@@ -171,10 +171,10 @@ class BackendBehaviors
     /**
      * Store the series of an entry.
      *
-     * @param   Cursor  $cur        The current
+     * @param   Cursor  $cursor        The current
      * @param   mixed   $post_id    The post identifier
      */
-    public static function setSeries(Cursor $cur, $post_id): string
+    public static function setSeries(Cursor $cursor, $post_id): string
     {
         $post_id = is_numeric($post_id) ? (int) $post_id : 0;
 
@@ -194,11 +194,11 @@ class BackendBehaviors
     /**
      * Add series actions.
      *
-     * @param   ActionsPosts    $ap     The current action instance
+     * @param   ActionsPosts    $actionsPosts     The current action instance
      */
-    public static function adminPostsActions(ActionsPosts $ap): string
+    public static function adminPostsActions(ActionsPosts $actionsPosts): string
     {
-        $ap->addAction(
+        $actionsPosts->addAction(
             [__('Series') => [__('Add series') => 'series_add']],
             BackendBehaviors::adminAddSeries(...)
         );
@@ -207,7 +207,7 @@ class BackendBehaviors
             App::auth()::PERMISSION_DELETE,
             App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id())) {
-            $ap->addAction(
+            $actionsPosts->addAction(
                 [__('Series') => [__('Remove series') => 'series_remove']],
                 BackendBehaviors::adminRemoveSeries(...)
             );
@@ -219,16 +219,16 @@ class BackendBehaviors
     /**
      * Add series to entries.
      *
-     * @param      ActionsPosts                 $ap     Actions
-     * @param      ArrayObject<string, mixed>   $post   The post
+     * @param      ActionsPosts                 $actionsPosts     Actions
+     * @param      ArrayObject<string, mixed>   $arrayObject   The post
      */
-    public static function adminAddSeries(ActionsPosts $ap, ArrayObject $post): void
+    public static function adminAddSeries(ActionsPosts $actionsPosts, ArrayObject $arrayObject): void
     {
-        if (!empty($post['new_series'])) {
-            $new_series = is_string($new_series = $post['new_series']) ? $new_series : '';
+        if (!empty($arrayObject['new_series'])) {
+            $new_series = is_string($new_series = $arrayObject['new_series']) ? $new_series : '';
             $meta       = App::meta();
             $series     = $meta->splitMetaValues($new_series);
-            $posts      = $ap->getRS();
+            $posts      = $actionsPosts->getRS();
 
             while ($posts->fetch()) {
                 $post_id = $posts->intField('post_id');
@@ -258,7 +258,7 @@ class BackendBehaviors
                     count($series)
                 )
             );
-            $ap->redirect(true, ['upd' => 1]);
+            $actionsPosts->redirect(true, ['upd' => 1]);
         } else {
             $type = App::auth()->prefs()->get('interface')->getStr('serie_list_format', false) ?: 'more';
 
@@ -275,11 +275,11 @@ class BackendBehaviors
                 'text_separation'     => __('Enter series separated by comma'),
             ];
 
-            $ap->beginPage(
+            $actionsPosts->beginPage(
                 App::backend()->page()->breadcrumb(
                     [
                         Html::escapeHTML(App::blog()->name()) => '',
-                        __('Entries')                         => $ap->getRedirection(true),
+                        __('Entries')                         => $actionsPosts->getRedirection(true),
                         __('Add series to this selection')    => '',
                     ]
                 ),
@@ -292,10 +292,10 @@ class BackendBehaviors
             );
 
             echo (new Form('frm_new_series'))
-                ->action($ap->getURI())
+                ->action($actionsPosts->getURI())
                 ->method('post')
                 ->items([
-                    $ap->checkboxes(),
+                    $actionsPosts->checkboxes(),
                     (new Div())
                         ->items([
                             (new Textarea('new_series'))
@@ -305,7 +305,7 @@ class BackendBehaviors
                         ]),
                     (new Para())
                         ->items([
-                            ...$ap->hiddenFields(),
+                            ...$actionsPosts->hiddenFields(),
                             App::nonce()->formNonce(),
                             (new Hidden('action', 'series_add')),
                             (new Submit(['save_series'], __('Save'))),
@@ -313,24 +313,24 @@ class BackendBehaviors
                 ])
             ->render();
 
-            $ap->endPage();
+            $actionsPosts->endPage();
         }
     }
 
     /**
      * Remove series from entries.
      *
-     * @param      ActionsPosts                 $ap     Actions
-     * @param      ArrayObject<string, mixed>   $post   The post
+     * @param      ActionsPosts                 $actionsPosts     Actions
+     * @param      ArrayObject<string, mixed>   $arrayObject   The post
      */
-    public static function adminRemoveSeries(ActionsPosts $ap, ArrayObject $post): void
+    public static function adminRemoveSeries(ActionsPosts $actionsPosts, ArrayObject $arrayObject): void
     {
-        if (!empty($post['meta_id']) && App::auth()->check(App::auth()->makePermissions([
+        if (!empty($arrayObject['meta_id']) && App::auth()->check(App::auth()->makePermissions([
             App::auth()::PERMISSION_DELETE,
             App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id())) {
             $meta  = App::meta();
-            $posts = $ap->getRS();
+            $posts = $actionsPosts->getRS();
             while ($posts->fetch()) {
                 $post_id = $posts->intField('post_id');
                 if ($post_id !== 0 && is_array($_POST['meta_id'])) {
@@ -351,12 +351,12 @@ class BackendBehaviors
                 )
             );
 
-            $ap->redirect(true, ['upd' => 1]);
+            $actionsPosts->redirect(true, ['upd' => 1]);
         } else {
             $meta   = App::meta();
             $series = [];
 
-            foreach ($ap->getIDs() as $id) {
+            foreach ($actionsPosts->getIDs() as $id) {
                 $post_series = $meta->getMetadata([
                     'meta_type' => 'serie',
                     'post_id'   => (int) $id,
@@ -378,7 +378,7 @@ class BackendBehaviors
                 throw new Exception(__('No series for selected entries'));
             }
 
-            $ap->beginPage(
+            $actionsPosts->beginPage(
                 App::backend()->page()->breadcrumb(
                     [
                         Html::escapeHTML(App::blog()->name())            => '',
@@ -402,10 +402,10 @@ class BackendBehaviors
             }
 
             echo (new Form('frm_rem_series'))
-                ->action($ap->getURI())
+                ->action($actionsPosts->getURI())
                 ->method('post')
                 ->items([
-                    $ap->checkboxes(),
+                    $actionsPosts->checkboxes(),
                     (new Div())
                         ->items([
                             (new Para())
@@ -416,7 +416,7 @@ class BackendBehaviors
                         ]),
                     (new Para())
                         ->items([
-                            ...$ap->hiddenFields(),
+                            ...$actionsPosts->hiddenFields(),
                             App::nonce()->formNonce(),
                             (new Hidden('action', 'series_remove')),
                             (new Submit(['rem_series'], __('ok'))),
@@ -424,7 +424,7 @@ class BackendBehaviors
                 ])
             ->render();
 
-            $ap->endPage();
+            $actionsPosts->endPage();
         }
     }
 
@@ -481,16 +481,16 @@ class BackendBehaviors
     }
 
     /**
-     * @param      ArrayObject<int, array{name:string, url:string, button:string}>  $extraPlugins  The extra plugins
+     * @param      ArrayObject<int, array{name:string, url:string, button:string}>  $arrayObject  The extra plugins
      * @param      string                                                           $context       The context
      */
-    public static function ckeditorExtraPlugins(ArrayObject $extraPlugins, string $context): string
+    public static function ckeditorExtraPlugins(ArrayObject $arrayObject, string $context): string
     {
         if ($context !== 'post') {
             return '';
         }
 
-        $extraPlugins[] = [
+        $arrayObject[] = [
             'name'   => 'dcseries',
             'button' => 'dcSeries',
             'url'    => urldecode(App::config()->adminUrl() . App::backend()->page()->getPF(My::id() . '/js/ckeditor-series-plugin.js')),
@@ -524,9 +524,9 @@ class BackendBehaviors
         return '';
     }
 
-    public static function adminUserForm(?MetaRecord $rs): string
+    public static function adminUserForm(?MetaRecord $metaRecord): string
     {
-        $user_id = $rs instanceof MetaRecord ? $rs->strField('user_id') : '';
+        $user_id = $metaRecord instanceof MetaRecord ? $metaRecord->strField('user_id') : '';
 
         if ($user_id !== '') {
             $combo                 = [];
@@ -566,7 +566,7 @@ class BackendBehaviors
         return '';
     }
 
-    public static function setSerieListFormatUser(Cursor $cur, string $user_id): string
+    public static function setSerieListFormatUser(Cursor $cursor, string $user_id): string
     {
         if ($user_id !== '') {
             $type = isset($_POST['user_serie_list_format']) && is_string($type = $_POST['user_serie_list_format']) ? $type : 'more';
