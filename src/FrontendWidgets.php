@@ -188,47 +188,46 @@ class FrontendWidgets
 
         $serie = '';
         $list  = '';
-        if (App::frontend()->context()->posts instanceof MetaRecord) {
-            while ($metaRecord->fetch()) {
-                $class   = '';
-                $meta_id = $metaRecord->strField('meta_id');
-                if ($meta_id !== '') {
-                    $link = true;
-                    if ($metaRecord->intField('post_id') === App::frontend()->context()->posts->intField('post_id')) {
-                        if ($widgetsElement->get('current') == 'none') {
-                            continue;
-                        }
 
-                        $class = ' class="current"';
-                        if ($widgetsElement->get('current') == 'std') {
-                            $link = false;
-                        }
+        while ($metaRecord->fetch()) {
+            $class   = '';
+            $meta_id = $metaRecord->strField('meta_id');
+            if ($meta_id !== '') {
+                $link = true;
+                if ($metaRecord->intField('post_id') === App::frontend()->context()->posts->intField('post_id')) {
+                    if ($widgetsElement->get('current') == 'none') {
+                        continue;
                     }
 
-                    $suffix = $widgetsElement->get('folded') ? '</details>' . "\n" : '';
-                    if ($meta_id !== $serie) {
-                        if ($serie !== '') {
-                            $list .= '</ul>' . "\n" . $suffix;
-                        }
-
-                        if ($widgetsElement->get('serietitle')) {
-                            $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($meta_id)) . '">' .
-                            $meta_id . '</a></h3>' . "\n";
-                        }
-
-                        $serie  = $meta_id;
-                        $prefix = $widgetsElement->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
-
-                        $list .= $prefix . '<ul>' . "\n";
+                    $class = ' class="current"';
+                    if ($widgetsElement->get('current') == 'std') {
+                        $link = false;
                     }
-
-                    $post_type  = $metaRecord->strField('post_type');
-                    $post_url   = $metaRecord->strField('post_url');
-                    $post_title = $metaRecord->strField('post_title');
-                    $href       = App::blog()->url() . App::postTypes()->get($post_type)->publicUrl(Html::sanitizeURL($post_url));
-
-                    $list .= '<li' . $class . '>' . ($link ? '<a href="' . $href . '">' : '') . Html::escapeHTML($post_title) . ($link ? '</a>' : '') . '</li>' . "\n";
                 }
+
+                $suffix = $widgetsElement->get('folded') ? '</details>' . "\n" : '';
+                if ($meta_id !== $serie) {
+                    if ($serie !== '') {
+                        $list .= '</ul>' . "\n" . $suffix;
+                    }
+
+                    if ($widgetsElement->get('serietitle')) {
+                        $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($meta_id)) . '">' .
+                        $meta_id . '</a></h3>' . "\n";
+                    }
+
+                    $serie  = $meta_id;
+                    $prefix = $widgetsElement->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
+
+                    $list .= $prefix . '<ul>' . "\n";
+                }
+
+                $post_type  = $metaRecord->strField('post_type');
+                $post_url   = $metaRecord->strField('post_url');
+                $post_title = $metaRecord->strField('post_title');
+                $href       = App::blog()->url() . App::postTypes()->get($post_type)->publicUrl(Html::sanitizeURL($post_url));
+
+                $list .= '<li' . $class . '>' . ($link ? '<a href="' . $href . '">' : '') . Html::escapeHTML($post_title) . ($link ? '</a>' : '') . '</li>' . "\n";
             }
         }
 
