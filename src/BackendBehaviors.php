@@ -119,12 +119,18 @@ class BackendBehaviors
             $series_combo = self::adminSimpleMenuGetCombo();
             $menu_item[3] = array_search($item_select, $series_combo, true);
             if ($item_select === '-') {
+                // @phpstan-ignore assign.unused ($menu_item items are references)
                 $menu_item[0] = __('All series');
+                // @phpstan-ignore assign.unused ($menu_item items are references)
                 $menu_item[1] = '';
+                // @phpstan-ignore assign.unused ($menu_item items are references)
                 $menu_item[2] .= App::url()->getURLFor('series');
             } else {
+                // @phpstan-ignore assign.unused ($menu_item items are references)
                 $menu_item[0] = $menu_item[3];
+                // @phpstan-ignore assign.unused ($menu_item items are references)
                 $menu_item[1] = sprintf(__('Recent posts for %s serie'), $menu_item[3]);
+                // @phpstan-ignore assign.unused ($menu_item items are references)
                 $menu_item[2] .= App::url()->getURLFor('serie', $item_select);
             }
         }
