@@ -63,9 +63,9 @@ class Backend
             // Register favorite
             'adminDashboardFavoritesV2' => BackendBehaviors::adminDashboardFavorites(...),
 
-            'adminSimpleMenuAddType'    => BackendBehaviors::adminSimpleMenuAddType(...),
-            'adminSimpleMenuSelect'     => BackendBehaviors::adminSimpleMenuSelect(...),
-            'adminSimpleMenuBeforeEdit' => BackendBehaviors::adminSimpleMenuBeforeEdit(...),
+            'adminSimpleMenuAddType'      => BackendBehaviors::adminSimpleMenuAddType(...),
+            'adminSimpleMenuSelect'       => BackendBehaviors::adminSimpleMenuSelect(...),
+            'adminSimpleMenuBeforeEditV2' => BackendBehaviors::adminSimpleMenuBeforeEditV2(...),
         ]);
 
         if (My::checkContext(My::WIDGETS)) {

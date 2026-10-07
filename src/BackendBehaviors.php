@@ -35,6 +35,7 @@ use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Form\Textarea;
 use Dotclear\Helper\Html\Html;
 use Dotclear\Interface\Core\UserWorkspaceInterface;
+use Dotclear\Plugin\simpleMenu\MenuItemEdit;
 use Exception;
 
 class BackendBehaviors
@@ -108,30 +109,22 @@ class BackendBehaviors
         return '';
     }
 
-    /**
-     * @param      string               $item_type    The item type
-     * @param      string               $item_select  The item select
-     * @param      array<int, string>   $menu_item    The menu item
-     */
-    public static function adminSimpleMenuBeforeEdit(string $item_type, string $item_select, array $menu_item): string
+    public static function adminSimpleMenuBeforeEditV2(MenuItemEdit $menuItemEdit): string
     {
-        if ($item_type === 'series') {
-            $series_combo = self::adminSimpleMenuGetCombo();
-            $menu_item[3] = array_search($item_select, $series_combo, true);
-            if ($item_select === '-') {
-                // @phpstan-ignore assign.unused ($menu_item items are references)
-                $menu_item[0] = __('All series');
-                // @phpstan-ignore assign.unused ($menu_item items are references)
-                $menu_item[1] = '';
-                // @phpstan-ignore assign.unused ($menu_item items are references)
-                $menu_item[2] .= App::url()->getURLFor('series');
+        if ($menuItemEdit->getType() === 'series') {
+            $combo = self::adminSimpleMenuGetCombo();
+            $menuItemEdit->setSelectLabel((string) array_search($menuItemEdit->getSelect(), $combo, true));
+
+            if ($menuItemEdit->getSelect() === '-') {
+                // All series
+                $menuItemEdit->setLabel(__('All series'));
+                $menuItemEdit->setDescription('');
+                $menuItemEdit->setUrl($menuItemEdit->getUrl() . App::url()->getURLFor('series'));
             } else {
-                // @phpstan-ignore assign.unused ($menu_item items are references)
-                $menu_item[0] = $menu_item[3];
-                // @phpstan-ignore assign.unused ($menu_item items are references)
-                $menu_item[1] = sprintf(__('Recent posts for %s serie'), $menu_item[3]);
-                // @phpstan-ignore assign.unused ($menu_item items are references)
-                $menu_item[2] .= App::url()->getURLFor('serie', $item_select);
+                // One specific serie
+                $menuItemEdit->setLabel($menuItemEdit->getSelectLabel());
+                $menuItemEdit->setDescription(sprintf(__('Recent posts for %s serie'), $menuItemEdit->getSelectLabel()));
+                $menuItemEdit->setUrl($menuItemEdit->getUrl() . App::url()->getURLFor('serie', $menuItemEdit->getSelect()));
             }
         }
 
