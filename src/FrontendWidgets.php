@@ -27,13 +27,11 @@ class FrontendWidgets
 {
     public static function seriesWidget(WidgetsElement $widgetsElement): string
     {
-        if ($widgetsElement->offline) {
+        if ($widgetsElement->isOffline()) {
             return '';
         }
 
-        if (($widgetsElement->homeonly == 1 && !App::url()->isHome(App::url()->getType()))
-            || ($widgetsElement->homeonly == 2 && App::url()->isHome(App::url()->getType()))
-        ) {
+        if (!$widgetsElement->checkHomeOnly(App::url()->getType())) {
             return '';
         }
 
@@ -74,7 +72,7 @@ class FrontendWidgets
             $rs->lexicalSort($sort, $order);
         }
 
-        $res = ($widgetsElement->title ? $widgetsElement->renderTitle(Html::escapeHTML($widgetsElement->title)) : '') . '<ul>';
+        $res = ($widgetsElement->getTitle() !== '' ? $widgetsElement->renderTitle(Html::escapeHTML($widgetsElement->getTitle())) : '') . '<ul>';
 
         if (App::url()->isType('post') && App::frontend()->context()->posts instanceof MetaRecord) {
             $post_meta = App::frontend()->context()->posts->strField('post_meta', true);
@@ -113,12 +111,12 @@ class FrontendWidgets
             }
         }
 
-        return $widgetsElement->renderDiv((bool) $widgetsElement->content_only, 'series ' . $widgetsElement->class, '', $res);
+        return $widgetsElement->renderDiv((bool) $widgetsElement->getContentOnly(), 'series ' . $widgetsElement->getClass(), '', $res);
     }
 
     public static function seriePostsWidget(WidgetsElement $widgetsElement): string
     {
-        if ($widgetsElement->offline) {
+        if ($widgetsElement->isOffline()) {
             return '';
         }
 
@@ -184,7 +182,7 @@ class FrontendWidgets
             return '';
         }
 
-        $res = ($widgetsElement->title ? $widgetsElement->renderTitle(Html::escapeHTML($widgetsElement->title)) . "\n" : '');
+        $res = ($widgetsElement->getTitle() !== '' ? $widgetsElement->renderTitle(Html::escapeHTML($widgetsElement->getTitle())) . "\n" : '');
 
         $serie = '';
         $list  = '';
@@ -237,6 +235,6 @@ class FrontendWidgets
 
         $res .= $list . '</ul>' . "\n";
 
-        return $widgetsElement->renderDiv((bool) $widgetsElement->content_only, 'series-posts ' . $widgetsElement->class, '', $res);
+        return $widgetsElement->renderDiv((bool) $widgetsElement->getContentOnly(), 'series-posts ' . $widgetsElement->getClass(), '', $res);
     }
 }
