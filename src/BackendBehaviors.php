@@ -465,8 +465,8 @@ class BackendBehaviors
                 'serie' => [
                     'title'     => __('Serie'),
                     'url'       => $serie_url,
-                    'icon'      => urldecode((string) App::backend()->page()->getPF(My::id() . '/icon.svg')),
-                    'icon_dark' => urldecode((string) App::backend()->page()->getPF(My::id() . '/icon-dark.svg')),
+                    'icon'      => urldecode(App::backend()->page()->getPF(My::id() . '/icon.svg')),
+                    'icon_dark' => urldecode(App::backend()->page()->getPF(My::id() . '/icon-dark.svg')),
                 ],
             ]) .
             My::jsLoad('legacy-post.js');

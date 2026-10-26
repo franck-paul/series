@@ -43,7 +43,7 @@ class CoreBehaviors
         }
 
         $serie_url      = Html::stripHostURL(App::blog()->url() . App::url()->getURLFor('serie'));
-        $res['url']     = $serie_url . '/' . rawurlencode((string) App::meta()->sanitizeMetaID($url));
+        $res['url']     = $serie_url . '/' . rawurlencode(App::meta()->sanitizeMetaID($url));
         $res['content'] = $content;
 
         return $res;

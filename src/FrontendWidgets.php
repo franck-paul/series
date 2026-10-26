@@ -95,7 +95,7 @@ class FrontendWidgets
                     }
                 }
 
-                $res .= '<li' . $class . '><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode((string) $meta_id)) . '" ' . 'class="serie' . $roundpercent . '">' . $meta_id . '</a></li>';
+                $res .= '<li' . $class . '><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($meta_id)) . '" ' . 'class="serie' . $roundpercent . '">' . $meta_id . '</a></li>';
             }
         }
 
@@ -111,7 +111,7 @@ class FrontendWidgets
             }
         }
 
-        return $widgetsElement->renderDiv((bool) $widgetsElement->getContentOnly(), 'series ' . $widgetsElement->getClass(), '', $res);
+        return $widgetsElement->renderDiv($widgetsElement->getContentOnly(), 'series ' . $widgetsElement->getClass(), '', $res);
     }
 
     public static function seriePostsWidget(WidgetsElement $widgetsElement): string
@@ -235,6 +235,6 @@ class FrontendWidgets
 
         $res .= $list . '</ul>' . "\n";
 
-        return $widgetsElement->renderDiv((bool) $widgetsElement->getContentOnly(), 'series-posts ' . $widgetsElement->getClass(), '', $res);
+        return $widgetsElement->renderDiv($widgetsElement->getContentOnly(), 'series-posts ' . $widgetsElement->getClass(), '', $res);
     }
 }
