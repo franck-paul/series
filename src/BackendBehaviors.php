@@ -243,7 +243,7 @@ class BackendBehaviors
                     }
 
                     foreach ($series as $s) {
-                        if (!in_array($s, $pm)) {
+                        if (!in_array($s, $pm, true)) {
                             $meta->setPostMeta($post_id, 'serie', $s);
                         }
                     }

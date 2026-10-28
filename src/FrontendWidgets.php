@@ -164,7 +164,7 @@ class FrontendWidgets
             $sql .= ' ORDER BY meta_id ' . ($order == 'asc' ? 'ASC' : 'DESC') . ', ';
 
             $sort = $widgetsElement->get('sortentriesby');
-            if (!in_array($sort, ['date', 'title'])) {
+            if (!in_array($sort, ['date', 'title'], true)) {
                 $sort = 'date';
             }
 
@@ -173,7 +173,7 @@ class FrontendWidgets
                 $order = 'asc';
             }
 
-            $sql .= ($sort == 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
+            $sql .= ($sort === 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
             $metaRecord = new MetaRecord(App::db()->con()->select($sql));
             if ($metaRecord->isEmpty()) {
                 return '';
