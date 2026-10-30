@@ -157,11 +157,11 @@ class FrontendWidgets
             $sql .= ')';
 
             $order = $widgetsElement->get('orderseriesby');
-            if ($order != 'desc') {
+            if ($order !== 'desc') {
                 $order = 'asc';
             }
 
-            $sql .= ' ORDER BY meta_id ' . ($order == 'asc' ? 'ASC' : 'DESC') . ', ';
+            $sql .= ' ORDER BY meta_id ' . ($order === 'asc' ? 'ASC' : 'DESC') . ', ';
 
             $sort = $widgetsElement->get('sortentriesby');
             if (!in_array($sort, ['date', 'title'], true)) {
@@ -169,11 +169,11 @@ class FrontendWidgets
             }
 
             $order = $widgetsElement->get('orderentriesby');
-            if ($order != 'desc') {
+            if ($order !== 'desc') {
                 $order = 'asc';
             }
 
-            $sql .= ($sort === 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order == 'asc' ? 'ASC' : 'DESC');
+            $sql .= ($sort === 'date' ? 'p.post_dt' : 'p.post_title') . ' ' . ($order === 'asc' ? 'ASC' : 'DESC');
             $metaRecord = new MetaRecord(App::db()->con()->select($sql));
             if ($metaRecord->isEmpty()) {
                 return '';
@@ -193,12 +193,12 @@ class FrontendWidgets
             if ($meta_id !== '') {
                 $link = true;
                 if ($metaRecord->intField('post_id') === App::frontend()->context()->posts->intField('post_id')) {
-                    if ($widgetsElement->get('current') == 'none') {
+                    if ($widgetsElement->get('current') === 'none') {
                         continue;
                     }
 
                     $class = ' class="current"';
-                    if ($widgetsElement->get('current') == 'std') {
+                    if ($widgetsElement->get('current') === 'std') {
                         $link = false;
                     }
                 }
