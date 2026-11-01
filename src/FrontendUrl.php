@@ -28,9 +28,9 @@ class FrontendUrl extends Url
         $n = self::getPageNumber($args);
 
         $args = is_string($args) ? $args : '';
-        if ($args === '' && !$n) {
+        if ($args === '' && empty($n)) {
             self::p404();
-        } elseif (preg_match('%(.*?)/feed/(rss2|atom)?$%u', $args, $m)) {
+        } elseif ((bool) preg_match('%(.*?)/feed/(rss2|atom)?$%u', $args, $m)) {
             $type = ($m[2] ?? '') === 'atom' ? 'atom' : 'rss2';
             $mime = 'application/xml';
 
@@ -53,7 +53,7 @@ class FrontendUrl extends Url
                 self::serveDocument($tpl . '.xml', $mime);
             }
         } else {
-            if ($n) {
+            if (is_int($n)) {
                 App::frontend()->setPageNumber($n);
             }
 
@@ -82,7 +82,7 @@ class FrontendUrl extends Url
      */
     public static function serieFeed(?string $args): void
     {
-        if (!preg_match('#^(.+)/(atom|rss2)(/comments)?$#', (string) $args, $m)) {
+        if (!(bool) preg_match('#^(.+)/(atom|rss2)(/comments)?$#', (string) $args, $m)) {
             self::p404();
         } else {
             $serie    = $m[1];

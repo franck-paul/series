@@ -91,7 +91,7 @@ class ManagePosts
         );
 
         App::backend()->posts_actions_page_rendered = null;
-        if (App::backend()->posts_actions_page->process()) {
+        if ((bool) App::backend()->posts_actions_page->process()) {
             App::backend()->posts_actions_page_rendered = true;
 
             return true;
@@ -147,7 +147,7 @@ class ManagePosts
             return;
         }
 
-        if (App::backend()->posts_actions_page instanceof BackendActions && App::backend()->posts_actions_page_rendered) {
+        if (App::backend()->posts_actions_page instanceof BackendActions && (bool) App::backend()->posts_actions_page_rendered) {
             App::backend()->posts_actions_page->render();
 
             return;

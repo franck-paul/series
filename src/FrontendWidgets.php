@@ -101,7 +101,7 @@ class FrontendWidgets
 
         $res .= '</ul>';
 
-        if (App::url()->getURLFor('series')
+        if (App::url()->getURLFor('series') !== ''
             && !is_null($widgetsElement->get('allserieslinktitle'))
             && $widgetsElement->get('allserieslinktitle') !== ''
         ) {
@@ -203,19 +203,19 @@ class FrontendWidgets
                     }
                 }
 
-                $suffix = $widgetsElement->get('folded') ? '</details>' . "\n" : '';
+                $suffix = (bool) $widgetsElement->get('folded') ? '</details>' . "\n" : '';
                 if ($meta_id !== $serie) {
                     if ($serie !== '') {
                         $list .= '</ul>' . "\n" . $suffix;
                     }
 
-                    if ($widgetsElement->get('serietitle')) {
+                    if ((bool) $widgetsElement->get('serietitle')) {
                         $list .= '<h3><a href="' . App::blog()->url() . App::url()->getURLFor('serie', rawurlencode($meta_id)) . '">' .
                         $meta_id . '</a></h3>' . "\n";
                     }
 
                     $serie  = $meta_id;
-                    $prefix = $widgetsElement->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
+                    $prefix = (bool) $widgetsElement->get('folded') ? '<details><summary>' . $serie . '</summary>' . "\n" : '';
 
                     $list .= $prefix . '<ul>' . "\n";
                 }
