@@ -25,10 +25,10 @@ class FrontendUrl extends Url
      */
     public static function serie(?string $args): void
     {
-        $n = self::getPageNumber($args);
+        $page_number = self::getPageNumber($args);
 
         $args = is_string($args) ? $args : '';
-        if ($args === '' && empty($n)) {
+        if ($args === '' && $page_number === false) {
             self::p404();
         } elseif ((bool) preg_match('%(.*?)/feed/(rss2|atom)?$%u', $args, $m)) {
             $type = ($m[2] ?? '') === 'atom' ? 'atom' : 'rss2';
@@ -53,8 +53,8 @@ class FrontendUrl extends Url
                 self::serveDocument($tpl . '.xml', $mime);
             }
         } else {
-            if (is_int($n)) {
-                App::frontend()->setPageNumber($n);
+            if ($page_number !== false) {
+                App::frontend()->setPageNumber($page_number);
             }
 
             App::frontend()->context()->meta = App::meta()->computeMetaStats(
