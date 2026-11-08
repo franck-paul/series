@@ -18,9 +18,9 @@ if (isset($this) && is_object($this) && method_exists($this, 'registerModule') &
         'Series',
         'Series of posts',
         'Franck Paul',
-        '11.0',
+        '12.0',
         [
-            'date'     => '2026-08-03T10:09:54+0200',
+            'date'     => '2026-11-08T10:21:12+0100',
             'requires' => [
                 ['core', '2.40'],
                 ['TemplateHelper'],
