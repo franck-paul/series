@@ -105,7 +105,7 @@ class FrontendBehaviors
      * @param   string                      $content    The content
      * @param   ArrayObject<int, string>    $if         The conditions stack
      */
-    public static function tplIfConditions($tag, $attr, $content, $if): string
+    public static function tplIfConditions(string $tag, ArrayObject $attr, string $content, ArrayObject $if): string
     {
         if ($tag === 'EntryIf' && isset($attr['has_series'])) {
             $sign = (bool) $attr['has_series'] ? '' : '!';

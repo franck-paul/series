@@ -171,12 +171,10 @@ class BackendBehaviors
      * Store the series of an entry.
      *
      * @param   Cursor  $cursor        The current
-     * @param   mixed   $post_id    The post identifier
+     * @param   int     $post_id    The post identifier
      */
-    public static function setSeries(Cursor $cursor, $post_id): string
+    public static function setSeries(Cursor $cursor, int $post_id): string
     {
-        $post_id = is_numeric($post_id) ? (int) $post_id : 0;
-
         if ($post_id > 0 && isset($_POST['post_series'])) {
             $series = is_string($series = $_POST['post_series']) ? $series : '';
             $meta   = App::meta();
